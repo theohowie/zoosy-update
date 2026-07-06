@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_desc">显示今日思考数量和连续天数</string>
+    <string name="accessibility_desc">监听音量按键组合快速记录思考</string>
+</resources>

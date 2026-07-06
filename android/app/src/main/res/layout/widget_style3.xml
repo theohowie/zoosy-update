@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Zoosy 2x4 - 最近思考卡片 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/widget_bg3">
+
+    <!-- 标题行：图标 + "最近思考" -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/widget_icon_label"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="6dp"
+            android:gravity="center"
+            android:text="💭"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/widget_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="最近思考"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/widget_logo"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@mipmap/ic_launcher"
+            android:contentDescription="logo" />
+    </LinearLayout>
+
+    <!-- 思考标题（加粗，突出的思考标题） -->
+    <TextView
+        android:id="@+id/widget_thought_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- 思考内容（正文，最多 4 行） -->
+    <TextView
+        android:id="@+id/widget_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="4dp"
+        android:gravity="top"
+        android:lineSpacingExtra="2dp"
+        android:maxLines="4"
+        android:ellipsize="end"
+        android:textSize="12sp" />
+
+    <!-- 底部：日期 -->
+    <TextView
+        android:id="@+id/widget_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="end"
+        android:textSize="10sp" />
+
+</LinearLayout>

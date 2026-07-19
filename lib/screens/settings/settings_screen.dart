@@ -255,7 +255,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.cloud_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text('云同步', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                title: Text(TranslationService.tr('cloud_sync'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 subtitle: Text('WebDAV 同步到坚果云等', style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CloudSyncScreen(

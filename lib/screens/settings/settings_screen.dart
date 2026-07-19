@@ -25,6 +25,7 @@ import 'permission_settings_screen.dart';
 import '../profile/device_management_screen.dart';
 import '../thoughts/trash_screen.dart';
 import '../thoughts/drafts_screen.dart';
+import 'cloud_sync_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   final int reflectionsCount;
@@ -251,6 +252,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: Text(TranslationService.tr('restore_data'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => _restoreData(context),
+              ),
+              const Divider(height: 1, indent: 16, endIndent: 16),
+              ListTile(leading: Icon(Icons.cloud_outlined, color: ZoosyTheme.textMutedOf(context)),
+                title: Text('云同步', style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text('WebDAV 同步到坚果云等', style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
+                trailing: const Icon(Icons.chevron_right, size: 20),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CloudSyncScreen(
+                  reflections: widget.reflections,
+                  onSyncCompleted: (refs) {
+                    for (final ref in refs) {
+                      widget.onUpdateReflection(ref);
+                    }
+                  },
+                ))),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.share_outlined, color: ZoosyTheme.textMutedOf(context)),

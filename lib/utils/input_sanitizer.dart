@@ -196,16 +196,16 @@ class InputSanitizer {
   static String prepareForAI(String content) {
     String sanitized = sanitizeText(content);
 
-    // 移除可能的 prompt 注入标记
-    sanitized = sanitized.replaceAll(RegExp(r'(?i)ignore\s+(previous|above|all)\s+(instructions?|prompts?)'), '');
-    sanitized = sanitized.replaceAll(RegExp(r'(?i)you\s+are\s+now'), '');
-    sanitized = sanitized.replaceAll(RegExp(r'(?i)system\s*:'), '');
-    sanitized = sanitized.replaceAll(RegExp(r'(?i)assistant\s*:'), '');
-    sanitized = sanitized.replaceAll(RegExp(r'(?i)human\s*:'), '');
-    sanitized = sanitized.replaceAll(RegExp(r'(?i)\[INST\]'), '');
-    sanitized = sanitized.replaceAll(RegExp(r'(?i)\[/INST\]'), '');
-    sanitized = sanitized.replaceAll(RegExp(r'(?i)<<SYS>>'), '');
-    sanitized = sanitized.replaceAll(RegExp(r'(?i)<</SYS>>'), '');
+    // 移除可能的 prompt 注入标记（Dart RegExp 不支持 (?i)，用 caseSensitive: false）
+    sanitized = sanitized.replaceAll(RegExp(r'ignore\s+(previous|above|all)\s+(instructions?|prompts?)', caseSensitive: false), '');
+    sanitized = sanitized.replaceAll(RegExp(r'you\s+are\s+now', caseSensitive: false), '');
+    sanitized = sanitized.replaceAll(RegExp(r'system\s*:', caseSensitive: false), '');
+    sanitized = sanitized.replaceAll(RegExp(r'assistant\s*:', caseSensitive: false), '');
+    sanitized = sanitized.replaceAll(RegExp(r'human\s*:', caseSensitive: false), '');
+    sanitized = sanitized.replaceAll(RegExp(r'\[INST\]', caseSensitive: false), '');
+    sanitized = sanitized.replaceAll(RegExp(r'\[/INST\]', caseSensitive: false), '');
+    sanitized = sanitized.replaceAll(RegExp(r'<<SYS>>', caseSensitive: false), '');
+    sanitized = sanitized.replaceAll(RegExp(r'<</SYS>>', caseSensitive: false), '');
 
     // 移除多余的空白行
     sanitized = sanitized.replaceAll(RegExp(r'\n{3,}'), '\n\n');

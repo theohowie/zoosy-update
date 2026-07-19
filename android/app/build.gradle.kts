@@ -25,7 +25,6 @@ android {
 
     buildTypes {
         release {
-            // ⚠️ 重要：上线前必须替换为正式签名
             signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
             isShrinkResources = false

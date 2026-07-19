@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import '../utils/input_sanitizer.dart';
 import 'prefs_util.dart';
 
@@ -39,7 +42,7 @@ class AIService {
     'Sonnet': 'claude-3-sonnet-20240229',
     'Kimi': 'moonshot-v1-8k',
     'Qwen': 'qwen-plus',
-    'MiMo': 'mimo-auto',
+    'MiMo': 'mimo-v2.5',
   };
 
   static const List<String> modelList = [
@@ -110,17 +113,17 @@ class AIService {
   }
 
   /// 验证 API Key 是否可用（发送测试请求）
-  static Future<String?> validateApiKey(String apiKey, String apiUrl) async {
+  static Future<String?> validateApiKey(String apiKey, String apiUrl, {String? model}) async {
     try {
-      final model = await getModel();
-      final requestModel = requestModelFor(model);
+      final selectedModel = model ?? await getModel();
+      final requestModel = requestModelFor(selectedModel);
 
       Map<String, dynamic> body;
       Map<String, String> headers = {
         'Content-Type': 'application/json',
       };
 
-      if (model == 'Sonnet') {
+      if (selectedModel == 'Sonnet') {
         // Anthropic 格式
         headers['x-api-key'] = apiKey;
         headers['anthropic-version'] = '2023-06-01';
@@ -131,20 +134,43 @@ class AIService {
         };
       } else {
         headers['Authorization'] = 'Bearer $apiKey';
-        body = _buildOpenAIBody(requestModel, '', 'Hi', maxTokens: 5);
+        // 验证时发送简单消息，不带 system prompt
+        body = {
+          'model': requestModel,
+          'messages': [
+            {'role': 'user', 'content': 'Hi'},
+          ],
+          'max_tokens': 5,
+        };
       }
 
-      final response = await http.post(
+      // 使用 IOClient 跳过 SSL 验证
+      final ioClient = HttpClient()
+        ..badCertificateCallback = (_, __, ___) => true;
+      final client = IOClient(ioClient);
+
+      final response = await client.post(
         Uri.parse(apiUrl),
         headers: headers,
         body: jsonEncode(body),
-      );
+      ).timeout(const Duration(seconds: 30));
+
+      client.close();
+
       if (response.statusCode == 200) {
         return null; // 验证通过
       } else if (response.statusCode == 401 || response.statusCode == 403) {
         return 'API Key 无效，请检查后重试';
       } else {
-        return 'API 返回错误 (${response.statusCode})';
+        // 尝试解析错误信息
+        String detail = '';
+        try {
+          final errorBody = jsonDecode(response.body);
+          if (errorBody['error'] != null) {
+            detail = ': ${errorBody['error']['message'] ?? errorBody['error']}';
+          }
+        } catch (_) {}
+        return 'API 返回错误 (${response.statusCode})$detail';
       }
     } catch (e) {
       return '连接失败，请检查网络或 API 地址';
@@ -188,31 +214,71 @@ class AIService {
         };
       } else {
         headers['Authorization'] = 'Bearer $apiKey';
-        body = _buildOpenAIBody(requestModel, systemPrompt, userContent);
+        // MiMo 等部分模型不支持 system 角色，将 system prompt 合并到 user 消息中
+        if (model == 'MiMo') {
+          body = {
+            'model': requestModel,
+            'messages': [
+              {'role': 'user', 'content': '$systemPrompt\n\n$userContent'},
+            ],
+            'max_tokens': 1024,
+            'temperature': 0.7,
+          };
+        } else {
+          body = _buildOpenAIBody(requestModel, systemPrompt, userContent);
+        }
       }
 
-      final response = await http.post(
+      // 使用 IOClient 跳过 SSL 验证
+      final ioClient = HttpClient()
+        ..badCertificateCallback = (_, __, ___) => true;
+      final client = IOClient(ioClient);
+
+      final response = await client.post(
         Uri.parse(apiUrl),
         headers: headers,
         body: jsonEncode(body),
-      );
+      ).timeout(const Duration(seconds: 30));
+
+      client.close();
+
+      debugPrint('[AI] Status: ${response.statusCode}');
+      debugPrint('[AI] Body: ${response.body}');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        debugPrint('[AI] Response keys: ${data.keys.toList()}');
+        debugPrint('[AI] Response: ${response.body}');
+
         // 兼容不同响应格式
         String? text;
-        if (data['choices'] != null) {
-          text = data['choices']?[0]?['message']?['content'] as String?;
-        } else if (data['content'] != null) {
-          text = data['content'] as String?;
+        if (data['choices'] != null && (data['choices'] as List).isNotEmpty) {
+          final msg = data['choices']?[0]?['message'];
+          text = msg?['content'] as String?;
+          // MiMo 等推理模型：content 为空时读 reasoning_content
+          if ((text == null || text.isEmpty) && msg?['reasoning_content'] != null) {
+            text = msg['reasoning_content'] as String?;
+          }
+        }
+        if (text == null || text.isEmpty) {
+          if (data['content'] != null) {
+            text = data['content'] as String?;
+          }
+        }
+        if (text == null || text.isEmpty) {
+          if (data['data'] != null && data['data']['text'] != null) {
+            text = data['data']['text'] as String?;
+          }
         }
         if (text != null && text.isNotEmpty) return 'AI 摘要：$text';
         return 'AI 摘要生成失败，请重试。';
       } else {
         return 'AI 摘要：API 返回错误 (${response.statusCode})';
       }
-    } catch (e) {
-      return 'AI 摘要：连接失败（请检查网络或 API 配置）';
+    } catch (e, stack) {
+      debugPrint('[AI] Exception: $e');
+      debugPrint('[AI] Stack: $stack');
+      return 'AI 摘要：连接失败 - $e';
     }
   }
 }

@@ -79,7 +79,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
       return;
     }
     setState(() { _isValidating = true; _validateResult = null; });
-    final result = await AIService.validateApiKey(key, url);
+    final result = await AIService.validateApiKey(key, url, model: _selectedModel);
     if (mounted) {
       setState(() {
         _isValidating = false;
@@ -160,8 +160,18 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                         decoration: InputDecoration(hintText: 'sk-...', filled: true, fillColor: ZoosyTheme.containerLowOf(context),
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                           isDense: true, contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                          suffixIcon: _keyController.text.isNotEmpty
+                            ? IconButton(
+                                icon: Icon(Icons.clear, size: 16, color: ZoosyTheme.textMutedOf(context)),
+                                onPressed: () {
+                                  _keyController.clear();
+                                  setState(() {});
+                                },
+                              )
+                            : null,
                         ),
                         style: const TextStyle(fontSize: 13),
+                        onChanged: (_) => setState(() {}),
                       ),
                     ),
                     const SizedBox(width: 8),

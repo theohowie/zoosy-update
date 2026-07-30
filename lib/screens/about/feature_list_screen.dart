@@ -40,7 +40,6 @@ class FeatureListScreen extends StatelessWidget {
             const SizedBox(height: 16),
             _buildSection(context, Icons.notifications_outlined, TranslationService.tr('fl_section_notify'), [
               _Item(TranslationService.tr('fl_daily_remind'), TranslationService.tr('fl_daily_remind_sub')),
-              _Item(TranslationService.tr('fl_screen_time'), TranslationService.tr('fl_screen_time_sub')),
               _Item(TranslationService.tr('fl_shortcut'), TranslationService.tr('fl_shortcut_sub')),
             ]),
             const SizedBox(height: 16),

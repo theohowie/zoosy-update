@@ -6,7 +6,6 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'prefs_util.dart';
 import '../models/reflection.dart';
-import 'screen_time_service.dart';
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
@@ -41,6 +40,7 @@ class NotificationService {
   /// App 内部定时器，每分钟检查一次是否该发通知
   static Timer? _timer;
   static bool _firedToday = false;
+  static bool _appJustStarted = true;
 
   static Future<void> init() async {
     tz.initializeTimeZones();
@@ -65,15 +65,25 @@ class NotificationService {
     _startTimer();
   }
 
-  /// App 内部定时器：每 30 秒检查一次
+  /// App 内部定时器：每 30 秒检查一次，启动后延迟 1 分钟开始
   static void _startTimer() {
     _timer?.cancel();
-    _timer = Timer.periodic(const Duration(seconds: 30), (_) => _checkAndFire());
-    debugPrint('[Notification] App 内部定时器已启动（每30秒检查一次）');
+    _appJustStarted = true;
+    // 启动后延迟 1 分钟再开始检查，避免刚打开 App 就发送通知
+    Future.delayed(const Duration(minutes: 1), () {
+      _appJustStarted = false;
+      _timer = Timer.periodic(const Duration(seconds: 30), (_) => _checkAndFire());
+      debugPrint('[Notification] App 内部定时器已启动（每30秒检查一次）');
+    });
   }
 
   /// 核心检查逻辑
   static Future<void> _checkAndFire() async {
+    if (_appJustStarted) {
+      debugPrint('[Notification] App 刚启动，跳过检查');
+      return;
+    }
+
     if (!await isEnabled()) return;
 
     // 跨天重置：如果日期变了，重置今日标记
@@ -86,6 +96,12 @@ class NotificationService {
     }
 
     if (_firedToday) return;
+
+    // 如果用户今天已经记录了思考，跳过通知
+    if (await hasRecordedToday()) {
+      debugPrint('[Notification] 用户今天已记录思考，跳过通知');
+      return;
+    }
 
     final hour = await getHour();
     final minute = await getMinute();
@@ -105,6 +121,12 @@ class NotificationService {
   /// 实际发送通知
   static Future<void> _fireReminder() async {
     if (_firedToday) return;
+
+    // 如果用户今天已经记录了思考，跳过通知
+    if (await hasRecordedToday()) {
+      debugPrint('[Notification] 用户今天已记录思考，跳过通知');
+      return;
+    }
 
     final title = await getTitle();
     final content = await getContent();
@@ -183,14 +205,9 @@ class NotificationService {
     return storageStatus.isGranted;
   }
 
-  static Future<void> requestUsageStatsPermission() async {
-    await ScreenTimeService.requestPermission();
-  }
-
   static Future<void> requestAllPermissions() async {
     await requestNotificationPermission();
     await requestPhotoPermission();
-    await requestUsageStatsPermission();
   }
 
   // ==================== 记录今日已记录 ====================
@@ -242,23 +259,6 @@ class NotificationService {
     final prefs = await PrefsUtil.get();
     await prefs.remove(_scheduledKey);
     debugPrint('[Notification] 时间已更改，重置今日触发标记');
-  }
-
-  /// 屏幕时长通知
-  static Future<void> showScreenTimeNotification(int hours) async {
-    String title;
-    String body;
-    if (hours >= 11) {
-      title = '今天使用手机时间较长';
-      body = '是时候记录一下今天的思考了，让思考更有价值~';
-    } else {
-      title = '使用手机时间有点长啦';
-      body = '不如停下来，记录一个今天的想法？';
-    }
-    debugPrint('[Notification] 屏幕时长通知: $title');
-    await notifications.show(
-      hours, title, body, _notificationDetails, payload: _payloadNewThought,
-    );
   }
 
   /// 停止定时器
@@ -401,9 +401,6 @@ Future<void> showPermissionDialog(BuildContext context) async {
       ],
     ),
   );
-  if (!await ScreenTimeService.hasPermission()) {
-    ScreenTimeService.requestPermission();
-  }
 }
 
 class _PermissionItem extends StatelessWidget {

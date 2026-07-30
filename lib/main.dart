@@ -15,7 +15,6 @@ import 'screens/home/main_navigation.dart';
 import 'screens/thoughts/new_reflection_screen.dart';
 import 'services/shortcut_service.dart';
 import 'services/prefs_util.dart';
-import 'services/screen_time_service.dart';
 import 'services/trash_service.dart';
 import 'package:home_widget/home_widget.dart';
 
@@ -172,11 +171,6 @@ void main() async {
   // 初始化通知（捕获异常防止热重启时崩溃）
   try {
     await NotificationService.init();
-    // 初始化屏幕使用时长提醒（注入 notifications 实例）
-    ScreenTimeService.init(NotificationService.notifications);
-    if (await ScreenTimeService.isEnabled()) {
-      ScreenTimeService.start();
-    }
   } catch (e) {
     debugPrint('[App] 通知初始化失败: $e');
   }

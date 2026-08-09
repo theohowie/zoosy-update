@@ -18,7 +18,7 @@ class UpdateInfo {
 /// 检查更新服务
 ///
 /// 版本信息托管在 GitHub 仓库的 version.json 文件中：
-/// https://raw.githubusercontent.com/hwt3202958058-arch/zoosy-update/main/version.json
+/// https://raw.githubusercontent.com/theohowie/zoosy-update/main/version.json
 ///
 /// 文件格式：
 /// {
@@ -29,7 +29,7 @@ class UpdateInfo {
 class UpdateService {
   // ====== 配置：修改为你的 GitHub 仓库地址 ======
   static const String _versionFileUrl =
-      'https://raw.githubusercontent.com/hwt3202958058-arch/zoosy-update/main/version.json';
+      'https://raw.githubusercontent.com/theohowie/zoosy-update/main/version.json';
 
   /// 检查是否有新版本
   /// 返回 null 表示已是最新，否则返回更新信息

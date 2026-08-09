@@ -7,7 +7,7 @@
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-blue?logo=flutter)
 ![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart)
 ![License](https://img.shields.io/badge/License-MIT-green)
-[![Version](https://img.shields.io/badge/version-1.14.2-blue)](https://github.com/hwt3202958058-arch/zoosy)
+[![Version](https://img.shields.io/badge/version-1.15.0-blue)](https://github.com/theohowie/zoosy)
 
 </div>
 

@@ -52,3 +52,6 @@ android/app/google-services.json
 *.apk
 *.aab
 *.jks
+
+# Kotlin build cache
+android/.kotlin/

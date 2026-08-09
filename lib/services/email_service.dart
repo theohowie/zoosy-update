@@ -27,9 +27,9 @@ class EmailService {
       return '邮箱地址无效';
     }
 
-    // 检查是否已配置发件邮箱
-    if (AppConfig.qqEmail == 'your_email@qq.com' || AppConfig.qqAuthCode == 'your_smtp_auth_code') {
-      return '请先在 lib/config.dart 中配置 QQ 邮箱和授权码';
+    // 检查是否已配置发件邮箱（需在构建时通过 --dart-define 注入 QQ_EMAIL / QQ_AUTH_CODE）
+    if (AppConfig.qqEmail.isEmpty || AppConfig.qqAuthCode.isEmpty) {
+      return '发件邮箱未配置，请通过 --dart-define 传入 QQ_EMAIL 和 QQ_AUTH_CODE';
     }
 
     final code = _generateCode();

@@ -7,7 +7,7 @@
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-blue?logo=flutter)
 ![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart)
 ![License](https://img.shields.io/badge/License-MIT-green)
-[![Version](https://img.shields.io/badge/version-1.16.0-blue)](https://github.com/theohowie/zoosy)
+[![Version](https://img.shields.io/badge/version-1.17.5-blue)](https://github.com/theohowie/zoosy)
 
 </div>
 
@@ -78,11 +78,11 @@ flutter pub get
 # 开发模式运行（注入 QQ 邮箱 SMTP 配置，密钥勿写入代码）
 flutter run --dart-define=QQ_EMAIL=your_email@qq.com --dart-define=QQ_AUTH_CODE=your_code
 
-# 构建 Release APK（仅 arm64，体积最小；Dart 混淆 + 符号表外置 + 去除调试信息）
-flutter build apk --target-platform android-arm64 --obfuscate --split-debug-info=build/symbols --strip
+# 构建 Release APK（仅 arm64，体积最小；Dart 混淆 + 符号表外置）
+flutter build apk --target-platform android-arm64 --obfuscate --split-debug-info=build/symbols
 
 # 构建 Release APK（兼容 arm32 + arm64）
-flutter build apk --obfuscate --split-debug-info=build/symbols --strip
+flutter build apk --obfuscate --split-debug-info=build/symbols
 ```
 
 APK 输出路径：`build/app/outputs/flutter-apk/app-release.apk`

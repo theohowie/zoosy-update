@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'generated/l10n/l10n_ext.dart';
 import 'models/reflection.dart';
 import 'services/auth_service.dart';
 import 'services/theme_service.dart';
@@ -39,10 +39,10 @@ Future<void> updateWidgetData(List<Reflection> srcReflections) async {
   String savedLabel;
   try {
     savedStyle = (await HomeWidget.getWidgetData<String>('style')) ?? 'style3';
-    savedLabel = (await HomeWidget.getWidgetData<String>('widget_label')) ?? '总共思考';
+    savedLabel = (await HomeWidget.getWidgetData<String>('widget_label')) ?? appL10n().ws_total;
   } catch (_) {
     savedStyle = 'style3';
-    savedLabel = '总共思考';
+    savedLabel = appL10n().ws_total;
   }
 
   // 计算今日条数 + 连续记录天数
@@ -89,7 +89,7 @@ Future<void> updateWidgetData(List<Reflection> srcReflections) async {
     debugPrint('[Widget] saved recent: title=${first.title}');
   } else {
     await HomeWidget.saveWidgetData('rt', '');
-    await HomeWidget.saveWidgetData('rc', '开始记录你的第一个思考吧～');
+    await HomeWidget.saveWidgetData('rc', appL10n().app_first_thought_empty);
     await HomeWidget.saveWidgetData('rd', '');
     await HomeWidget.saveWidgetData('recent_list_json', '[]');
   }
@@ -159,7 +159,7 @@ String _formatWidgetDate(String date, String time) {
       final y = int.parse(parts[0]);
       final m = int.parse(parts[1]);
       final d = int.parse(parts[2]);
-      return '$y年${m}月${d}日 $time';
+      return appL10n().date_header_full(y, m, d, time);
     }
   } catch (_) {}
   return '$date $time';
@@ -262,6 +262,7 @@ class _ZoosyAppState extends State<ZoosyApp> {
     _loadTheme();
     _loadLocale();
     TranslationService.init();
+    TranslationService.localeNotifier.addListener(_onLocaleChanged);
     _checkAuth();
     // 初始化状态栏样式
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -301,16 +302,25 @@ class _ZoosyAppState extends State<ZoosyApp> {
 
   Future<void> _loadLocale() async {
     final code = await PrefsUtil.getLocale();
-    if (code == 'system') {
-      if (mounted) setState(() => _locale = null);
+    _applyLocale(code);
+  }
+
+  /// 应用 locale code 到 MaterialApp.locale：'system' → null（跟随系统）
+  void _applyLocale(String code) {
+    if (!mounted) return;
+    if (code == 'system' || code.isEmpty) {
+      setState(() => _locale = null);
       return;
     }
     final parts = code.split('_');
-    if (mounted) {
-      setState(() {
-        _locale = parts.length > 1 ? Locale(parts[0], parts[1]) : Locale(parts[0]);
-      });
-    }
+    setState(() {
+      _locale = parts.length > 1 ? Locale(parts[0], parts[1]) : Locale(parts[0]);
+    });
+  }
+
+  /// 语言切换（设置页）→ 通知 → 更新 MaterialApp.locale → 整树重建，即时生效
+  void _onLocaleChanged() {
+    _applyLocale(TranslationService.localeNotifier.value);
   }
 
   void _onThemeChanged() async {
@@ -447,12 +457,8 @@ class _ZoosyAppState extends State<ZoosyApp> {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       locale: _locale,
-      supportedLocales: const [Locale('zh'), Locale('zh', 'TW'), Locale('en'), Locale('de'), Locale('fr'), Locale('ja'), Locale('ko'), Locale('ru'), Locale('th')],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       themeMode: _themeMode,
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFFEF7FF),

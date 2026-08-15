@@ -1,7 +1,7 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/theme_service.dart';
-import '../../services/translation_service.dart';
 import '../../widgets/toast_util.dart';
 
 class ThemeSettingsScreen extends StatefulWidget {
@@ -47,21 +47,21 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
       builder: (ctx) => AlertDialog(
         backgroundColor: ZoosyTheme.surfaceOf(ctx),
         surfaceTintColor: Colors.transparent,
-        title: Text(TranslationService.tr('unsaved_changes'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
-        content: Text(TranslationService.tr('unsaved_changes_desc'), style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
+        title: Text(ctx.l10n.unsaved_changes, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
+        content: Text(ctx.l10n.unsaved_changes_desc, style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, 'discard'),
-            child: Text(TranslationService.tr('discard'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
+            child: Text(ctx.l10n.discard, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, 'cancel'),
-            child: const Text('取消'),
+            child: Text(context.l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, 'save'),
             style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary),
-            child: Text(TranslationService.tr('save'), style: TextStyle(color: Colors.white)),
+            child: Text(ctx.l10n.save, style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -89,27 +89,27 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
           builder: (ctx) => AlertDialog(
             backgroundColor: ZoosyTheme.surfaceOf(ctx),
             surfaceTintColor: Colors.transparent,
-            title: Text(TranslationService.tr('change_app_icon'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
+            title: Text(ctx.l10n.change_app_icon, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(TranslationService.tr('icon_change_notice'), style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(ctx), height: 1.5)),
+                Text(ctx.l10n.icon_change_notice, style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(ctx), height: 1.5)),
                 const SizedBox(height: 12),
-                Text(TranslationService.tr('icon_update_notice'), style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(ctx), height: 1.5)),
+                Text(ctx.l10n.icon_update_notice, style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(ctx), height: 1.5)),
                 const SizedBox(height: 12),
-                Text(TranslationService.tr('icon_missing_notice'), style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(ctx), height: 1.5)),
+                Text(ctx.l10n.icon_missing_notice, style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(ctx), height: 1.5)),
               ],
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(ctx, false),
-                child: const Text('取消'),
+                child: Text(context.l10n.cancel),
               ),
               ElevatedButton(
                 onPressed: () => Navigator.pop(ctx, true),
                 style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary),
-                child: Text(TranslationService.tr('confirm'), style: TextStyle(color: Colors.white)),
+                child: Text(ctx.l10n.confirm, style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
@@ -125,7 +125,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
       }
 
       if (!mounted) return;
-      ToastUtil.showToast(context, message: TranslationService.tr('theme_saved'), icon: Icons.palette, color: ZoosyTheme.primary);
+      ToastUtil.showToast(context, message: context.l10n.theme_saved, icon: Icons.palette, color: ZoosyTheme.primary);
       // 先 pop 当前页面，下一帧再触发父组件重建（避免重建时 context 失效导致崩溃）
       Navigator.pop(context);
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -138,7 +138,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
     } catch (e, stack) {
       debugPrint('[ThemeSettings] 保存主题异常: $e\n$stack');
       if (mounted) {
-        ToastUtil.showToast(context, message: '${TranslationService.tr('save_failed')}$e', icon: Icons.error_outline, color: Colors.red);
+        ToastUtil.showToast(context, message: '${context.l10n.save_failed}$e', icon: Icons.error_outline, color: Colors.red);
       }
     }
   }
@@ -147,7 +147,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('theme_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.theme_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -172,14 +172,15 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // ===== 主题颜色 =====
-            Text(TranslationService.tr('theme_color'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.theme_color, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 16),
             Wrap(
               spacing: 14,
               runSpacing: 14,
               children: List.generate(ThemeService.presetColors.length, (i) {
                 final color = ThemeService.presetColors[i];
-                final name = ThemeService.presetNames[i];
+                final names = [context.l10n.th_color_purple, context.l10n.th_color_pink, context.l10n.th_color_green, context.l10n.th_color_orange, context.l10n.th_color_blue, context.l10n.th_color_violet, context.l10n.th_color_cyan, context.l10n.th_color_red];
+            final name = names[i];
                 final isSel = _selectedColor.value == color.value;
                 return GestureDetector(
                   onTap: () => setState(() => _selectedColor = color),
@@ -220,7 +221,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
             const SizedBox(height: 28),
 
             // ===== 模式选择 =====
-            Text(TranslationService.tr('display_mode'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.display_mode, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 12),
             Card(
               color: ZoosyTheme.surfaceOf(context),
@@ -232,18 +233,18 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
               ),
               child: Column(
                 children: [
-                  _buildModeTile(ThemeMode.light, Icons.light_mode, TranslationService.tr('light_mode'), TranslationService.tr('light_mode_desc')),
+                  _buildModeTile(ThemeMode.light, Icons.light_mode, context.l10n.light_mode, context.l10n.light_mode_desc),
                   const Divider(height: 1, indent: 16, endIndent: 16),
-                  _buildModeTile(ThemeMode.dark, Icons.dark_mode, TranslationService.tr('dark_mode'), TranslationService.tr('dark_mode_desc')),
+                  _buildModeTile(ThemeMode.dark, Icons.dark_mode, context.l10n.dark_mode, context.l10n.dark_mode_desc),
                   const Divider(height: 1, indent: 16, endIndent: 16),
-                  _buildModeTile(ThemeMode.system, Icons.settings_brightness, TranslationService.tr('system_default'), TranslationService.tr('follow_system_desc')),
+                  _buildModeTile(ThemeMode.system, Icons.settings_brightness, context.l10n.system_default, context.l10n.follow_system_desc),
                 ],
               ),
             ),
             const SizedBox(height: 28),
 
             // ===== 实时预览 =====
-            Text(TranslationService.tr('live_preview'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.live_preview, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 12),
             _buildPreview(),
             const SizedBox(height: 28),
@@ -260,7 +261,7 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                 ),
                 child: _isSaving
                     ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
-                    : Text(TranslationService.tr('save_theme'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                    : Text(context.l10n.save_theme, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
               ),
             ),
             const SizedBox(height: 40),
@@ -337,21 +338,21 @@ class _ThemeSettingsScreenState extends State<ThemeSettingsScreen> {
                   children: [
                     Container(width: 10, height: 10, decoration: BoxDecoration(color: accentColor, shape: BoxShape.circle)),
                     const SizedBox(width: 8),
-                    Text('工作汇报后的反思', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: textColor)),
+                    Text(context.l10n.ts_preview_title, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: textColor)),
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text('今天完成了工作总结，整体顺利…', style: TextStyle(fontSize: 12, color: mutedColor), maxLines: 1),
+                Text(context.l10n.ts_preview_content, style: TextStyle(fontSize: 12, color: mutedColor), maxLines: 1),
                 const SizedBox(height: 8),
                 Row(
                   children: [
                     Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(color: accentColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                      child: Text('工作', style: TextStyle(fontSize: 9, color: accentColor, fontWeight: FontWeight.bold))),
+                      child: Text(context.l10n.ts_preview_tag1, style: TextStyle(fontSize: 9, color: accentColor, fontWeight: FontWeight.bold))),
                     const SizedBox(width: 6),
                     Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(color: ZoosyTheme.containerLowOf(context), borderRadius: BorderRadius.circular(8)),
-                      child: Text('反思', style: TextStyle(fontSize: 9, color: mutedColor, fontWeight: FontWeight.bold))),
+                      child: Text(context.l10n.ts_preview_tag2, style: TextStyle(fontSize: 9, color: mutedColor, fontWeight: FontWeight.bold))),
                   ],
                 ),
               ],

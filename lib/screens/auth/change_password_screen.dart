@@ -1,10 +1,10 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import '../../models/reflection.dart';
 import '../../services/auth_service.dart';
 import '../../services/secure_prefs.dart';
-import '../../services/translation_service.dart';
 import '../../utils/input_sanitizer.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -41,15 +41,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     final confirmPw = confirmPwResult.sanitized;
 
     if (oldPw.isEmpty || newPw.isEmpty) {
-      setState(() => _errorMsg = TranslationService.tr('fill_all_fields'));
+      setState(() => _errorMsg = context.l10n.fill_all_fields);
       return;
     }
     if (newPw.length < 6) {
-      setState(() => _errorMsg = TranslationService.tr('new_password_min'));
+      setState(() => _errorMsg = context.l10n.new_password_min);
       return;
     }
     if (newPw != confirmPw) {
-      setState(() => _errorMsg = TranslationService.tr('password_mismatch'));
+      setState(() => _errorMsg = context.l10n.password_mismatch);
       return;
     }
 
@@ -57,13 +57,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
     final email = await AuthService.getLoggedInEmail();
     if (email == null) {
-      setState(() { _errorMsg = TranslationService.tr('please_login_first'); _isLoading = false; });
+      setState(() { _errorMsg = context.l10n.please_login_first; _isLoading = false; });
       return;
     }
 
     final valid = await AuthService.login(email, oldPw);
     if (!valid) {
-      setState(() { _errorMsg = TranslationService.tr('current_password_wrong'); _isLoading = false; });
+      setState(() { _errorMsg = context.l10n.current_password_wrong; _isLoading = false; });
       return;
     }
 
@@ -80,7 +80,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       }
     }
 
-    setState(() { _successMsg = TranslationService.tr('password_changed'); _isLoading = false; });
+    setState(() { _successMsg = context.l10n.password_changed; _isLoading = false; });
     await Future.delayed(const Duration(milliseconds: 1000));
     if (mounted) Navigator.pop(context);
   }
@@ -88,17 +88,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('change_password'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.change_password, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           const SizedBox(height: 8),
-          _buildField(TranslationService.tr('current_password'), _oldPwController, _obscureOld, (v) => setState(() => _obscureOld = v), TranslationService.tr('enter_current_password')),
+          _buildField(context.l10n.current_password, _oldPwController, _obscureOld, (v) => setState(() => _obscureOld = v), context.l10n.enter_current_password),
           const SizedBox(height: 20),
-          _buildField(TranslationService.tr('new_password_label'), _newPwController, _obscureNew, (v) => setState(() => _obscureNew = v), TranslationService.tr('password_min_length')),
+          _buildField(context.l10n.new_password_label, _newPwController, _obscureNew, (v) => setState(() => _obscureNew = v), context.l10n.password_min_length),
           const SizedBox(height: 20),
-          _buildField(TranslationService.tr('confirm_new_password'), _confirmPwController, _obscureConfirm, (v) => setState(() => _obscureConfirm = v), TranslationService.tr('reenter_new_password')),
+          _buildField(context.l10n.confirm_new_password, _confirmPwController, _obscureConfirm, (v) => setState(() => _obscureConfirm = v), context.l10n.reenter_new_password),
           const SizedBox(height: 32),
           _buildMessage(),
           SizedBox(height: 52, child: ElevatedButton(
@@ -106,7 +106,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), elevation: 0),
             child: _isLoading
                 ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
-                : Text(TranslationService.tr('save'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                : Text(context.l10n.save, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
           )),
           const SizedBox(height: 40),
         ]),

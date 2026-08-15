@@ -1,3 +1,4 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../models/reflection.dart';
 import '../../services/ai_service.dart';
-import '../../services/translation_service.dart';
 import '../../widgets/toast_util.dart';
 import 'new_reflection_screen.dart';
 import 'image_gallery_screen.dart';
@@ -124,7 +124,7 @@ class _ReflectionDetailScreenState extends State<ReflectionDetailScreen> {
         final dir = await getTemporaryDirectory();
         final file = File('${dir.path}/zoosy_share_${DateTime.now().millisecondsSinceEpoch}.png');
         await file.writeAsBytes(byteData.buffer.asUint8List());
-        await Share.shareXFiles([XFile(file.path)], text: TranslationService.tr('thought_from_zoosy'));
+        await Share.shareXFiles([XFile(file.path)], text: context.l10n.thought_from_zoosy);
       } finally {
         // 无论分享成功与否，都清理临时文件
         for (final path in imgMap.values) {
@@ -141,17 +141,17 @@ class _ReflectionDetailScreenState extends State<ReflectionDetailScreen> {
   void _showShareOptions() {
     showModalBottomSheet(context: context, shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
       builder: (ctx) => Padding(padding: const EdgeInsets.all(20), child: Column(mainAxisSize: MainAxisSize.min, children: [
-        Text(TranslationService.tr('share'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ZoosyTheme.textDark)),
+        Text(ctx.l10n.share, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ZoosyTheme.textDark)),
         const SizedBox(height: 20),
-        ListTile(leading: Icon(Icons.text_fields, color: ZoosyTheme.primary), title: Text(TranslationService.tr('share_text')), onTap: () { Navigator.pop(ctx); _shareText(); }),
-        ListTile(leading: Icon(Icons.image_outlined, color: ZoosyTheme.primary), title: Text(TranslationService.tr('share_image')), onTap: () { Navigator.pop(ctx); _shareImage(); }),
+        ListTile(leading: Icon(Icons.text_fields, color: ZoosyTheme.primary), title: Text(ctx.l10n.share_text), onTap: () { Navigator.pop(ctx); _shareText(); }),
+        ListTile(leading: Icon(Icons.image_outlined, color: ZoosyTheme.primary), title: Text(ctx.l10n.share_image), onTap: () { Navigator.pop(ctx); _shareImage(); }),
       ])),
     );
   }
 
   void _edit() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => NewReflectionScreen(
-      onSave: (ref) { widget.onUpdateReflection(ref); Navigator.pop(context); ToastUtil.showToast(context, message: TranslationService.tr('updated'), icon: Icons.check, color: Colors.green); },
+    Navigator.push(context, MaterialPageRoute(builder: (ctx) => NewReflectionScreen(
+      onSave: (ref) { widget.onUpdateReflection(ref); Navigator.pop(context); ToastUtil.showToast(context, message: ctx.l10n.updated, icon: Icons.check, color: Colors.green); },
       editReflection: widget.reflection,
     )));
   }
@@ -159,8 +159,8 @@ class _ReflectionDetailScreenState extends State<ReflectionDetailScreen> {
   void _delete() {
     showDialog(context: context, builder: (ctx) => AlertDialog(
       backgroundColor: ZoosyTheme.surfaceOf(ctx), surfaceTintColor: Colors.transparent,
-      title: Text(TranslationService.tr('delete_record'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))), content: Text(TranslationService.tr('delete_record_confirm'), style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
-      actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: Text(TranslationService.tr('cancel'))), TextButton(onPressed: () { widget.onDeleteReflection(widget.reflection.id); Navigator.pop(ctx); Navigator.pop(context); ToastUtil.showToast(context, message: TranslationService.tr('reflection_deleted'), icon: Icons.delete_outline, color: Colors.redAccent); }, child: Text(TranslationService.tr('delete'), style: TextStyle(color: Colors.red)))],
+      title: Text(ctx.l10n.delete_record, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))), content: Text(ctx.l10n.delete_record_confirm, style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
+      actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: Text(ctx.l10n.cancel)), TextButton(onPressed: () { widget.onDeleteReflection(widget.reflection.id); Navigator.pop(ctx); Navigator.pop(context); ToastUtil.showToast(context, message: ctx.l10n.reflection_deleted, icon: Icons.delete_outline, color: Colors.redAccent); }, child: Text(ctx.l10n.delete, style: TextStyle(color: Colors.red)))],
     ));
   }
 
@@ -267,10 +267,10 @@ class _ReflectionDetailScreenState extends State<ReflectionDetailScreen> {
                       Row(children: [
                         Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: ZoosyTheme.primary.withOpacity(0.15), shape: BoxShape.circle), child: Icon(Icons.psychology, color: ZoosyTheme.primary, size: 20)),
                         const SizedBox(width: 10),
-                        Text(TranslationService.tr('ai_summary'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.primary)),
+                        Text(context.l10n.ai_summary, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.primary)),
                       ]),
                       const SizedBox(height: 14),
-                      Text(widget.reflection.aiSummary ?? TranslationService.tr('no_ai_summary'), style: TextStyle(fontSize: 13.5, color: ZoosyTheme.textDarkOf(context), height: 1.6)),
+                      Text(widget.reflection.aiSummary ?? context.l10n.no_ai_summary, style: TextStyle(fontSize: 13.5, color: ZoosyTheme.textDarkOf(context), height: 1.6)),
                     ]),
                   ),
                 ),
@@ -281,9 +281,9 @@ class _ReflectionDetailScreenState extends State<ReflectionDetailScreen> {
         )),
         Container(padding: const EdgeInsets.fromLTRB(16, 8, 16, 16), decoration: BoxDecoration(color: ZoosyTheme.surfaceOf(context), boxShadow: [BoxShadow(color: Theme.of(context).brightness == Brightness.dark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.05), blurRadius: 8, offset: const Offset(0, -2))]),
           child: Row(children: [
-            Expanded(child: SizedBox(height: 48, child: ElevatedButton.icon(onPressed: _edit, icon: const Icon(Icons.edit_outlined, color: Colors.white, size: 18), label: Text(TranslationService.tr('edit'), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)))))),
+            Expanded(child: SizedBox(height: 48, child: ElevatedButton.icon(onPressed: _edit, icon: const Icon(Icons.edit_outlined, color: Colors.white, size: 18), label: Text(context.l10n.edit, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)))))),
             const SizedBox(width: 12),
-            Expanded(child: SizedBox(height: 48, child: ElevatedButton.icon(onPressed: _delete, icon: const Icon(Icons.delete, color: Colors.white, size: 18), label: Text(TranslationService.tr('delete'), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFBA1A1A), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)))))),
+            Expanded(child: SizedBox(height: 48, child: ElevatedButton.icon(onPressed: _delete, icon: const Icon(Icons.delete, color: Colors.white, size: 18), label: Text(context.l10n.delete, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)), style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFBA1A1A), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)))))),
           ]),
         ),
       ]),

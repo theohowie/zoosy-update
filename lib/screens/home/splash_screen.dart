@@ -1,8 +1,8 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/theme_service.dart';
-import '../../services/translation_service.dart';
 
 class SplashScreen extends StatefulWidget {
   final VoidCallback onSplashCompleted;
@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           // Zoosy 标题
           Text('Zoosy', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 34, fontWeight: FontWeight.w800, color: ZoosyTheme.primary, letterSpacing: -1.0)),
           const SizedBox(height: 8),
-          Text(TranslationService.tr('slogan'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: ZoosyTheme.textMutedOf(context).withOpacity(0.8))),
+          Text(context.l10n.slogan, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: ZoosyTheme.textMutedOf(context).withOpacity(0.8))),
           const Spacer(flex: 1),
           // 中间 Logo 卡片（弹性动画）
           AnimatedBuilder(animation: _bounceAnimation, builder: (context, child) {
@@ -63,8 +63,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           const Spacer(flex: 1),
           // 底部标语 + 进度条
           Column(children: [
-            Text(TranslationService.tr('splash_line1'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: ZoosyTheme.textMutedOf(context))),
-            Text(TranslationService.tr('splash_line2'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: ZoosyTheme.textMutedOf(context))),
+            Text(context.l10n.splash_line1, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: ZoosyTheme.textMutedOf(context))),
+            Text(context.l10n.splash_line2, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: ZoosyTheme.textMutedOf(context))),
             const SizedBox(height: 24),
             SizedBox(width: 120, height: 5,
               child: ClipRRect(borderRadius: BorderRadius.circular(10),

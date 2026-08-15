@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 import 'reflection_detail_screen.dart';
 
 class TagThoughtsScreen extends StatelessWidget {
@@ -20,10 +20,10 @@ class TagThoughtsScreen extends StatelessWidget {
     final filtered = reflections.where((r) => r.tags.contains(tag)).toList();
 
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('tag_label', params: {'tag': tag}), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.tag_label(tag), style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: filtered.isEmpty
-          ? Center(child: Text(TranslationService.tr('no_records'), style: TextStyle(color: ZoosyTheme.textMutedOf(context))))
+          ? Center(child: Text(context.l10n.no_records, style: TextStyle(color: ZoosyTheme.textMutedOf(context))))
           : ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: filtered.length,

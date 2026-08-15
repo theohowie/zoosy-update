@@ -1,9 +1,9 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import '../../models/reflection.dart';
 import '../../services/email_service.dart';
-import '../../services/translation_service.dart';
 import '../../utils/input_sanitizer.dart';
 import '../../widgets/captcha_widget.dart';
 import '../../widgets/toast_util.dart';
@@ -52,7 +52,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final emailResult = InputSanitizer.sanitizeEmail(_emailController.text.trim());
     final email = emailResult.sanitized;
     if (email.isEmpty) {
-      setState(() => _errorMsg = TranslationService.tr('enter_email_first'));
+      setState(() => _errorMsg = context.l10n.enter_email_first);
       return;
     }
     if (emailResult.hasWarning) {
@@ -62,13 +62,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     // 检查账号是否存在
     final exists = await _accountExists(email);
     if (!exists) {
-      setState(() => _errorMsg = TranslationService.tr('account_not_found'));
+      setState(() => _errorMsg = context.l10n.account_not_found);
       return;
     }
 
     // 验证图形验证码
     if (!_captchaKey.currentState!.verify(_captchaInputController.text.trim())) {
-      setState(() => _errorMsg = TranslationService.tr('captcha_wrong'));
+      setState(() => _errorMsg = context.l10n.captcha_wrong);
       _captchaKey.currentState!.refresh();
       _captchaInputController.clear();
       return;
@@ -83,13 +83,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       _sentCode = result;
       setState(() {
         _isLoading = false;
-        _successMsg = TranslationService.tr('code_sent_to', params: {'email': email});
+        _successMsg = context.l10n.code_sent_to(email);
         _countdown = 60;
       });
       _startCountdown();
     } else {
       setState(() {
-        _errorMsg = result ?? TranslationService.tr('send_failed_short');
+        _errorMsg = result ?? context.l10n.send_failed_short;
         _isLoading = false;
       });
     }
@@ -128,11 +128,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     final confirmPassword = confirmPasswordResult.sanitized;
 
     if (password.length < 6) {
-      setState(() => _errorMsg = TranslationService.tr('password_min_length'));
+      setState(() => _errorMsg = context.l10n.password_min_length);
       return;
     }
     if (password != confirmPassword) {
-      setState(() => _errorMsg = TranslationService.tr('password_mismatch'));
+      setState(() => _errorMsg = context.l10n.password_mismatch);
       return;
     }
 
@@ -154,14 +154,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
       if (!mounted) return;
       setState(() {
-        _successMsg = TranslationService.tr('password_reset_success');
+        _successMsg = context.l10n.password_reset_success;
         _isLoading = false;
       });
 
       await Future.delayed(const Duration(milliseconds: 1200));
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
-      setState(() { _errorMsg = TranslationService.tr('reset_failed', params: {'error': '$e'}); _isLoading = false; });
+      setState(() { _errorMsg = context.l10n.reset_failed('$e'); _isLoading = false; });
     }
   }
 
@@ -169,7 +169,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('reset_password'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.reset_password, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -179,14 +179,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(TranslationService.tr('email'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.email, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 8),
             TextField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               enabled: _step == 1,
               decoration: InputDecoration(
-                hintText: TranslationService.tr('enter_registered_email'),
+                hintText: context.l10n.enter_registered_email,
                 filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -198,14 +198,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             const SizedBox(height: 16),
 
             if (_step == 1) ...[
-              Text(TranslationService.tr('captcha'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+              Text(context.l10n.captcha, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
               const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(flex: 3, child: TextField(
                     controller: _captchaInputController,
                     decoration: InputDecoration(
-                      hintText: TranslationService.tr('enter_captcha'),
+                      hintText: context.l10n.enter_captcha,
                       filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -224,7 +224,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   Expanded(flex: 3, child: TextField(
                     controller: _codeController,
                     decoration: InputDecoration(
-                      hintText: TranslationService.tr('email_code'),
+                      hintText: context.l10n.email_code,
                       filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -242,7 +242,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       elevation: 0,
                     ),
                     child: Text(
-                      _countdown > 0 ? '${_countdown}s' : TranslationService.tr('get_code'),
+                      _countdown > 0 ? '${_countdown}s' : context.l10n.get_code,
                       style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ))),
@@ -253,7 +253,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               SizedBox(height: 52, child: ElevatedButton(
                 onPressed: () {
                   if (_codeController.text.trim() != _sentCode) {
-                    setState(() => _errorMsg = TranslationService.tr('code_wrong'));
+                    setState(() => _errorMsg = context.l10n.code_wrong);
                     return;
                   }
                   setState(() { _step = 2; _errorMsg = null; });
@@ -263,18 +263,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   elevation: 0,
                 ),
-                child: Text(TranslationService.tr('verify_identity'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                child: Text(context.l10n.verify_identity, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
               )),
             ],
 
             if (_step == 2) ...[
-              Text(TranslationService.tr('new_password_label'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+              Text(context.l10n.new_password_label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
               const SizedBox(height: 8),
               TextField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
-                  hintText: TranslationService.tr('password_min_length'),
+                  hintText: context.l10n.password_min_length,
                   filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -289,13 +289,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               ),
               const SizedBox(height: 16),
 
-              Text(TranslationService.tr('confirm_password'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+              Text(context.l10n.confirm_password, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
               const SizedBox(height: 8),
               TextField(
                 controller: _confirmPasswordController,
                 obscureText: _obscureConfirm,
                 decoration: InputDecoration(
-                  hintText: TranslationService.tr('reenter_password'),
+                  hintText: context.l10n.reenter_password,
                   filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -319,7 +319,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 child: _isLoading
                     ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
-                    : Text(TranslationService.tr('reset_password'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                    : Text(context.l10n.reset_password, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
               )),
             ],
 

@@ -1,7 +1,7 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/profile_service.dart';
-import '../../services/translation_service.dart';
 
 class EditGenderScreen extends StatefulWidget {
   final String currentGender;
@@ -14,7 +14,7 @@ class EditGenderScreen extends StatefulWidget {
 class _EditGenderScreenState extends State<EditGenderScreen> {
   late String _selected;
 
-  static List<String> get _options => [TranslationService.tr('male'), TranslationService.tr('female'), TranslationService.tr('secret')];
+  List<String> get _options => [context.l10n.male, context.l10n.female, context.l10n.secret];
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('gender_label'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.gender_label, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -36,7 +36,7 @@ class _EditGenderScreenState extends State<EditGenderScreen> {
               await ProfileService.setGender(_selected);
               if (mounted) Navigator.pop(context, _selected);
             },
-            child: Text(TranslationService.tr('save'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 15)),
+            child: Text(context.l10n.save, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 15)),
           ),
         ],
       ),

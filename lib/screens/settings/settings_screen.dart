@@ -1,3 +1,4 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:crypto/crypto.dart';
@@ -8,7 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../models/reflection.dart';
 import '../../services/theme_service.dart';
 import '../../services/profile_service.dart';
-import '../../services/translation_service.dart';
 import '../../services/update_service.dart';
 import '../profile/edit_profile_screen.dart';
 import '../thoughts/favorites_screen.dart';
@@ -89,12 +89,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       );
     }
     if (_updateResult == true) {
-      return Text('已是最新版', style: TextStyle(fontSize: 12, color: Colors.green, fontWeight: FontWeight.bold));
+      return Text(context.l10n.st_latest, style: TextStyle(fontSize: 12, color: Colors.green, fontWeight: FontWeight.bold));
     }
     if (_updateResult is UpdateInfo) {
       return GestureDetector(
         onTap: _openDownload,
-        child: Text('去更新', style: TextStyle(fontSize: 12, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
+        child: Text(context.l10n.st_update, style: TextStyle(fontSize: 12, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
       );
     }
     return Icon(Icons.chevron_right, size: 20, color: ZoosyTheme.textMutedOf(context));
@@ -131,7 +131,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 100),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Text(TranslationService.tr('profile_title'), style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+          Text(context.l10n.profile_title, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
           const SizedBox(height: 20),
 
           Center(child: GestureDetector(
@@ -175,13 +175,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Column(children: [
                 Text('${widget.reflectionsCount}', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: ZoosyTheme.primary)),
                 const SizedBox(height: 2),
-                Text(TranslationService.tr('total_count'), style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
+                Text(context.l10n.total_count, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
               ]),
               Container(width: 1, height: 40, color: ZoosyTheme.primary.withOpacity(0.2)),
               Column(children: [
-                Text('$_currentStreak ${TranslationService.tr('unit_day')}', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: ZoosyTheme.primary)),
+                Text('$_currentStreak ${context.l10n.unit_day}', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: ZoosyTheme.primary)),
                 const SizedBox(height: 2),
-                Text(TranslationService.tr('current_streak'), style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
+                Text(context.l10n.current_streak, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
               ]),
             ]),
           ),
@@ -192,8 +192,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
             child: ListTile(
               leading: Icon(Icons.info_outline, color: ZoosyTheme.primary),
-              title: Text(TranslationService.tr('about_zoosy'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
-              subtitle: Text(TranslationService.tr('about_subtitle'), style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
+              title: Text(context.l10n.about_zoosy, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+              subtitle: Text(context.l10n.about_subtitle, style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
               trailing: Icon(Icons.chevron_right, size: 20, color: ZoosyTheme.textMutedOf(context)),
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AboutScreen())),
             ),
@@ -203,7 +203,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
             child: Column(children: [
               ListTile(leading: Icon(Icons.favorite_outline, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('my_favorites'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                title: Text(context.l10n.my_favorites, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => FavoritesScreen(
                   reflections: widget.reflections, onToggleFavorite: widget.onToggleFavorite, onDeleteReflection: widget.onDeleteReflection, onUpdateReflection: widget.onUpdateReflection,
@@ -211,7 +211,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.article_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('drafts_title'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                title: Text(context.l10n.drafts_title, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DraftsScreen(
                   onPublish: (ref) {
@@ -221,7 +221,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.delete_outline, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('trash_title'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                title: Text(context.l10n.trash_title, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => TrashScreen(
                   onRestore: (ref) {
@@ -231,32 +231,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.settings_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('settings_title'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                title: Text(context.l10n.settings_title, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => _SettingsDetailScreen(onThemeChanged: widget.onThemeChanged, onProfileSaved: _loadProfile, reflectionsCount: widget.reflectionsCount, currentStreak: _currentStreak, reflections: widget.reflections, onNavBarChanged: widget.onNavBarChanged))),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.system_update_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('check_update'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                title: Text(context.l10n.check_update, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 trailing: _buildUpdateTrailing(),
                 onTap: _checkUpdate,
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.backup_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('data_backup'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                title: Text(context.l10n.data_backup, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => _exportBackup(context),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.restore_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('restore_data'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                title: Text(context.l10n.restore_data, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => _restoreData(context),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.cloud_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('cloud_sync'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text('WebDAV 同步到坚果云等', style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
+                title: Text(context.l10n.cloud_sync, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.cloud_sync_desc, style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => CloudSyncScreen(
                   reflections: widget.reflections,
@@ -269,7 +269,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.share_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('export_markdown'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                title: Text(context.l10n.export_markdown, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => _exportMarkdown(context),
               ),
@@ -283,15 +283,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onPressed: () {
                 showDialog(context: context, builder: (ctx) => AlertDialog(
                   backgroundColor: ZoosyTheme.surfaceOf(ctx), surfaceTintColor: Colors.transparent,
-                  title: Text(TranslationService.tr('logout'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))), content: Text(TranslationService.tr('logout_confirm'), style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
+                  title: Text(ctx.l10n.logout, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))), content: Text(ctx.l10n.logout_confirm, style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
                   actions: [
-                    TextButton(onPressed: () => Navigator.pop(ctx), child: Text(TranslationService.tr('cancel'))),
-                    TextButton(onPressed: () { Navigator.pop(ctx); widget.onLogout(); }, child: Text(TranslationService.tr('logout_action'), style: TextStyle(color: Colors.red))),
+                    TextButton(onPressed: () => Navigator.pop(ctx), child: Text(ctx.l10n.cancel)),
+                    TextButton(onPressed: () { Navigator.pop(ctx); widget.onLogout(); }, child: Text(ctx.l10n.logout_action, style: TextStyle(color: Colors.red))),
                   ],
                 ));
               },
               icon: const Icon(Icons.logout, color: Colors.redAccent),
-              label: Text(TranslationService.tr('logout'), style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+              label: Text(context.l10n.logout, style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
               style: OutlinedButton.styleFrom(side: BorderSide(color: Colors.red.withOpacity(0.3)), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
             ),
           ),
@@ -317,22 +317,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final file = File('${dir.path}/zoosy_backup_${now.year}${now.month.toString().padLeft(2,'0')}${now.day.toString().padLeft(2,'0')}.json');
       await file.writeAsString(jsonStr);
       if (context.mounted) {
-        ToastUtil.showToast(context, message: '备份已保存到 Download/zoosy/backup/', icon: Icons.backup, color: Colors.green);
+        ToastUtil.showToast(context, message: context.l10n.st_backup_saved, icon: Icons.backup, color: Colors.green);
       }
     } catch (e) {
-      if (context.mounted) ToastUtil.showToast(context, message: '导出失败: $e', icon: Icons.error_outline, color: Colors.red);
+      if (context.mounted) ToastUtil.showToast(context, message: context.l10n.st_export_failed('$e'), icon: Icons.error_outline, color: Colors.red);
     }
   }
 
   Future<void> _exportMarkdown(BuildContext context) async {
     try {
       final buf = StringBuffer();
-      buf.writeln('# Zoosy 思考记录\n');
-      buf.writeln('导出时间: ${DateTime.now().year}年${DateTime.now().month}月${DateTime.now().day}日\n---\n');
+      buf.writeln(context.l10n.st_md_title);
+      buf.writeln(context.l10n.st_md_export_time(DateTime.now().year, DateTime.now().month, DateTime.now().day));
       for (final r in widget.reflections) {
         buf.writeln('## ${r.title}\n');
-        buf.writeln('**日期**: ${r.date} ${r.time}');
-        if (r.tags.isNotEmpty) buf.writeln('**标签**: ${r.tags.join(", ")}');
+        buf.writeln(context.l10n.st_md_date(r.date, r.time));
+        if (r.tags.isNotEmpty) buf.writeln(context.l10n.st_md_tags(r.tags.join(", ")));
         buf.writeln('\n${r.content}\n\n---\n');
       }
 
@@ -343,10 +343,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final file = File('${dir.path}/zoosy_${now.year}${now.month.toString().padLeft(2,'0')}${now.day.toString().padLeft(2,'0')}.md');
       await file.writeAsString(buf.toString());
       if (context.mounted) {
-        ToastUtil.showToast(context, message: '已保存到 Download/zoosy/download/', icon: Icons.check, color: Colors.green);
+        ToastUtil.showToast(context, message: context.l10n.st_download_saved, icon: Icons.check, color: Colors.green);
       }
     } catch (e) {
-      if (context.mounted) ToastUtil.showToast(context, message: '导出失败: $e', icon: Icons.error_outline, color: Colors.red);
+      if (context.mounted) ToastUtil.showToast(context, message: context.l10n.st_export_failed('$e'), icon: Icons.error_outline, color: Colors.red);
     }
   }
 
@@ -377,9 +377,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         );
         widget.onUpdateReflection(ref);
       }
-      if (context.mounted) ToastUtil.showToast(context, message: '已恢复 ${data.length} 条记录', icon: Icons.restore, color: Colors.green);
+      if (context.mounted) ToastUtil.showToast(context, message: context.l10n.st_restored_count(data.length), icon: Icons.restore, color: Colors.green);
     } catch (e) {
-      if (context.mounted) ToastUtil.showToast(context, message: '恢复失败: $e', icon: Icons.error_outline, color: Colors.red);
+      if (context.mounted) ToastUtil.showToast(context, message: context.l10n.st_restore_failed('$e'), icon: Icons.error_outline, color: Colors.red);
     }
   }
 }
@@ -409,7 +409,7 @@ class _SettingsDetailScreenState extends State<_SettingsDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('settings_title'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.settings_title, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: SingleChildScrollView(padding: const EdgeInsets.fromLTRB(16, 12, 16, 100),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -417,22 +417,22 @@ class _SettingsDetailScreenState extends State<_SettingsDetailScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
             child: Column(children: [
               ListTile(leading: Icon(Icons.person_outline, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('edit_profile'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('edit_profile_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.edit_profile, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.edit_profile_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => EditProfileScreen(onSaved: widget.onProfileSaved))),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.security_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('account_settings'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('account_settings_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.account_settings, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.account_settings_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AccountSettingsScreen())),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.pages_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('page_settings'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('page_settings_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.page_settings, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.page_settings_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () async {
                   final result = await Navigator.push(context, MaterialPageRoute(builder: (_) => const PageSettingsScreen()));
@@ -443,48 +443,48 @@ class _SettingsDetailScreenState extends State<_SettingsDetailScreen> {
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.label_outline, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('tag_settings'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('tag_settings_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.tag_settings, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.tag_settings_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TagSettingsScreen())),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.language, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('language_settings'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('language_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.language_settings, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.language_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageSettingsScreen())),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.palette_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('theme_settings'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('theme_settings_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.theme_settings, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.theme_settings_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20), onTap: _openThemeSettings),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.widgets_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('widget_settings'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('widget_settings_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.widget_settings, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.widget_settings_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => WidgetSettingsScreen(reflectionCount: widget.reflectionsCount, currentStreak: widget.currentStreak, reflections: widget.reflections))),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.notifications_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('notification_settings'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('notification_settings_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.notification_settings, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.notification_settings_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationSettingsScreen())),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.security, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('permission_settings'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('permission_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.permission_settings, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.permission_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PermissionSettingsScreen())),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               ListTile(leading: Icon(Icons.devices, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('device_management'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('device_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.device_management, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.device_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const DeviceManagementScreen())),
               ),

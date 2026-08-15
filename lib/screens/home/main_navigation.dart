@@ -1,7 +1,7 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/theme_service.dart';
-import '../../services/translation_service.dart';
 import '../../services/prefs_util.dart';
 import 'home_screen.dart';
 import '../thoughts/search_screen.dart';
@@ -106,7 +106,7 @@ class _MainNavigationState extends State<MainNavigation> {
   void _openNewReflection() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewReflectionScreen(onSave: (ref) {
       widget.onAddReflection(ref);
-      ToastUtil.showToast(context, message: TranslationService.tr('thought_recorded'), icon: Icons.check, color: Colors.green);
+      ToastUtil.showToast(context, message: context.l10n.thought_recorded, icon: Icons.check, color: Colors.green);
     })));
   }
 
@@ -138,7 +138,7 @@ class _MainNavigationState extends State<MainNavigation> {
                   Icon(Icons.close, color: ZoosyTheme.textDarkOf(context), size: 24),
                   const SizedBox(width: 12),
                   Text(
-                    TranslationService.tr('selected_count', params: {'count': '$_selectedCount'}),
+                    context.l10n.selected_count('$_selectedCount'),
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context)),
                   ),
                 ]),
@@ -167,13 +167,13 @@ class _MainNavigationState extends State<MainNavigation> {
                 _selectedCount == widget.reflections.length ? Icons.check_circle : Icons.check_circle_outline,
                 color: ZoosyTheme.primary,
               ),
-              tooltip: TranslationService.tr('select_all'),
+              tooltip: context.l10n.select_all,
             ),
           if (_isSelectionMode)
             IconButton(
               onPressed: _selectedCount > 0 ? _onDelete : null,
               icon: Icon(Icons.delete_outline, color: _selectedCount > 0 ? Colors.red : Colors.grey),
-              tooltip: TranslationService.tr('delete'),
+              tooltip: context.l10n.delete,
             ),
           if (showSearch)
             IconButton(
@@ -207,8 +207,8 @@ class _MainNavigationState extends State<MainNavigation> {
       color: ZoosyTheme.surfaceOf(context), elevation: 0,
       child: SizedBox(height: 48,
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          _buildNavBarItem(Icons.home_filled, TranslationService.tr('nav_home'), 0),
-          _buildNavBarItem(Icons.list_alt_rounded, TranslationService.tr('nav_all'), 1),
+          _buildNavBarItem(Icons.home_filled, context.l10n.nav_home, 0),
+          _buildNavBarItem(Icons.list_alt_rounded, context.l10n.nav_all, 1),
           SizedBox(width: 48, height: 48, child: Center(child: SizedBox(width: 48, height: 48,
             child: FloatingActionButton(
               onPressed: _openNewReflection,
@@ -216,8 +216,8 @@ class _MainNavigationState extends State<MainNavigation> {
               child: const Icon(Icons.add, color: Colors.white, size: 28),
             ),
           ))),
-          _buildNavBarItem(Icons.insights_rounded, TranslationService.tr('nav_stats'), 2),
-          _buildNavBarItem(Icons.person_outline, TranslationService.tr('nav_profile'), 3),
+          _buildNavBarItem(Icons.insights_rounded, context.l10n.nav_stats, 2),
+          _buildNavBarItem(Icons.person_outline, context.l10n.nav_profile, 3),
         ]),
       ),
     );

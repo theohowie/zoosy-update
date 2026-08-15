@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 import '../../services/trash_service.dart';
 import '../../widgets/toast_util.dart';
 
@@ -31,17 +31,17 @@ class _TrashScreenState extends State<TrashScreen> {
   void _restore(Reflection ref) {
     showDialog(context: context, builder: (ctx) => AlertDialog(
       backgroundColor: ZoosyTheme.surfaceOf(ctx), surfaceTintColor: Colors.transparent,
-      title: Text(TranslationService.tr('trash_restore'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
-      content: Text(TranslationService.tr('trash_restore_confirm'), style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
+      title: Text(ctx.l10n.trash_restore, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
+      content: Text(ctx.l10n.trash_restore_confirm, style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(ctx), child: Text(TranslationService.tr('cancel'))),
+        TextButton(onPressed: () => Navigator.pop(ctx), child: Text(ctx.l10n.cancel)),
         TextButton(onPressed: () async {
           Navigator.pop(ctx);
           await TrashService.permanentDelete(ref.id);
           widget.onRestore(ref);
           await _load();
-          if (mounted) ToastUtil.showToast(context, message: TranslationService.tr('trash_restore_success'), icon: Icons.restore, color: Colors.green);
-        }, child: Text(TranslationService.tr('trash_restore'), style: TextStyle(color: ZoosyTheme.primary))),
+          if (mounted) ToastUtil.showToast(context, message: ctx.l10n.trash_restore_success, icon: Icons.restore, color: Colors.green);
+        }, child: Text(ctx.l10n.trash_restore, style: TextStyle(color: ZoosyTheme.primary))),
       ],
     ));
   }
@@ -49,16 +49,16 @@ class _TrashScreenState extends State<TrashScreen> {
   void _permanentDelete(Reflection ref) {
     showDialog(context: context, builder: (ctx) => AlertDialog(
       backgroundColor: ZoosyTheme.surfaceOf(ctx), surfaceTintColor: Colors.transparent,
-      title: Text(TranslationService.tr('trash_permanent_delete'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
-      content: Text(TranslationService.tr('trash_permanent_confirm'), style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
+      title: Text(ctx.l10n.trash_permanent_delete, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
+      content: Text(ctx.l10n.trash_permanent_confirm, style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(ctx), child: Text(TranslationService.tr('cancel'))),
+        TextButton(onPressed: () => Navigator.pop(ctx), child: Text(ctx.l10n.cancel)),
         TextButton(onPressed: () async {
           Navigator.pop(ctx);
           await TrashService.permanentDelete(ref.id);
           await _load();
-          if (mounted) ToastUtil.showToast(context, message: TranslationService.tr('deleted'), icon: Icons.delete, color: Colors.red);
-        }, child: Text(TranslationService.tr('trash_permanent_delete'), style: const TextStyle(color: Colors.red))),
+          if (mounted) ToastUtil.showToast(context, message: ctx.l10n.deleted, icon: Icons.delete, color: Colors.red);
+        }, child: Text(ctx.l10n.trash_permanent_delete, style: const TextStyle(color: Colors.red))),
       ],
     ));
   }
@@ -66,16 +66,16 @@ class _TrashScreenState extends State<TrashScreen> {
   void _clearAll() {
     showDialog(context: context, builder: (ctx) => AlertDialog(
       backgroundColor: ZoosyTheme.surfaceOf(ctx), surfaceTintColor: Colors.transparent,
-      title: Text(TranslationService.tr('trash_clear_all'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
-      content: Text(TranslationService.tr('trash_clear_all_confirm'), style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
+      title: Text(ctx.l10n.trash_clear_all, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
+      content: Text(ctx.l10n.trash_clear_all_confirm, style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(ctx), child: Text(TranslationService.tr('cancel'))),
+        TextButton(onPressed: () => Navigator.pop(ctx), child: Text(ctx.l10n.cancel)),
         TextButton(onPressed: () async {
           Navigator.pop(ctx);
           await TrashService.clearAll();
           await _load();
-          if (mounted) ToastUtil.showToast(context, message: TranslationService.tr('deleted'), icon: Icons.delete_sweep, color: Colors.red);
-        }, child: Text(TranslationService.tr('trash_clear_all'), style: const TextStyle(color: Colors.red))),
+          if (mounted) ToastUtil.showToast(context, message: ctx.l10n.deleted, icon: Icons.delete_sweep, color: Colors.red);
+        }, child: Text(ctx.l10n.trash_clear_all, style: const TextStyle(color: Colors.red))),
       ],
     ));
   }
@@ -84,7 +84,7 @@ class _TrashScreenState extends State<TrashScreen> {
     try {
       final dt = DateTime.parse(deletedAt);
       final days = 30 - DateTime.now().difference(dt).inDays;
-      return TranslationService.tr('trash_days_remaining', params: {'days': '$days'});
+      return context.l10n.trash_days_remaining('$days');
     } catch (_) {
       return '';
     }
@@ -94,7 +94,7 @@ class _TrashScreenState extends State<TrashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('trash_title'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.trash_title, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0,
         actions: [
           if (_trash.isNotEmpty)
@@ -107,9 +107,9 @@ class _TrashScreenState extends State<TrashScreen> {
               ? Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Icon(Icons.delete_outline, size: 64, color: ZoosyTheme.textMutedOf(context).withOpacity(0.3)),
                   const SizedBox(height: 16),
-                  Text(TranslationService.tr('trash_empty'), style: TextStyle(fontSize: 16, color: ZoosyTheme.textMutedOf(context))),
+                  Text(context.l10n.trash_empty, style: TextStyle(fontSize: 16, color: ZoosyTheme.textMutedOf(context))),
                   const SizedBox(height: 8),
-                  Text(TranslationService.tr('trash_empty_sub'), style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context).withOpacity(0.6))),
+                  Text(context.l10n.trash_empty_sub, style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context).withOpacity(0.6))),
                 ]))
               : ListView.builder(
                   padding: const EdgeInsets.all(16),
@@ -138,13 +138,13 @@ class _TrashScreenState extends State<TrashScreen> {
                           TextButton.icon(
                             onPressed: () => _restore(ref),
                             icon: Icon(Icons.restore, size: 16, color: ZoosyTheme.primary),
-                            label: Text(TranslationService.tr('trash_restore'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
+                            label: Text(context.l10n.trash_restore, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
                           ),
                           const SizedBox(width: 8),
                           TextButton.icon(
                             onPressed: () => _permanentDelete(ref),
                             icon: Icon(Icons.delete_forever, size: 16, color: Colors.red),
-                            label: Text(TranslationService.tr('trash_permanent_delete'), style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                            label: Text(context.l10n.trash_permanent_delete, style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
                           ),
                         ]),
                       ])),

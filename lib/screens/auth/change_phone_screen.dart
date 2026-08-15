@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 
 class ChangePhoneScreen extends StatelessWidget {
   const ChangePhoneScreen({Key? key}) : super(key: key);
@@ -9,7 +9,7 @@ class ChangePhoneScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('bind_phone'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.bind_phone, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -31,12 +31,12 @@ class ChangePhoneScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               Text(
-                TranslationService.tr('phone_bind_title'),
+                context.l10n.phone_bind_title,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context)),
               ),
               const SizedBox(height: 12),
               Text(
-                TranslationService.tr('phone_bind_coming_soon'),
+                context.l10n.phone_bind_coming_soon,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(context), height: 1.6),
               ),
@@ -54,7 +54,7 @@ class ChangePhoneScreen extends StatelessWidget {
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        TranslationService.tr('phone_bind_desc'),
+                        context.l10n.phone_bind_desc,
                         style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context)),
                       ),
                     ),

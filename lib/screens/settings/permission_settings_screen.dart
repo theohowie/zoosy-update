@@ -1,7 +1,7 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 
 class PermissionSettingsScreen extends StatefulWidget {
   const PermissionSettingsScreen({Key? key}) : super(key: key);
@@ -32,18 +32,18 @@ class _PermissionSettingsScreenState extends State<PermissionSettingsScreen> wit
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('permission_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.permission_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _buildPermissionTile(context, Icons.notifications_outlined, TranslationService.tr('notification_perm'), TranslationService.tr('notification_perm_desc'), Permission.notification),
+          _buildPermissionTile(context, Icons.notifications_outlined, context.l10n.notification_perm, context.l10n.notification_perm_desc, Permission.notification),
           const Divider(height: 1, indent: 16, endIndent: 16),
-          _buildPermissionTile(context, Icons.photo_library_outlined, TranslationService.tr('photo_perm'), TranslationService.tr('photo_perm_desc'), Permission.photos),
+          _buildPermissionTile(context, Icons.photo_library_outlined, context.l10n.photo_perm, context.l10n.photo_perm_desc, Permission.photos),
           const Divider(height: 1, indent: 16, endIndent: 16),
-          _buildPermissionTile(context, Icons.mic_outlined, TranslationService.tr('microphone_perm'), TranslationService.tr('microphone_perm_desc'), Permission.microphone),
+          _buildPermissionTile(context, Icons.mic_outlined, context.l10n.microphone_perm, context.l10n.microphone_perm_desc, Permission.microphone),
           const Divider(height: 1, indent: 16, endIndent: 16),
-          _buildPermissionTile(context, Icons.location_on_outlined, TranslationService.tr('location_perm'), TranslationService.tr('location_perm_desc'), Permission.location),
+          _buildPermissionTile(context, Icons.location_on_outlined, context.l10n.location_perm, context.l10n.location_perm_desc, Permission.location),
           const Divider(height: 1, indent: 16, endIndent: 16),
           _buildShortcutTile(context),
         ],
@@ -69,7 +69,7 @@ class _PermissionSettingsScreenState extends State<PermissionSettingsScreen> wit
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                isGranted ? TranslationService.tr('granted') : TranslationService.tr('not_granted'),
+                isGranted ? context.l10n.granted : context.l10n.not_granted,
                 style: TextStyle(fontSize: 11, color: isGranted ? Colors.green : ZoosyTheme.primaryOf(context), fontWeight: FontWeight.bold),
               ),
             ),
@@ -82,8 +82,8 @@ class _PermissionSettingsScreenState extends State<PermissionSettingsScreen> wit
   Widget _buildShortcutTile(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.add_box_outlined, color: ZoosyTheme.primaryOf(context)),
-      title: Text(TranslationService.tr('shortcut_perm'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
-      subtitle: Text(TranslationService.tr('shortcut_perm_desc'), style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
+      title: Text(context.l10n.shortcut_perm, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+      subtitle: Text(context.l10n.shortcut_perm_desc, style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
       trailing: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         decoration: BoxDecoration(
@@ -91,7 +91,7 @@ class _PermissionSettingsScreenState extends State<PermissionSettingsScreen> wit
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
-          TranslationService.tr('granted'),
+          context.l10n.granted,
           style: const TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.bold),
         ),
       ),

@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 import '../../services/prefs_util.dart';
 import '../../widgets/toast_util.dart';
 
@@ -31,26 +31,26 @@ class _NavBarSettingsScreenState extends State<NavBarSettingsScreen> {
     setState(() => _isSaving = true);
     await PrefsUtil.setNavBarStyle(_currentStyle);
     if (!mounted) return;
-    ToastUtil.showToast(context, message: TranslationService.tr('updated'), icon: Icons.check, color: Colors.green);
+    ToastUtil.showToast(context, message: context.l10n.updated, icon: Icons.check, color: Colors.green);
     Navigator.pop(context, true);
   }
 
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('nav_bar_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.nav_bar_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: const Center(child: CircularProgressIndicator()),
     );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('nav_bar_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.nav_bar_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0,
         actions: [
           TextButton(
             onPressed: _isSaving ? null : _save,
-            child: Text(TranslationService.tr('save'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 15)),
+            child: Text(context.l10n.save, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 15)),
           ),
         ],
       ),
@@ -58,14 +58,14 @@ class _NavBarSettingsScreenState extends State<NavBarSettingsScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           // 预览区域
-          Text(TranslationService.tr('preview'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
+          Text(context.l10n.preview, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
           const SizedBox(height: 12),
           _buildPreview(),
 
           const SizedBox(height: 24),
 
           // 样式选择
-          Text(TranslationService.tr('nav_style_desc'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
+          Text(context.l10n.nav_style_desc, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
           const SizedBox(height: 12),
           Card(
             color: ZoosyTheme.surfaceOf(context),
@@ -76,9 +76,9 @@ class _NavBarSettingsScreenState extends State<NavBarSettingsScreen> {
               side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2)),
             ),
             child: Column(children: [
-              _buildStyleOption('default', TranslationService.tr('nav_style_default'), TranslationService.tr('nav_style_default_desc')),
+              _buildStyleOption('default', context.l10n.nav_style_default, context.l10n.nav_style_default_desc),
               const Divider(height: 1, indent: 16, endIndent: 16),
-              _buildStyleOption('floating', TranslationService.tr('nav_style_floating'), TranslationService.tr('nav_style_floating_desc')),
+              _buildStyleOption('floating', context.l10n.nav_style_floating, context.l10n.nav_style_floating_desc),
             ]),
           ),
           const SizedBox(height: 40),
@@ -117,7 +117,7 @@ class _NavBarSettingsScreenState extends State<NavBarSettingsScreen> {
                       Icon(Icons.article_outlined, size: 32, color: ZoosyTheme.textMutedOf(context).withOpacity(0.3)),
                       const SizedBox(height: 8),
                       Text(
-                        TranslationService.tr('preview_content'),
+                        context.l10n.preview_content,
                         style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context).withOpacity(0.5)),
                       ),
                     ],
@@ -162,11 +162,11 @@ class _NavBarSettingsScreenState extends State<NavBarSettingsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildNavItemPreview(Icons.home_filled, TranslationService.tr('nav_home'), true),
-          _buildNavItemPreview(Icons.list_alt_rounded, TranslationService.tr('nav_all'), false),
+          _buildNavItemPreview(Icons.home_filled, context.l10n.nav_home, true),
+          _buildNavItemPreview(Icons.list_alt_rounded, context.l10n.nav_all, false),
           _buildAddButtonPreview(),
-          _buildNavItemPreview(Icons.insights_rounded, TranslationService.tr('nav_stats'), false),
-          _buildNavItemPreview(Icons.person_outline, TranslationService.tr('nav_profile'), false),
+          _buildNavItemPreview(Icons.insights_rounded, context.l10n.nav_stats, false),
+          _buildNavItemPreview(Icons.person_outline, context.l10n.nav_profile, false),
         ],
       ),
     );

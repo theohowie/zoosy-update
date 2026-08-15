@@ -1,7 +1,7 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/prefs_util.dart';
-import '../../services/translation_service.dart';
 import '../../utils/input_sanitizer.dart';
 import '../../widgets/toast_util.dart';
 
@@ -33,7 +33,7 @@ class _TagSettingsScreenState extends State<TagSettingsScreen> {
     final text = result.sanitized;
     if (text.isEmpty) return;
     if (_tags.contains(text)) {
-      ToastUtil.showToast(context, message: TranslationService.tr('tag_exists'), icon: Icons.warning_amber_rounded, color: Colors.orange);
+      ToastUtil.showToast(context, message: context.l10n.tag_exists, icon: Icons.warning_amber_rounded, color: Colors.orange);
       return;
     }
     // 显示消毒警告
@@ -51,7 +51,7 @@ class _TagSettingsScreenState extends State<TagSettingsScreen> {
     _tags.removeAt(index);
     await PrefsUtil.saveCustomTags(_tags);
     if (mounted) setState(() {});
-    ToastUtil.showToast(context, message: TranslationService.tr('tag_deleted', params: {'tag': tag}), icon: Icons.delete_outline, color: Colors.redAccent);
+    ToastUtil.showToast(context, message: context.l10n.tag_deleted(tag), icon: Icons.delete_outline, color: Colors.redAccent);
   }
 
   @override
@@ -64,7 +64,7 @@ class _TagSettingsScreenState extends State<TagSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('tag_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.tag_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -81,7 +81,7 @@ class _TagSettingsScreenState extends State<TagSettingsScreen> {
                   child: TextField(
                     controller: _controller,
                     decoration: InputDecoration(
-                      hintText: TranslationService.tr('enter_new_tag'),
+                      hintText: context.l10n.enter_new_tag,
                       filled: true,
                       fillColor: ZoosyTheme.surfaceOf(context),
                       border: OutlineInputBorder(
@@ -115,7 +115,7 @@ class _TagSettingsScreenState extends State<TagSettingsScreen> {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 40),
-                  child: Text(TranslationService.tr('no_tags'), style: TextStyle(color: ZoosyTheme.textMutedOf(context))),
+                  child: Text(context.l10n.no_tags, style: TextStyle(color: ZoosyTheme.textMutedOf(context))),
                 ),
               )
             else

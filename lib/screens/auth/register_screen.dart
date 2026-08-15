@@ -1,9 +1,9 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/auth_service.dart';
 import '../../services/email_service.dart';
 import '../../services/profile_service.dart';
-import '../../services/translation_service.dart';
 import '../../widgets/captcha_widget.dart';
 import '../about/user_agreement_screen.dart';
 
@@ -67,13 +67,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
   Future<void> _sendCode() async {
     final email = _emailController.text.trim();
     if (email.isEmpty) {
-      setState(() => _errorMsg = TranslationService.tr('enter_email_first'));
+      setState(() => _errorMsg = context.l10n.enter_email_first);
       return;
     }
 
     // 验证图形验证码
     if (!_captchaKey.currentState!.verify(_captchaInputController.text.trim())) {
-      setState(() => _errorMsg = TranslationService.tr('captcha_wrong'));
+      setState(() => _errorMsg = context.l10n.captcha_wrong);
       _captchaKey.currentState!.refresh();
       _captchaInputController.clear();
       return;
@@ -90,13 +90,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
       setState(() {
         _codeSent = true;
         _isLoading = false;
-        _successMsg = TranslationService.tr('code_sent_to', params: {'email': email});
+        _successMsg = context.l10n.code_sent_to(email);
         _countdown = 60;
       });
       _startCountdown();
     } else {
       setState(() {
-        _errorMsg = result ?? TranslationService.tr('send_failed');
+        _errorMsg = result ?? context.l10n.send_failed;
         _isLoading = false;
       });
     }
@@ -132,15 +132,15 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     final code = _codeController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      setState(() => _errorMsg = TranslationService.tr('fill_complete_info'));
+      setState(() => _errorMsg = context.l10n.fill_complete_info);
       return;
     }
     if (password.length < 6) {
-      setState(() => _errorMsg = TranslationService.tr('password_min_length'));
+      setState(() => _errorMsg = context.l10n.password_min_length);
       return;
     }
     if (password != confirmPassword) {
-      setState(() => _errorMsg = TranslationService.tr('password_mismatch'));
+      setState(() => _errorMsg = context.l10n.password_mismatch);
       return;
     }
     if (!_agreeTerms) {
@@ -148,12 +148,12 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
       return;
     }
     if (!_codeSent) {
-      setState(() => _errorMsg = TranslationService.tr('get_code_first'));
+      setState(() => _errorMsg = context.l10n.get_code_first);
       return;
     }
     if (code != _sentCode) {
       debugPrint('[Register] 验证码比对失败: 输入="$code" 期望="$_sentCode"');
-      setState(() => _errorMsg = TranslationService.tr('code_wrong'));
+      setState(() => _errorMsg = context.l10n.code_wrong);
       return;
     }
 
@@ -161,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
 
     String? err;
     final success = await AuthService.register(email, password, nickname: _nicknameController.text.trim());
-    err = success ? null : TranslationService.tr('email_registered');
+    err = success ? null : context.l10n.email_registered;
     if (!mounted) return;
 
     if (err == null) {
@@ -169,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
       await ProfileService.setNickname(_nicknameController.text.trim());
       await ProfileService.setEmail(email);
       setState(() {
-        _successMsg = TranslationService.tr('register_success');
+        _successMsg = context.l10n.register_success;
         _isLoading = false;
       });
       await Future.delayed(const Duration(seconds: 2));
@@ -192,7 +192,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('register_title'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.register_title, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -203,12 +203,12 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // 昵称
-            Text(TranslationService.tr('nickname'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.nickname, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 8),
             TextField(
               controller: _nicknameController,
               decoration: InputDecoration(
-                hintText: TranslationService.tr('nickname_hint'),
+                hintText: context.l10n.nickname_hint,
                 filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -219,7 +219,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
             const SizedBox(height: 16),
 
             // 邮箱
-            Text(TranslationService.tr('email'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.email, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 8),
             TextField(
               controller: _emailController,
@@ -237,7 +237,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
             const SizedBox(height: 16),
 
             // 图形验证码
-            Text(TranslationService.tr('captcha'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.captcha, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 8),
             Row(
               children: [
@@ -246,7 +246,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                   child: TextField(
                     controller: _captchaInputController,
                     decoration: InputDecoration(
-                      hintText: TranslationService.tr('enter_captcha'),
+                      hintText: context.l10n.enter_captcha,
                       filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -275,7 +275,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                   child: TextField(
                     controller: _codeController,
                     decoration: InputDecoration(
-                      hintText: TranslationService.tr('email_code'),
+                      hintText: context.l10n.email_code,
                       filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -298,7 +298,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                         elevation: 0,
                       ),
                       child: Text(
-                        _countdown > 0 ? '${_countdown}s' : TranslationService.tr('get_code'),
+                        _countdown > 0 ? '${_countdown}s' : context.l10n.get_code,
                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ),
@@ -309,13 +309,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
             const SizedBox(height: 16),
 
             // 密码
-            Text(TranslationService.tr('password'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.password, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 8),
             TextField(
               controller: _passwordController,
               obscureText: _obscurePassword,
               decoration: InputDecoration(
-                hintText: TranslationService.tr('password_min_length'),
+                hintText: context.l10n.password_min_length,
                 filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -331,13 +331,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
             const SizedBox(height: 16),
 
             // 确认密码
-            Text(TranslationService.tr('confirm_password'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.confirm_password, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 8),
             TextField(
               controller: _confirmPasswordController,
               obscureText: _obscureConfirm,
               decoration: InputDecoration(
-                hintText: TranslationService.tr('reenter_password'),
+                hintText: context.l10n.reenter_password,
                 filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -378,19 +378,19 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                     child: RichText(
                       text: TextSpan(
                         style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context)),
-                          text: TranslationService.tr('agree_prefix'),
+                          text: context.l10n.agree_prefix,
                         children: [
                           WidgetSpan(
                             child: GestureDetector(
                               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const UserAgreementPage())),
-                              child: Text(TranslationService.tr('user_agreement'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 12)),
+                              child: Text(context.l10n.user_agreement, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 12)),
                             ),
                           ),
-                          TextSpan(text: TranslationService.tr('and')),
+                          TextSpan(text: context.l10n.and),
                           WidgetSpan(
                             child: GestureDetector(
                               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyPage())),
-                              child: Text(TranslationService.tr('privacy_policy'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 12)),
+                              child: Text(context.l10n.privacy_policy, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 12)),
                             ),
                           ),
                         ],
@@ -450,7 +450,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                 ),
                 child: _isLoading
                     ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
-                    : Text(TranslationService.tr('register'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                    : Text(context.l10n.register, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
               ),
             ),
 
@@ -463,10 +463,10 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                 child: RichText(
                   text: TextSpan(
                     style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(context)),
-                    text: TranslationService.tr('have_account'),
+                    text: context.l10n.have_account,
                     children: [
                       TextSpan(
-                        text: ' ${TranslationService.tr('login_now')}',
+                        text: ' ${context.l10n.login_now}',
                         style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold),
                       ),
                     ],

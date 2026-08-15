@@ -1,8 +1,8 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../models/reflection.dart';
 import '../../services/theme_service.dart';
-import '../../services/translation_service.dart';
 import '../thoughts/reflection_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,7 +26,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   int _contentPage = 10000;
   DateTime? _currentWeekStart;
   bool _isAnimatingContent = false;
-  static const _weekDays = ['一', '二', '三', '四', '五', '六', '日'];
+  List<String> get _weekDays => [
+    context.l10n.weekday_mon, context.l10n.weekday_tue, context.l10n.weekday_wed, context.l10n.weekday_thu,
+    context.l10n.weekday_fri, context.l10n.weekday_sat, context.l10n.weekday_sun,
+  ];
 
   @override
   void initState() {
@@ -135,14 +138,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   _onDateSelected(_dateStr(_today));
                   setState(() { _currentWeekPage = 10000; _currentWeekStart = _mondayOfWeek(_today); });
                 },
-                child: Text('${_currentWeekStart?.year ?? _today.year}年${_currentWeekStart?.month ?? _today.month}月',
+                child: Text(context.l10n.date_header(_currentWeekStart?.year ?? _today.year, _currentWeekStart?.month ?? _today.month),
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context)),
                     key: ValueKey(_currentWeekStart?.month)),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(color: ZoosyTheme.primary.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
-                child: Text(TranslationService.tr('active_calendar'), style: TextStyle(fontSize: 9, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
+                child: Text(context.l10n.active_calendar, style: TextStyle(fontSize: 9, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
               )
             ]),
             const SizedBox(height: 10),
@@ -176,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             child: Row(children: [
               Icon(Icons.analytics_outlined, color: ZoosyTheme.primary, size: 20),
               const SizedBox(width: 8),
-              Text(_isToday(_selectedDate) ? TranslationService.tr('today_thoughts') : TranslationService.tr('daily_records'),
+              Text(_isToday(_selectedDate) ? context.l10n.today_thoughts : context.l10n.daily_records,
                   style: TextStyle(fontSize: 12, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
               const Spacer(),
               Text(_selectedDate, style: TextStyle(fontSize: 10, color: ZoosyTheme.primary.withOpacity(0.7), fontWeight: FontWeight.bold)),
@@ -243,9 +246,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final isFuture = dateStr.compareTo(_dateStr(_today)) > 0;
     final isPast = dateStr.compareTo(_dateStr(_today)) < 0;
     String title, subtitle;
-    if (isFuture) { title = TranslationService.tr('day_not_reached'); subtitle = TranslationService.tr('day_not_reached_sub'); }
-    else if (isPast) { title = TranslationService.tr('no_record_day'); subtitle = TranslationService.tr('no_record_day_sub'); }
-    else { title = TranslationService.tr('no_record_today'); subtitle = TranslationService.tr('no_record_today_sub'); }
+    if (isFuture) { title = context.l10n.day_not_reached; subtitle = context.l10n.day_not_reached_sub; }
+    else if (isPast) { title = context.l10n.no_record_day; subtitle = context.l10n.no_record_day_sub; }
+    else { title = context.l10n.no_record_today; subtitle = context.l10n.no_record_today_sub; }
 
     return SingleChildScrollView(
       child: Padding(padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 24.0),

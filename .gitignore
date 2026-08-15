@@ -55,3 +55,6 @@ android/app/google-services.json
 
 # Kotlin build cache
 android/.kotlin/
+
+# Generated localization code
+lib/generated/

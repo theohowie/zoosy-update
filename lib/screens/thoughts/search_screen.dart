@@ -1,7 +1,7 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/prefs_util.dart';
-import '../../services/translation_service.dart';
 import 'reflection_detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -92,7 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 TextEditingValue(text: query),
               ),
               decoration: InputDecoration(
-                hintText: isSearching ? query : TranslationService.tr('search_hint'),
+                hintText: isSearching ? query : context.l10n.search_hint,
                 prefixIcon: Icon(Icons.search, color: ZoosyTheme.primary),
                 suffixIcon: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -122,7 +122,7 @@ class _SearchScreenState extends State<SearchScreen> {
             const SizedBox(height: 20),
 
             // ===== 热门标签（始终显示） =====
-            Text(TranslationService.tr('hot_tags'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.hot_tags, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 10),
             Wrap(
               spacing: 8,
@@ -161,8 +161,8 @@ class _SearchScreenState extends State<SearchScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(TranslationService.tr('search_result'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
-                  Text(TranslationService.tr('result_count', params: {'count': '${results.length}'}), style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), fontWeight: FontWeight.bold)),
+                  Text(context.l10n.search_result, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+                  Text(context.l10n.result_count('${results.length}'), style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), fontWeight: FontWeight.bold)),
                 ],
               ),
               const SizedBox(height: 12),
@@ -170,7 +170,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 40.0),
                   child: Center(
-                    child: Text(TranslationService.tr('no_results'), style: TextStyle(color: ZoosyTheme.textMutedOf(context))),
+                    child: Text(context.l10n.no_results, style: TextStyle(color: ZoosyTheme.textMutedOf(context))),
                   ),
                 )
               else
@@ -225,10 +225,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(TranslationService.tr('search_history'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+                    Text(context.l10n.search_history, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
                     GestureDetector(
                       onTap: _clearHistory,
-                      child: Text(TranslationService.tr('clear'), style: TextStyle(fontSize: 12, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
+                      child: Text(context.l10n.clear, style: TextStyle(fontSize: 12, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
@@ -257,7 +257,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 40),
-                      child: Text(TranslationService.tr('no_history'), style: TextStyle(color: ZoosyTheme.textMutedOf(context))),
+                      child: Text(context.l10n.no_history, style: TextStyle(color: ZoosyTheme.textMutedOf(context))),
                     ),
                   ),
               ],
@@ -267,15 +267,15 @@ class _SearchScreenState extends State<SearchScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(TranslationService.tr('tag_match'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
-                    Text(TranslationService.tr('result_count', params: {'count': '${results.length}'}), style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), fontWeight: FontWeight.bold)),
+                    Text(context.l10n.tag_match, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+                    Text(context.l10n.result_count('${results.length}'), style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), fontWeight: FontWeight.bold)),
                   ],
                 ),
                 const SizedBox(height: 12),
                 if (results.isEmpty)
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 40.0),
-                    child: Center(child: Text(TranslationService.tr('no_tag_match'), style: TextStyle(color: ZoosyTheme.textMutedOf(context)))),
+                    child: Center(child: Text(context.l10n.no_tag_match, style: TextStyle(color: ZoosyTheme.textMutedOf(context)))),
                   )
                 else
                   ListView.builder(

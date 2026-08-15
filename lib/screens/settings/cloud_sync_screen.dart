@@ -1,9 +1,9 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../models/reflection.dart';
 import '../../services/cloud_service.dart';
 import '../../services/theme_service.dart';
-import '../../services/translation_service.dart';
 import '../../widgets/toast_util.dart';
 
 class CloudSyncScreen extends StatefulWidget {
@@ -77,7 +77,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
     if (!mounted) return;
     setState(() {
       _testing = false;
-      _testResult = error == null ? '连接成功' : error;
+      _testResult = error == null ? context.l10n.cs_conn_success : error;
       _isSuccess = error == null;
     });
   }
@@ -89,7 +89,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
       password: _passwordController.text,
     );
     if (mounted) {
-      ToastUtil.showToast(context, message: TranslationService.tr('config_saved'), icon: Icons.check, color: Colors.green);
+      ToastUtil.showToast(context, message: context.l10n.config_saved, icon: Icons.check, color: Colors.green);
     }
   }
 
@@ -103,7 +103,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
     setState(() => _syncing = false);
 
     if (error == null) {
-      ToastUtil.showToast(context, message: '上传成功', icon: Icons.cloud_done, color: Colors.green);
+      ToastUtil.showToast(context, message: context.l10n.cs_upload_success, icon: Icons.cloud_done, color: Colors.green);
     } else {
       ToastUtil.showToast(context, message: error, icon: Icons.error_outline, color: Colors.red);
     }
@@ -122,12 +122,12 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
       widget.onSyncCompleted(reflections);
       ToastUtil.showToast(
         context,
-        message: '下载完成，共 ${reflections.length} 条记录',
+        message: context.l10n.cs_download_done(reflections.length),
         icon: Icons.cloud_download,
         color: Colors.green,
       );
     } else {
-      ToastUtil.showToast(context, message: '下载失败或无数据', icon: Icons.error_outline, color: Colors.red);
+      ToastUtil.showToast(context, message: context.l10n.cs_download_failed, icon: Icons.error_outline, color: Colors.red);
     }
   }
 
@@ -143,7 +143,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
     widget.onSyncCompleted(result.reflections);
     ToastUtil.showToast(
       context,
-      message: '${result.message}，共 ${result.reflections.length} 条记录',
+      message: context.l10n.cs_upload_result(result.message, result.reflections.length),
       icon: result.hasUpdate ? Icons.sync : Icons.check,
       color: Colors.green,
     );
@@ -153,7 +153,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('cloud_sync'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.cloud_sync, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -184,7 +184,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      TranslationService.tr('cloud_sync_desc'),
+                      context.l10n.cloud_sync_desc,
                       style: TextStyle(fontSize: 13, color: ZoosyTheme.textDarkOf(context)),
                     ),
                   ),
@@ -196,8 +196,8 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
             // 服务器地址
             _buildTextField(
               controller: _serverController,
-              label: TranslationService.tr('server_address'),
-              hint: 'https://dav.jianguoyun.com/dav/',
+              label: context.l10n.server_address,
+              hint: context.l10n.cs_jg_step7_d,
               icon: Icons.dns,
             ),
             const SizedBox(height: 16),
@@ -205,7 +205,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
             // 用户名
             _buildTextField(
               controller: _usernameController,
-              label: TranslationService.tr('username'),
+              label: context.l10n.username,
               hint: 'your@email.com',
               icon: Icons.person_outline,
             ),
@@ -214,8 +214,8 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
             // 密码
             _buildTextField(
               controller: _passwordController,
-              label: TranslationService.tr('app_password'),
-              hint: '输入密码或应用专用密码',
+              label: context.l10n.app_password,
+              hint: context.l10n.cs_pwd_hint,
               icon: Icons.lock_outline,
               obscure: _obscurePassword,
               suffix: IconButton(
@@ -261,7 +261,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
                     icon: _testing
                       ? SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
                       : Icon(Icons.wifi_find, size: 18),
-                    label: Text(_testing ? TranslationService.tr('testing') : TranslationService.tr('test_connection')),
+                    label: Text(_testing ? context.l10n.testing : context.l10n.test_connection),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: ZoosyTheme.primary,
                       side: BorderSide(color: ZoosyTheme.primary),
@@ -275,7 +275,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
                   child: FilledButton.icon(
                     onPressed: _saveConfig,
                     icon: Icon(Icons.save, size: 18),
-                    label: Text(TranslationService.tr('save_config')),
+                    label: Text(context.l10n.save_config),
                     style: FilledButton.styleFrom(
                       backgroundColor: ZoosyTheme.primary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -288,7 +288,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
             const SizedBox(height: 32),
 
             // 同步操作
-            Text('同步操作', style: TextStyle(
+            Text(context.l10n.cs_sync_ops, style: TextStyle(
               fontSize: 16, fontWeight: FontWeight.bold,
               color: ZoosyTheme.textDarkOf(context),
             )),
@@ -297,8 +297,8 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
             // 双向同步
             _buildSyncButton(
               icon: Icons.sync,
-              title: TranslationService.tr('smart_sync'),
-              subtitle: TranslationService.tr('smart_sync_desc'),
+              title: context.l10n.smart_sync,
+              subtitle: context.l10n.smart_sync_desc,
               onTap: _sync,
               color: ZoosyTheme.primary,
             ),
@@ -307,8 +307,8 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
             // 上传
             _buildSyncButton(
               icon: Icons.cloud_upload,
-              title: TranslationService.tr('upload_to_cloud'),
-              subtitle: TranslationService.tr('upload_desc'),
+              title: context.l10n.upload_to_cloud,
+              subtitle: context.l10n.upload_desc,
               onTap: _upload,
               color: Colors.blue,
             ),
@@ -317,8 +317,8 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
             // 下载
             _buildSyncButton(
               icon: Icons.cloud_download,
-              title: TranslationService.tr('download_from_cloud'),
-              subtitle: TranslationService.tr('download_desc'),
+              title: context.l10n.download_from_cloud,
+              subtitle: context.l10n.download_desc,
               onTap: _download,
               color: Colors.orange,
             ),
@@ -326,15 +326,15 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
             const SizedBox(height: 24),
 
             // 自动同步设置
-            Text(TranslationService.tr('auto_sync'), style: TextStyle(
+            Text(context.l10n.auto_sync, style: TextStyle(
               fontSize: 16, fontWeight: FontWeight.bold,
               color: ZoosyTheme.textDarkOf(context),
             )),
             const SizedBox(height: 12),
-            _buildAutoSyncOption(0, TranslationService.tr('auto_sync_off')),
-            _buildAutoSyncOption(5, TranslationService.tr('auto_sync_5min')),
-            _buildAutoSyncOption(10, TranslationService.tr('auto_sync_10min')),
-            _buildAutoSyncOption(20, TranslationService.tr('auto_sync_20min')),
+            _buildAutoSyncOption(0, context.l10n.auto_sync_off),
+            _buildAutoSyncOption(5, context.l10n.auto_sync_5min),
+            _buildAutoSyncOption(10, context.l10n.auto_sync_10min),
+            _buildAutoSyncOption(20, context.l10n.auto_sync_20min),
 
             if (_syncing)
               Padding(
@@ -345,7 +345,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
                     children: [
                       SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)),
                       const SizedBox(width: 8),
-                      Text(TranslationService.tr('syncing'), style: TextStyle(color: ZoosyTheme.textMutedOf(context))),
+                      Text(context.l10n.syncing, style: TextStyle(color: ZoosyTheme.textMutedOf(context))),
                     ],
                   ),
                 ),
@@ -428,7 +428,7 @@ class _CloudSyncScreenState extends State<CloudSyncScreen> {
         if (mounted) {
           ToastUtil.showToast(
             context,
-            message: minutes > 0 ? TranslationService.tr('auto_sync_enabled', params: {'interval': label}) : TranslationService.tr('auto_sync_disabled'),
+            message: minutes > 0 ? context.l10n.auto_sync_enabled(label) : context.l10n.auto_sync_disabled,
             icon: minutes > 0 ? Icons.timer : Icons.timer_off,
             color: Colors.green,
           );
@@ -475,13 +475,13 @@ class CloudSyncTutorialScreen extends StatefulWidget {
 
 class _CloudSyncTutorialScreenState extends State<CloudSyncTutorialScreen> {
   int _selectedTab = 0;
-  final _tabs = ['坚果云', 'NextCloud', '自建服务器'];
+  List<String> get _tabs => [context.l10n.cs_tab_jianguoyun, 'NextCloud', context.l10n.cs_tab_selfhosted];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('cloud_sync_tutorial'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.cloud_sync_tutorial, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -545,31 +545,31 @@ class _CloudSyncTutorialScreenState extends State<CloudSyncTutorialScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('一、什么是坚果云 WebDAV？'),
-        _buildParagraph('坚果云是国内主流的云存储服务，支持 WebDAV 协议。你可以通过 Zoosy 直接将思考数据同步到坚果云，实现多设备备份。'),
+        _buildSectionTitle(context.l10n.cs_jg_s1_title),
+        _buildParagraph(context.l10n.cs_jg_s1_para),
         const SizedBox(height: 16),
 
-        _buildSectionTitle('二、获取 WebDAV 凭据'),
-        _buildStep(1, '打开坚果云网页版', '浏览器访问 www.jianguoyun.com，登录你的账号'),
-        _buildStep(2, '进入安全设置', '点击右上角头像 → 选择「设置」→ 左侧点击「安全选项」'),
-        _buildStep(3, '找到第三方应用管理', '滚动页面到「第三方应用管理」区域'),
-        _buildStep(4, '添加应用密码', '点击「添加应用密码」按钮，应用名称填「Zoosy」，点击确定'),
-        _buildStep(5, '保存应用密码', '系统会生成一个 16 位的应用密码（如 a1b2c3d4e5f6g7h8），复制并保存好'),
+        _buildSectionTitle(context.l10n.cs_jg_s2_title),
+        _buildStep(1, context.l10n.cs_jg_step1_t, context.l10n.cs_jg_step1_d),
+        _buildStep(2, context.l10n.cs_jg_step2_t, context.l10n.cs_jg_step2_d),
+        _buildStep(3, context.l10n.cs_jg_step3_t, context.l10n.cs_jg_step3_d),
+        _buildStep(4, context.l10n.cs_jg_step4_t, context.l10n.cs_jg_step4_d),
+        _buildStep(5, context.l10n.cs_jg_step5_t, context.l10n.cs_jg_step5_d),
         const SizedBox(height: 16),
 
-        _buildSectionTitle('三、在 Zoosy 中配置'),
-        _buildStep(6, '打开云同步', 'Zoosy → 个人中心 → 云同步'),
-        _buildStep(7, '填写服务器地址', 'https://dav.jianguoyun.com/dav/'),
-        _buildStep(8, '填写用户名', '你的坚果云登录邮箱（如 xxx@qq.com）'),
-        _buildStep(9, '填写密码', '粘贴刚才复制的 16 位应用密码'),
-        _buildStep(10, '测试连接', '点击「测试连接」，显示成功后点「保存配置」'),
-        _buildStep(11, '开始同步', '点击「智能同步」即可上传数据'),
+        _buildSectionTitle(context.l10n.cs_jg_s3_title),
+        _buildStep(6, context.l10n.cs_jg_step6_t, context.l10n.cs_jg_step6_d),
+        _buildStep(7, context.l10n.cs_jg_step7_t, context.l10n.cs_jg_step7_d),
+        _buildStep(8, context.l10n.cs_jg_step8_t, context.l10n.cs_jg_step8_d),
+        _buildStep(9, context.l10n.cs_jg_step9_t, context.l10n.cs_jg_step9_d),
+        _buildStep(10, context.l10n.cs_jg_step10_t, context.l10n.cs_jg_step10_d),
+        _buildStep(11, context.l10n.cs_jg_step11_t, context.l10n.cs_jg_step11_d),
         const SizedBox(height: 16),
 
         _buildWarningBox([
-          '密码处填的是「应用密码」，不是你的坚果云登录密码',
-          '坚果云免费版每月 1GB 上传 / 3GB 下载流量',
-          '首次同步建议用「智能同步」，会自动合并本地和云端数据',
+          context.l10n.cs_jg_warn1,
+          context.l10n.cs_jg_warn2,
+          context.l10n.cs_jg_warn3,
         ]),
       ],
     );
@@ -580,24 +580,24 @@ class _CloudSyncTutorialScreenState extends State<CloudSyncTutorialScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('一、什么是 NextCloud？'),
-        _buildParagraph('NextCloud 是开源的自托管云存储方案，你可以搭建自己的私有云。很多 NAS（群晖、威联通）也内置了 WebDAV 功能。'),
+        _buildSectionTitle(context.l10n.cs_nc_s1_title),
+        _buildParagraph(context.l10n.cs_nc_s1_para),
         const SizedBox(height: 16),
 
-        _buildSectionTitle('二、获取 WebDAV 地址'),
-        _buildStep(1, '登录 NextCloud', '打开你的 NextCloud 网页端并登录'),
-        _buildStep(2, '查看 WebDAV 地址', 'NextCloud 的 WebDAV 格式为：\nhttps://你的域名/remote.php/dav/files/用户名/'),
-        _buildStep(3, '获取应用密码（推荐）', '点击右上角头像 → 设置 → 安全 → 应用密码\n创建一个新密码，复制保存'),
+        _buildSectionTitle(context.l10n.cs_nc_s2_title),
+        _buildStep(1, context.l10n.cs_nc_step1_t, context.l10n.cs_nc_step1_d),
+        _buildStep(2, context.l10n.cs_nc_step2_t, context.l10n.cs_nc_step2_d),
+        _buildStep(3, context.l10n.cs_nc_step3_t, context.l10n.cs_nc_step3_d),
         const SizedBox(height: 16),
 
-        _buildSectionTitle('三、在 Zoosy 中配置'),
-        _buildStep(4, '服务器地址', 'https://你的域名/remote.php/dav/files/用户名/'),
-        _buildStep(5, '用户名', '你的 NextCloud 用户名'),
-        _buildStep(6, '密码', '应用密码（推荐）或登录密码'),
-        _buildStep(7, '测试并保存', '点击「测试连接」确认成功后保存'),
+        _buildSectionTitle(context.l10n.cs_jg_s3_title),
+        _buildStep(4, context.l10n.cs_server_addr, context.l10n.cs_nc_step4_d),
+        _buildStep(5, context.l10n.cs_username, context.l10n.cs_nc_step5_d),
+        _buildStep(6, context.l10n.cs_password, context.l10n.cs_nc_step6_d),
+        _buildStep(7, context.l10n.cs_test_save, context.l10n.cs_test_save_desc),
         const SizedBox(height: 16),
 
-        _buildInfoBox('如果 NextCloud 启用了 HTTPS 自签证书，请在 Zoosy 中正常使用，已内置证书跳过功能。'),
+        _buildInfoBox(context.l10n.cs_nc_info1),
       ],
     );
   }
@@ -607,16 +607,16 @@ class _CloudSyncTutorialScreenState extends State<CloudSyncTutorialScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('一、支持的服务端软件'),
-        _buildParagraph('任何支持 WebDAV 协议的服务器都可以使用，常见的有：'),
-        _buildBulletItem('Nginx + WebDAV 模块'),
-        _buildBulletItem('Apache + mod_dav'),
-        _buildBulletItem('Caddy + webdav 插件'),
-        _buildBulletItem('Rclone serve webdav'),
-        _buildBulletItem('WebDAV Server（Docker）'),
+        _buildSectionTitle(context.l10n.cs_sh_s1_title),
+        _buildParagraph(context.l10n.cs_sh_s1_para),
+        _buildBulletItem(context.l10n.cs_sh_bullet1),
+        _buildBulletItem(context.l10n.cs_sh_bullet2),
+        _buildBulletItem(context.l10n.cs_sh_bullet3),
+        _buildBulletItem(context.l10n.cs_sh_bullet4),
+        _buildBulletItem(context.l10n.cs_sh_bullet5),
         const SizedBox(height: 16),
 
-        _buildSectionTitle('二、快速搭建（Docker 方式）'),
+        _buildSectionTitle(context.l10n.cs_sh_s2_title),
         _buildCodeBlock('# 使用 rclone 搭建 WebDAV\n'
             'docker run -d \\\n'
             '  -p 8080:8080 \\\n'
@@ -627,14 +627,14 @@ class _CloudSyncTutorialScreenState extends State<CloudSyncTutorialScreen> {
             '  --pass your-password'),
         const SizedBox(height: 16),
 
-        _buildSectionTitle('三、在 Zoosy 中配置'),
-        _buildStep(1, '服务器地址', 'http://你的服务器IP:端口/（或 https）'),
-        _buildStep(2, '用户名', '服务端设置的用户名'),
-        _buildStep(3, '密码', '服务端设置的密码'),
-        _buildStep(4, '测试并保存', '点击「测试连接」确认成功后保存'),
+        _buildSectionTitle(context.l10n.cs_jg_s3_title),
+        _buildStep(1, context.l10n.cs_server_addr, context.l10n.cs_sh_step1_d),
+        _buildStep(2, context.l10n.cs_username, context.l10n.cs_sh_step2_d),
+        _buildStep(3, context.l10n.cs_password, context.l10n.cs_sh_step3_d),
+        _buildStep(4, context.l10n.cs_test_save, context.l10n.cs_test_save_desc),
         const SizedBox(height: 16),
 
-        _buildSectionTitle('四、Nginx 配置示例'),
+        _buildSectionTitle(context.l10n.cs_sh_s4_title),
         _buildCodeBlock('server {\n'
             '    listen 443 ssl;\n'
             '    server_name dav.example.com;\n\n'
@@ -649,9 +649,9 @@ class _CloudSyncTutorialScreenState extends State<CloudSyncTutorialScreen> {
         const SizedBox(height: 16),
 
         _buildWarningBox([
-          '自建服务器请确保启用 HTTPS，避免密码明文传输',
-          '如果使用内网地址，手机需要在同一局域网下才能同步',
-          '建议使用 DDNS 或内网穿透服务实现外网访问',
+          context.l10n.cs_sh_warn1,
+          context.l10n.cs_sh_warn2,
+          context.l10n.cs_sh_warn3,
         ]),
       ],
     );
@@ -743,7 +743,7 @@ class _CloudSyncTutorialScreenState extends State<CloudSyncTutorialScreen> {
           Row(children: [
             Icon(Icons.warning_amber, color: Colors.orange, size: 18),
             const SizedBox(width: 6),
-            Text('注意事项', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange.shade800)),
+            Text(context.l10n.cs_note, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange.shade800)),
           ]),
           const SizedBox(height: 8),
           ...items.map((t) => Padding(

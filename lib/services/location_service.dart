@@ -1,3 +1,4 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -181,16 +182,33 @@ class LocationService {
   }
 
   static String _weatherCodeToDesc(int code) {
-    const descriptions = {
-      0: '晴', 1: '大部晴', 2: '多云', 3: '阴天',
-      45: '雾', 48: '雾凇', 51: '小毛毛雨', 53: '毛毛雨', 55: '大毛毛雨',
-      61: '小雨', 63: '中雨', 65: '大雨',
-      71: '小雪', 73: '中雪', 75: '大雪',
-      80: '阵雨', 81: '中阵雨', 82: '大阵雨',
-      85: '小阵雪', 86: '大阵雪',
-      95: '雷暴', 96: '雷暴+小冰雹', 99: '雷暴+大冰雹',
-    };
-    return descriptions[code] ?? '未知';
+    final l = appL10n();
+    switch (code) {
+      case 0: return l.wx_clear;
+      case 1: return l.wx_mostly_clear;
+      case 2: return l.wx_cloudy;
+      case 3: return l.wx_overcast;
+      case 45: return l.wx_fog;
+      case 48: return l.wx_rime;
+      case 51: return l.wx_drizzle_light;
+      case 53: return l.wx_drizzle;
+      case 55: return l.wx_drizzle_heavy;
+      case 61: return l.wx_rain_light;
+      case 63: return l.wx_rain;
+      case 65: return l.wx_rain_heavy;
+      case 71: return l.wx_snow_light;
+      case 73: return l.wx_snow;
+      case 75: return l.wx_snow_heavy;
+      case 80: return l.wx_shower;
+      case 81: return l.wx_shower_medium;
+      case 82: return l.wx_shower_heavy;
+      case 85: return l.wx_snow_shower_light;
+      case 86: return l.wx_snow_shower_heavy;
+      case 95: return l.wx_thunderstorm;
+      case 96: return l.wx_thunderstorm_hail_small;
+      case 99: return l.wx_thunderstorm_hail_large;
+      default: return l.wx_unknown;
+    }
   }
 
   // ==================== IP 定位降级 ====================
@@ -212,7 +230,7 @@ class LocationService {
 
     return LocationResult(
       type: LocationResultType.error,
-      errorMessage: '获取位置失败，请稍后重试',
+      errorMessage: appL10n().loc_failed_retry,
     );
   }
 

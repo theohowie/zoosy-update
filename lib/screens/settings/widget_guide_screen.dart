@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 
 class WidgetGuideScreen extends StatelessWidget {
   const WidgetGuideScreen({Key? key}) : super(key: key);
@@ -9,7 +9,7 @@ class WidgetGuideScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('how_to_add_widget'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.how_to_add_widget, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -34,7 +34,7 @@ class WidgetGuideScreen extends StatelessWidget {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      TranslationService.tr('widget_diff_notice'),
+                      context.l10n.widget_diff_notice,
                       style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), height: 1.4),
                     ),
                   ),
@@ -47,8 +47,8 @@ class WidgetGuideScreen extends StatelessWidget {
             _buildStep(
               context,
               step: '1',
-              title: TranslationService.tr('step_press_home'),
-              desc: TranslationService.tr('step_select_plugin'),
+              title: context.l10n.step_press_home,
+              desc: context.l10n.step_select_plugin,
             ),
             const SizedBox(height: 28),
 
@@ -56,8 +56,8 @@ class WidgetGuideScreen extends StatelessWidget {
             _buildStep(
               context,
               step: '2',
-              title: TranslationService.tr('step_scroll_down'),
-              desc: TranslationService.tr('step_window_widgets'),
+              title: context.l10n.step_scroll_down,
+              desc: context.l10n.step_window_widgets,
             ),
             const SizedBox(height: 28),
 
@@ -65,8 +65,8 @@ class WidgetGuideScreen extends StatelessWidget {
             _buildStep(
               context,
               step: '3',
-              title: TranslationService.tr('step_find_zoosy'),
-              desc: TranslationService.tr('step_drag_to_home'),
+              title: context.l10n.step_find_zoosy,
+              desc: context.l10n.step_drag_to_home,
             ),
             const SizedBox(height: 28),
 
@@ -87,10 +87,10 @@ class WidgetGuideScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(TranslationService.tr('widget_tip'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.primary)),
+                        Text(context.l10n.widget_tip, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.primary)),
                         const SizedBox(height: 6),
                         Text(
-                          TranslationService.tr('widget_tip_content'),
+                          context.l10n.widget_tip_content,
                           style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), height: 1.5),
                         ),
                       ],

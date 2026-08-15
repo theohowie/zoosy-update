@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 import 'reflection_detail_screen.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -19,13 +19,13 @@ class FavoritesScreen extends StatelessWidget {
     final favorites = reflections.where((r) => r.isFavorite).toList();
 
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('my_favorites'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.my_favorites, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: favorites.isEmpty
           ? Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Icon(Icons.favorite_border, size: 64, color: ZoosyTheme.textMutedOf(context).withOpacity(0.3)),
               const SizedBox(height: 16),
-              Text(TranslationService.tr('no_favorites'), style: TextStyle(fontSize: 16, color: ZoosyTheme.textMutedOf(context))),
+              Text(context.l10n.no_favorites, style: TextStyle(fontSize: 16, color: ZoosyTheme.textMutedOf(context))),
             ]))
           : ListView.builder(
               padding: const EdgeInsets.all(16),

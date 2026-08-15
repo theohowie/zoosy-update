@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 
 class FeatureListScreen extends StatelessWidget {
   const FeatureListScreen({Key? key}) : super(key: key);
@@ -9,7 +9,7 @@ class FeatureListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('feature_list'), style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.feature_list, style: const TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -19,58 +19,58 @@ class FeatureListScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _buildSection(context, Icons.edit_note, TranslationService.tr('fl_section_core'), [
-              _Item(TranslationService.tr('fl_crud'), TranslationService.tr('fl_crud_sub')),
-              _Item(TranslationService.tr('fl_calendar'), TranslationService.tr('fl_calendar_sub')),
-              _Item(TranslationService.tr('fl_all_list'), TranslationService.tr('fl_all_list_sub')),
-              _Item(TranslationService.tr('fl_detail'), TranslationService.tr('fl_detail_sub')),
-              _Item(TranslationService.tr('fl_search'), TranslationService.tr('fl_search_sub')),
-              _Item(TranslationService.tr('fl_favorites'), TranslationService.tr('fl_favorites_sub')),
+            _buildSection(context, Icons.edit_note, context.l10n.fl_section_core, [
+              _Item(context.l10n.fl_crud, context.l10n.fl_crud_sub),
+              _Item(context.l10n.fl_calendar, context.l10n.fl_calendar_sub),
+              _Item(context.l10n.fl_all_list, context.l10n.fl_all_list_sub),
+              _Item(context.l10n.fl_detail, context.l10n.fl_detail_sub),
+              _Item(context.l10n.fl_search, context.l10n.fl_search_sub),
+              _Item(context.l10n.fl_favorites, context.l10n.fl_favorites_sub),
             ]),
             const SizedBox(height: 16),
-            _buildSection(context, Icons.analytics_outlined, TranslationService.tr('fl_section_stats'), [
-              _Item(TranslationService.tr('fl_trend'), TranslationService.tr('fl_trend_sub')),
-              _Item(TranslationService.tr('fl_insight'), TranslationService.tr('fl_insight_sub')),
+            _buildSection(context, Icons.analytics_outlined, context.l10n.fl_section_stats, [
+              _Item(context.l10n.fl_trend, context.l10n.fl_trend_sub),
+              _Item(context.l10n.fl_insight, context.l10n.fl_insight_sub),
             ]),
             const SizedBox(height: 16),
-            _buildSection(context, Icons.psychology_outlined, TranslationService.tr('fl_section_ai'), [
-              _Item(TranslationService.tr('fl_ai_summary'), TranslationService.tr('fl_ai_summary_sub')),
-              _Item(TranslationService.tr('fl_voice'), TranslationService.tr('fl_voice_sub')),
+            _buildSection(context, Icons.psychology_outlined, context.l10n.fl_section_ai, [
+              _Item(context.l10n.fl_ai_summary, context.l10n.fl_ai_summary_sub),
+              _Item(context.l10n.fl_voice, context.l10n.fl_voice_sub),
             ]),
             const SizedBox(height: 16),
-            _buildSection(context, Icons.notifications_outlined, TranslationService.tr('fl_section_notify'), [
-              _Item(TranslationService.tr('fl_daily_remind'), TranslationService.tr('fl_daily_remind_sub')),
-              _Item(TranslationService.tr('fl_shortcut'), TranslationService.tr('fl_shortcut_sub')),
+            _buildSection(context, Icons.notifications_outlined, context.l10n.fl_section_notify, [
+              _Item(context.l10n.fl_daily_remind, context.l10n.fl_daily_remind_sub),
+              _Item(context.l10n.fl_shortcut, context.l10n.fl_shortcut_sub),
             ]),
             const SizedBox(height: 16),
-            _buildSection(context, Icons.widgets_outlined, TranslationService.tr('fl_section_widget'), [
-              _Item(TranslationService.tr('fl_widget_styles'), TranslationService.tr('fl_widget_styles_sub')),
-              _Item(TranslationService.tr('fl_widget_sync'), TranslationService.tr('fl_widget_sync_sub')),
+            _buildSection(context, Icons.widgets_outlined, context.l10n.fl_section_widget, [
+              _Item(context.l10n.fl_widget_styles, context.l10n.fl_widget_styles_sub),
+              _Item(context.l10n.fl_widget_sync, context.l10n.fl_widget_sync_sub),
             ]),
             const SizedBox(height: 16),
-            _buildSection(context, Icons.person_outline, TranslationService.tr('fl_section_user'), [
-              _Item(TranslationService.tr('fl_auth'), TranslationService.tr('fl_auth_sub')),
-              _Item(TranslationService.tr('fl_security'), TranslationService.tr('fl_security_sub')),
-              _Item(TranslationService.tr('fl_profile'), TranslationService.tr('fl_profile_sub')),
+            _buildSection(context, Icons.person_outline, context.l10n.fl_section_user, [
+              _Item(context.l10n.fl_auth, context.l10n.fl_auth_sub),
+              _Item(context.l10n.fl_security, context.l10n.fl_security_sub),
+              _Item(context.l10n.fl_profile, context.l10n.fl_profile_sub),
             ]),
             const SizedBox(height: 16),
-            _buildSection(context, Icons.palette_outlined, TranslationService.tr('fl_section_theme'), [
-              _Item(TranslationService.tr('fl_theme_colors'), TranslationService.tr('fl_theme_colors_sub')),
-              _Item(TranslationService.tr('fl_dark_mode'), TranslationService.tr('fl_dark_mode_sub')),
-              _Item(TranslationService.tr('fl_i18n'), TranslationService.tr('fl_i18n_sub')),
+            _buildSection(context, Icons.palette_outlined, context.l10n.fl_section_theme, [
+              _Item(context.l10n.fl_theme_colors, context.l10n.fl_theme_colors_sub),
+              _Item(context.l10n.fl_dark_mode, context.l10n.fl_dark_mode_sub),
+              _Item(context.l10n.fl_i18n, context.l10n.fl_i18n_sub),
             ]),
             const SizedBox(height: 16),
-            _buildSection(context, Icons.storage_outlined, TranslationService.tr('fl_section_data'), [
-              _Item(TranslationService.tr('fl_local_store'), TranslationService.tr('fl_local_store_sub')),
-              _Item(TranslationService.tr('fl_backup'), TranslationService.tr('fl_backup_sub')),
-              _Item(TranslationService.tr('fl_tags'), TranslationService.tr('fl_tags_sub')),
+            _buildSection(context, Icons.storage_outlined, context.l10n.fl_section_data, [
+              _Item(context.l10n.fl_local_store, context.l10n.fl_local_store_sub),
+              _Item(context.l10n.fl_backup, context.l10n.fl_backup_sub),
+              _Item(context.l10n.fl_tags, context.l10n.fl_tags_sub),
             ]),
             const SizedBox(height: 16),
-            _buildSection(context, Icons.construction_outlined, TranslationService.tr('fl_section_upcoming'), [
-              _Item(TranslationService.tr('fl_cloud_sync'), TranslationService.tr('fl_cloud_sync_sub')),
-              _Item(TranslationService.tr('fl_opinion_push'), TranslationService.tr('fl_opinion_push_sub')),
-              _Item(TranslationService.tr('fl_cool_review'), TranslationService.tr('fl_cool_review_sub')),
-              _Item(TranslationService.tr('fl_monthly_report'), TranslationService.tr('fl_monthly_report_sub')),
+            _buildSection(context, Icons.construction_outlined, context.l10n.fl_section_upcoming, [
+              _Item(context.l10n.fl_cloud_sync, context.l10n.fl_cloud_sync_sub),
+              _Item(context.l10n.fl_opinion_push, context.l10n.fl_opinion_push_sub),
+              _Item(context.l10n.fl_cool_review, context.l10n.fl_cool_review_sub),
+              _Item(context.l10n.fl_monthly_report, context.l10n.fl_monthly_report_sub),
             ]),
             const SizedBox(height: 32),
           ],

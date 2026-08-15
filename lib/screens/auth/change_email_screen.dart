@@ -1,9 +1,9 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/auth_service.dart';
 import '../../services/profile_service.dart';
 import '../../services/email_service.dart';
-import '../../services/translation_service.dart';
 import '../../utils/input_sanitizer.dart';
 import '../../widgets/captcha_widget.dart';
 import '../../widgets/toast_util.dart';
@@ -51,13 +51,13 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
     // 输入消毒
     final emailResult = InputSanitizer.sanitizeEmail(_newEmailController.text.trim());
     final email = emailResult.sanitized;
-    if (email.isEmpty) { setState(() => _errorMsg = TranslationService.tr('enter_email_first')); return; }
+    if (email.isEmpty) { setState(() => _errorMsg = context.l10n.enter_email_first); return; }
     if (emailResult.hasWarning) {
       ToastUtil.showToast(context, message: emailResult.warning!, icon: Icons.warning_amber_rounded, color: Colors.orange);
     }
 
     if (!_captchaKey.currentState!.verify(_captchaController.text.trim())) {
-      setState(() => _errorMsg = TranslationService.tr('captcha_wrong'));
+      setState(() => _errorMsg = context.l10n.captcha_wrong);
       _captchaKey.currentState!.refresh();
       _captchaController.clear();
       return;
@@ -69,10 +69,10 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
 
     if (result != null && result.length == 6) {
       _sentCode = result;
-      setState(() { _isLoading = false; _successMsg = TranslationService.tr('code_sent_to', params: {'email': email}); _countdown = 60; });
+      setState(() { _isLoading = false; _successMsg = context.l10n.code_sent_to(email); _countdown = 60; });
       _startCountdown();
     } else {
-      setState(() { _errorMsg = result ?? TranslationService.tr('send_failed_short'); _isLoading = false; });
+      setState(() { _errorMsg = result ?? context.l10n.send_failed_short; _isLoading = false; });
     }
   }
 
@@ -91,8 +91,8 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
     final newEmail = emailResult.sanitized;
     final code = _codeController.text.trim();
 
-    if (code != _sentCode) { setState(() => _errorMsg = TranslationService.tr('code_wrong')); return; }
-    if (newEmail.isEmpty) { setState(() => _errorMsg = TranslationService.tr('enter_email_first')); return; }
+    if (code != _sentCode) { setState(() => _errorMsg = context.l10n.code_wrong); return; }
+    if (newEmail.isEmpty) { setState(() => _errorMsg = context.l10n.enter_email_first); return; }
 
     setState(() { _isLoading = true; _errorMsg = null; });
 
@@ -105,7 +105,7 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
     // 同步更新登录邮箱
     await AuthService.saveLoginState(newEmail);
 
-    setState(() { _successMsg = TranslationService.tr('email_changed'); _isLoading = false; });
+    setState(() { _successMsg = context.l10n.email_changed; _isLoading = false; });
     await Future.delayed(const Duration(milliseconds: 1000));
     if (mounted) Navigator.pop(context);
   }
@@ -113,13 +113,13 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('change_email'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.change_email, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           const SizedBox(height: 8),
-          Text(TranslationService.tr('current_email'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+          Text(context.l10n.current_email, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
           const SizedBox(height: 8),
           Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: ZoosyTheme.containerLowOf(context), borderRadius: BorderRadius.circular(14)),
             child: Row(children: [
@@ -129,21 +129,21 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
           ),
           const SizedBox(height: 24),
 
-          Text(TranslationService.tr('new_email'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+          Text(context.l10n.new_email, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
           const SizedBox(height: 8),
           TextField(controller: _newEmailController, keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(hintText: TranslationService.tr('enter_new_email'), filled: true, fillColor: ZoosyTheme.surfaceOf(context),
+            decoration: InputDecoration(hintText: context.l10n.enter_new_email, filled: true, fillColor: ZoosyTheme.surfaceOf(context),
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.3))),
               prefixIcon: const Icon(Icons.email_outlined, size: 20),
             ),
           ),
           const SizedBox(height: 16),
 
-          Text(TranslationService.tr('captcha'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+          Text(context.l10n.captcha, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
           const SizedBox(height: 8),
           Row(children: [
             Expanded(flex: 3, child: TextField(controller: _captchaController,
-              decoration: InputDecoration(hintText: TranslationService.tr('enter_captcha'), filled: true, fillColor: ZoosyTheme.surfaceOf(context),
+              decoration: InputDecoration(hintText: context.l10n.enter_captcha, filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.3))),
               ),
             )),
@@ -154,7 +154,7 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
 
           Row(children: [
             Expanded(flex: 3, child: TextField(controller: _codeController,
-              decoration: InputDecoration(hintText: TranslationService.tr('email_code'), filled: true, fillColor: ZoosyTheme.surfaceOf(context),
+              decoration: InputDecoration(hintText: context.l10n.email_code, filled: true, fillColor: ZoosyTheme.surfaceOf(context),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.3))),
               ), keyboardType: TextInputType.number,
             )),
@@ -162,7 +162,7 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
             Expanded(flex: 2, child: SizedBox(height: 50, child: ElevatedButton(
               onPressed: _isLoading || _countdown > 0 ? null : _sendCode,
               style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)), elevation: 0),
-              child: Text(_countdown > 0 ? '${_countdown}s' : TranslationService.tr('get_code'), style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white)),
+              child: Text(_countdown > 0 ? '${_countdown}s' : context.l10n.get_code, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white)),
             ))),
           ]),
           const SizedBox(height: 32),
@@ -176,7 +176,7 @@ class _ChangeEmailScreenState extends State<ChangeEmailScreen> {
             style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)), elevation: 0),
             child: _isLoading
                 ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
-                : Text(TranslationService.tr('save'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                : Text(context.l10n.save, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
           )),
           const SizedBox(height: 40),
         ]),

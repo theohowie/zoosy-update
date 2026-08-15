@@ -1,0 +1,957 @@
+{
+  "@@locale": "en",
+  "save": "Save",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "delete": "Delete",
+  "confirm_delete": "Confirm Delete",
+  "delete_selected_count": "Delete {count} selected records?",
+  "selected_count": "{count} selected",
+  "check_update": "Check for Updates",
+  "check_update_sub": "Check if a new version is available",
+  "select_all": "Select All",
+  "back": "Back",
+  "loading": "Loading…",
+  "edit": "Edit",
+  "share": "Share",
+  "updated": "Updated",
+  "home_title": "Zoosy",
+  "active_calendar": "Activity Calendar",
+  "today_thoughts": "Today's Thoughts",
+  "daily_records": "Day's Records",
+  "day_not_reached": "That day hasn't arrived yet~",
+  "day_not_reached_sub": "Wait until that day comes to record it 😊",
+  "no_record_day": "No records on this day",
+  "no_record_day_sub": "Let it go, today is what matters most 😊",
+  "no_record_today": "No records today yet",
+  "no_record_today_sub": "Capture your thoughts or moments, let Zoosy accompany your daily reflection.",
+  "no_thoughts_yet": "No thoughts yet",
+  "nav_home": "Home",
+  "nav_all": "All Thoughts",
+  "nav_stats": "Stats",
+  "nav_profile": "Profile",
+  "profile_title": "Profile",
+  "about_zoosy": "About Zoosy",
+  "about_subtitle": "Version, features & more",
+  "total_count": "Total",
+  "current_streak": "Current Streak",
+  "settings_title": "Settings",
+  "edit_profile": "Edit Profile",
+  "account_settings": "Account Settings",
+  "page_settings": "Page Settings",
+  "nav_bar_settings": "Navigation Bar",
+  "nav_bar_settings_sub": "Navigation bar style & appearance",
+  "nav_style_default": "Default",
+  "nav_style_floating": "Floating",
+  "nav_style_desc": "Navigation bar style",
+  "nav_style_default_desc": "Classic bottom bar, fixed at screen bottom",
+  "nav_style_floating_desc": "iOS-style floating bar, modern design",
+  "preview": "Preview",
+  "preview_content": "Content preview",
+  "theme_settings": "Theme Settings",
+  "widget_settings": "Widget",
+  "notification_settings": "Notification Settings",
+  "tag_settings": "Tag Settings",
+  "language_settings": "Language",
+  "permission_settings": "Permissions",
+  "device_management": "Devices",
+  "edit_profile_sub": "Name, avatar, bio",
+  "account_settings_sub": "Password, email, phone",
+  "page_settings_sub": "Detail & stats display",
+  "theme_settings_sub": "Custom colors & mode",
+  "widget_settings_sub": "Home widget style",
+  "notification_settings_sub": "Daily reminders & permissions",
+  "tag_settings_sub": "Custom tag types",
+  "language_sub": "Multi-language",
+  "permission_sub": "Manage app permissions",
+  "device_sub": "Manage login devices",
+  "logout": "Log Out",
+  "logout_confirm": "Are you sure you want to log out?",
+  "logout_action": "Exit",
+  "data_backup": "Data Backup",
+  "restore_data": "Restore Data",
+  "export_markdown": "Export Markdown",
+  "language_title": "Language",
+  "system_default": "Follow System",
+  "language_saved": "Language changed, restart to apply",
+  "permission_title": "Permission Management",
+  "notification_perm": "Notifications",
+  "notification_perm_desc": "Daily thought reminders",
+  "photo_perm": "Photos",
+  "photo_perm_desc": "Change avatar",
+  "shortcut_perm": "Shortcuts",
+  "shortcut_perm_desc": "Quick thought recording",
+  "granted": "Granted",
+  "not_granted": "Grant",
+  "thought_detail_title": "Zoosy",
+  "share_text": "Share as Text",
+  "share_image": "Share as Image",
+  "delete_record": "Delete Record",
+  "delete_record_confirm": "Are you sure? This cannot be undone.",
+  "reflection_deleted": "Reflection deleted.",
+  "ai_summary": "AI Summary",
+  "no_ai_summary": "No AI summary yet",
+  "share_from_zoosy": "—— Zoosy Thought Record ——",
+  "thought_from_zoosy": "Thought from Zoosy",
+  "thought_location": "Thought Location",
+  "thought_location_sub": "Auto-record location when creating thoughts",
+  "location_getting": "Getting location...",
+  "location_granted": "Location obtained",
+  "location_denied": "Location permission denied",
+  "location_disabled": "Location services disabled",
+  "go_settings": "Enable",
+  "retry": "Retry",
+  "thought_detail_settings": "Thought Detail Settings",
+  "ai_settings": "AI Settings",
+  "ai_settings_sub": "AI summary model & API config",
+  "search_hint": "Search keywords or content",
+  "hot_tags": "Popular Tags",
+  "search_result": "Search Results",
+  "search_history": "Search History",
+  "clear": "Clear",
+  "no_results": "No matching thoughts",
+  "no_history": "Enter keywords or select tags",
+  "tag_match": "Tag Match",
+  "no_tag_match": "No records for this tag",
+  "result_count": "{count} items",
+  "new_thought": "New Thought",
+  "edit_thought": "Edit Thought",
+  "title_hint": "Give it a unique title…",
+  "content_hint": "What happened today that made you pause and think?",
+  "title_label": "Title",
+  "content_label": "Content",
+  "select_tags": "Select Tags",
+  "add_image": "Add Image",
+  "save_thought": "Save & Generate AI Summary",
+  "save_modify": "Save Changes",
+  "generating_ai": "Generating AI summary…",
+  "max_images": "Max {count} images",
+  "please_enter_content": "Please enter content to save 🧡",
+  "stats_trend": "Stats & Trends",
+  "tag_distribution": "Tag Distribution",
+  "weekly_insight": "Weekly Insight",
+  "period_day": "Day",
+  "period_week": "Week",
+  "period_month": "Month",
+  "record_count_label": "Record Count",
+  "no_data": "No Data",
+  "same_vs_last_week": "Same as last week",
+  "vs_last_week": "vs last week",
+  "total": "Total",
+  "unit_piece": "",
+  "unit_day": "days",
+  "consecutive_days": "Consecutive Days",
+  "keep_going": "Keep it up!",
+  "longest_streak": "Longest Streak",
+  "personal_best": "Personal Best",
+  "no_record_this_week": "No records this week!",
+  "no_tag_data": "No tag data",
+  "chart_share_text": "Zoosy Stats Chart",
+  "slogan": "Think Actively, Create Value; Think Independently, Judge Wisely",
+  "feature_daily_reflection": "Daily Reflection",
+  "feature_daily_reflection_sub": "Capture your thoughts & growth",
+  "feature_stats": "Data Analytics",
+  "feature_stats_sub": "Visual trends & tag analysis",
+  "feature_ai": "AI Summary",
+  "feature_ai_sub": "Intelligent content analysis",
+  "feature_widget": "Home Widget",
+  "feature_widget_sub": "Quick view on home screen",
+  "feature_theme": "Custom Theme",
+  "feature_theme_sub": "Colors + Dark Mode",
+  "feature_cloud": "Cloud Sync",
+  "feature_cloud_sub": "Sync across devices",
+  "about_description": "Zoosy is a lightweight note app focused on daily reflection and personal growth.\n\nThrough daily records and AI analysis, it helps you understand your thinking patterns, build lasting reflection habits, and let your thoughts compound in value.",
+  "record_success": "Recorded!",
+  "record_success_sub": "Your thought has been saved.",
+  "view_record": "View Record",
+  "write_another": "Write Another",
+  "reflection_builds_resilience": "Reflection builds resilience, keep going!",
+  "thought_recorded": "Thought saved!",
+  "splash_line1": "Pause and reflect,",
+  "splash_line2": "Let thoughts compound your value",
+  "my_favorites": "My Favorites",
+  "no_favorites": "No favorites yet",
+  "messages_and_notifications": "Messages & Notifications",
+  "no_notifications": "No notifications",
+  "welcome_back": "Welcome Back",
+  "email": "Email",
+  "password": "Password",
+  "enter_password": "Enter password",
+  "forgot_password": "Forgot password?",
+  "remember_password": "Remember me",
+  "agree_prefix": "I agree to the ",
+  "user_agreement": "User Agreement",
+  "and": " and ",
+  "privacy_policy": "Privacy Policy",
+  "login": "Log In",
+  "no_account": "Don't have an account?",
+  "register_now": "Register",
+  "enter_email_password": "Please enter email and password",
+  "email_password_error": "Wrong email or password",
+  "guest_login": "Guest Login",
+  "guest_login_desc": "Thoughts recorded as guest won't be saved to an account.\nYou'll need to log in again next time.\n\nGuest login is for trial only.",
+  "register_title": "Create Account",
+  "nickname": "Nickname",
+  "nickname_hint": "Pick a cool name~",
+  "captcha": "CAPTCHA",
+  "enter_captcha": "Enter CAPTCHA",
+  "email_code": "Email Code",
+  "get_code": "Get Code",
+  "password_min_length": "Min 6 characters",
+  "confirm_password": "Confirm Password",
+  "reenter_password": "Re-enter password",
+  "register": "Register",
+  "have_account": "Already have an account?",
+  "login_now": "Log In",
+  "enter_email_first": "Please enter email first",
+  "captcha_wrong": "Wrong CAPTCHA, try again",
+  "code_sent_to": "Code sent to {email}",
+  "send_failed": "Failed to send, check email config",
+  "fill_complete_info": "Please fill in all fields",
+  "password_too_short": "Password too short",
+  "password_mismatch": "Passwords do not match",
+  "get_code_first": "Get verification code first",
+  "code_wrong": "Wrong code",
+  "email_registered": "Email already registered",
+  "register_success": "Registered! Entering app…",
+  "change_avatar": "Change Avatar",
+  "choose_from_gallery": "Choose from Gallery",
+  "take_photo": "Take Photo",
+  "restore_default_avatar": "Restore Default",
+  "gender": "Gender",
+  "birthday": "Birthday",
+  "occupation": "Occupation",
+  "signature": "Signature",
+  "bio": "Bio",
+  "not_set": "Not set",
+  "enter_nickname": "Enter your nickname",
+  "enter_email_address": "Enter email address",
+  "write_signature": "Write a signature",
+  "introduce_yourself": "Introduce yourself",
+  "unsaved_changes": "Unsaved Changes",
+  "unsaved_changes_desc": "Save theme changes before leaving?",
+  "discard": "Discard",
+  "change_app_icon": "Change app icon?",
+  "icon_change_notice": "Changing the icon may return you to the home screen.",
+  "icon_update_notice": "The icon should update on your home screen. If not, wait a moment.",
+  "icon_missing_notice": "If the icon disappears, search for the app to open it.",
+  "theme_color": "Theme Color",
+  "display_mode": "Display Mode",
+  "light_mode": "Light Mode",
+  "light_mode_desc": "Always use light theme",
+  "dark_mode": "Dark Mode",
+  "dark_mode_desc": "Always use dark theme",
+  "follow_system_desc": "Follow system appearance",
+  "live_preview": "Live Preview",
+  "save_theme": "Save Theme",
+  "theme_saved": "Theme saved 🎨",
+  "save_failed": "Save failed: ",
+  "change_password": "Change Password",
+  "change_password_sub": "Regular changes improve security",
+  "change_email": "Change Email",
+  "change_email_sub": "Current: {email}",
+  "bind_phone": "Bind Phone",
+  "not_bound": "Not bound",
+  "current_password": "Current Password",
+  "enter_current_password": "Enter current password",
+  "new_password_label": "New Password",
+  "confirm_new_password": "Confirm New Password",
+  "reenter_new_password": "Re-enter new password",
+  "fill_all_fields": "Please fill in all fields",
+  "new_password_min": "New password must be at least 6 chars",
+  "please_login_first": "Please log in first",
+  "current_password_wrong": "Current password is incorrect",
+  "password_changed": "Password changed",
+  "current_email": "Current Email",
+  "new_email": "New Email",
+  "enter_new_email": "Enter new email address",
+  "send_failed_short": "Send failed",
+  "email_changed": "Email changed",
+  "notification_saved": "Notification settings saved",
+  "daily_reminder": "Daily Reminder",
+  "daily_reminder_desc": "Daily reminder to record thoughts",
+  "notif_time_label": "Reminder Time",
+  "notif_time": "Daily reminder time",
+  "notif_time_desc": "Remind you to record thoughts at {time} daily",
+  "notification_style": "Notification Style",
+  "notif_title_label": "Notification Title",
+  "notif_content_label": "Notification Content",
+  "send_test_notif": "Send Test Notification",
+  "tag_exists": "Tag already exists",
+  "tag_deleted": "Tag \"{tag}\" deleted",
+  "enter_new_tag": "Enter new tag name",
+  "no_tags": "No tags",
+  "microphone_perm": "Microphone",
+  "microphone_perm_desc": "Voice recording thoughts",
+  "location_perm": "Location",
+  "location_perm_desc": "Record thinking location",
+  "please_login": "Please log in first",
+  "no_device_records": "No device records",
+  "unknown_device": "Unknown Device",
+  "current_device": "Current Device",
+  "other_device": "Other Device",
+  "delete_device": "Delete Device",
+  "delete_device_confirm": "Delete this device?",
+  "reset_password": "Reset Password",
+  "enter_registered_email": "Enter your registered email",
+  "account_not_found": "Email not registered",
+  "verify_identity": "Verify Identity",
+  "password_reset_success": "Password reset successfully!",
+  "reset_failed": "Reset failed: {error}",
+  "auto_generate_ai": "Auto-generate AI summary on new thought",
+  "api_config": "API Configuration",
+  "select_model": "Select Model",
+  "api_url_label": "API URL",
+  "validate": "Validate",
+  "ai_saved": "AI settings saved",
+  "fill_api_key": "Please enter API Key first",
+  "fill_api_url": "Please enter API URL first",
+  "validation_passed": "Validated ✅ API Key works",
+  "ai_config_hint": "Selecting a model auto-fills the API URL (editable). AI generates a summary under 50 words based on title and content.",
+  "phone_bind_title": "Phone Binding",
+  "phone_bind_coming_soon": "This feature is coming soon.\nYou'll be able to bind your phone via SMS verification.",
+  "phone_bind_desc": "Bind phone for password recovery and account security",
+  "vip_center": "VIP Center",
+  "zoosy_member": "Zoosy Member",
+  "more_features_coming": "More exciting features coming soon",
+  "cloud_sync_feature": "Cloud Sync",
+  "multi_device_sync": "Sync across multiple devices",
+  "ai_advanced_analysis": "AI Advanced Analysis",
+  "deep_insight_report": "Deep thinking insight report",
+  "more_themes": "More Themes",
+  "unlock_themes": "Unlock all theme colors",
+  "how_to_add_widget": "How to Add Widget",
+  "widget_diff_notice": "Steps may vary by device model, below is for reference",
+  "step_press_home": "Long press empty area / Pinch on home screen",
+  "step_select_plugin": "Select \"Widgets\"\nButton name may vary by Android version.",
+  "step_scroll_down": "Scroll down to the bottom",
+  "step_window_widgets": "Tap \"Widgets\"\nButton name may vary by Android version.",
+  "step_find_zoosy": "Find Zoosy and select the widget you want",
+  "step_drag_to_home": "Scroll to find Zoosy, pick a style, and drag it to your home screen.",
+  "widget_tip": "Tip",
+  "widget_tip_content": "After changing theme or adding thoughts, go to Widget Settings and tap \"Update Widget\" to refresh.",
+  "update_widget": "Update Widget",
+  "stats_settings": "Stats Settings",
+  "tag_dist_show": "Tag Distribution",
+  "tag_dist_show_desc": "Show tag usage ratio at bottom of stats page",
+  "tag_label": "Tag: {tag}",
+  "no_records": "No records",
+  "gender_label": "Gender",
+  "male": "Male",
+  "female": "Female",
+  "secret": "Prefer not to say",
+  "thought_detail": "Thought Detail",
+  "thought_detail_sub": "AI summary, emotion tags, etc.",
+  "stats_label": "Stats",
+  "stats_sub": "Tag distribution display settings",
+  "voice_input": "Voice Input",
+  "voice_listening": "Listening...",
+  "voice_guest_blocked": "Guests cannot use voice input, please log in",
+  "voice_limit_reached": "Monthly voice limit reached, upgrade to VIP for unlimited",
+  "voice_mic_denied": "Please grant microphone permission",
+  "voice_not_available": "Speech recognition not available",
+  "feature_list": "Feature List",
+  "fl_section_core": "Core Features",
+  "fl_crud": "Thought Management",
+  "fl_crud_sub": "Create, edit, delete, favorite thoughts with up to 9 images",
+  "fl_calendar": "Calendar Home",
+  "fl_calendar_sub": "Weekly calendar, swipe to switch days, synced with daily thoughts",
+  "fl_all_list": "All Thoughts List",
+  "fl_all_list_sub": "All records grouped by date with filtering",
+  "fl_detail": "Thought Detail",
+  "fl_detail_sub": "Full content, AI summary, image gallery, text/image sharing",
+  "fl_search": "Search",
+  "fl_search_sub": "Keyword search, tag filters, search history",
+  "fl_favorites": "Favorites",
+  "fl_favorites_sub": "View all starred thought records",
+  "fl_section_stats": "Stats & Data",
+  "fl_trend": "Trend Charts",
+  "fl_trend_sub": "Line, bar, donut charts with day/week/month views",
+  "fl_insight": "Data Insights",
+  "fl_insight_sub": "Streaks, longest record, weekly insights, tag distribution",
+  "fl_section_ai": "AI Intelligence",
+  "fl_ai_summary": "AI Summary",
+  "fl_ai_summary_sub": "8 AI providers (OpenAI, DeepSeek, Moonshot, etc.), auto-analyze content",
+  "fl_voice": "Voice Input",
+  "fl_voice_sub": "Speech-to-text, 3 free monthly uses, VIP unlimited",
+  "fl_section_notify": "Reminders & Notifications",
+  "fl_daily_remind": "Daily Reminder",
+  "fl_daily_remind_sub": "Customizable local push notifications",
+  "fl_shortcut": "Hardware Shortcuts",
+  "fl_shortcut_sub": "Volume/power button combos to quickly open new thought",
+  "fl_section_widget": "Home Widget",
+  "fl_widget_styles": "3 Widget Styles",
+  "fl_widget_styles_sub": "Stats card, quick record, recent thought styles",
+  "fl_widget_sync": "Data Sync & Customization",
+  "fl_widget_sync_sub": "Theme color sync, custom labels, setup guide",
+  "fl_section_user": "User System",
+  "fl_auth": "Registration & Login",
+  "fl_auth_sub": "Email register/login, CAPTCHA, email code, guest mode",
+  "fl_security": "Account Security",
+  "fl_security_sub": "Change/reset password, change email, device management",
+  "fl_profile": "Profile",
+  "fl_profile_sub": "Avatar, nickname, gender, birthday, occupation, bio",
+  "fl_section_theme": "Theme & Appearance",
+  "fl_theme_colors": "8 Theme Colors",
+  "fl_theme_colors_sub": "Purple, pink, green, blue, etc., with auto app icon switch",
+  "fl_dark_mode": "Dark Mode",
+  "fl_dark_mode_sub": "Follow system, light, dark — fully adapted",
+  "fl_i18n": "Multi-language",
+  "fl_i18n_sub": "9 languages: Chinese, English, German, French, Japanese, Korean, Russian, Thai",
+  "fl_section_data": "Data Management",
+  "fl_local_store": "Local Data Persistence",
+  "fl_local_store_sub": "All data stored locally with tamper-proof secure prefs",
+  "fl_backup": "Backup & Restore",
+  "fl_backup_sub": "JSON backup/restore, Markdown export",
+  "fl_tags": "Tag Management",
+  "fl_tags_sub": "Add/delete custom tags, tag stats & filtering",
+  "fl_section_upcoming": "Coming Soon",
+  "fl_cloud_sync": "Cloud Sync",
+  "fl_cloud_sync_sub": "Cross-device sync with end-to-end encryption",
+  "fl_opinion_push": "Opinion-Aware Push",
+  "fl_opinion_push_sub": "Smart browsing detection, timely thinking invitations",
+  "fl_cool_review": "Cool-down Review",
+  "fl_cool_review_sub": "Auto-review thoughts after 24h and 1 month",
+  "fl_monthly_report": "Monthly Report",
+  "fl_monthly_report_sub": "Auto-generated monthly reflection review & analytics",
+  "trash_title": "Trash",
+  "trash_empty": "Trash is empty",
+  "trash_empty_sub": "Deleted thoughts are kept for 30 days",
+  "trash_restore": "Restore",
+  "trash_restore_confirm": "Restore this thought?",
+  "trash_restore_success": "Restored to thoughts",
+  "trash_permanent_delete": "Delete permanently",
+  "trash_permanent_confirm": "This cannot be undone. Delete permanently?",
+  "trash_clear_all": "Empty Trash",
+  "trash_clear_all_confirm": "Empty the trash? This cannot be undone.",
+  "trash_days_remaining": "{days} days left",
+  "drafts_title": "Drafts",
+  "drafts_empty": "No drafts",
+  "drafts_empty_sub": "Unsaved thoughts are auto-saved to drafts",
+  "draft_save_to_drafts": "Save this thought to drafts?",
+  "draft_save": "Save as Draft",
+  "draft_discard": "Discard",
+  "draft_deleted": "Draft deleted",
+  "draft_restore_success": "Restored as thought",
+  "draft_restore_confirm": "Restore this draft as a thought?",
+  "draft_edited": "Draft updated",
+  "draft_edit": "Edit Draft",
+  "cloud_sync": "Cloud Sync",
+  "cloud_sync_desc": "Sync via WebDAV to Jianguoyun etc.",
+  "server_address": "Server Address",
+  "username": "Username",
+  "app_password": "Password / App Password",
+  "test_connection": "Test Connection",
+  "testing": "Testing...",
+  "save_config": "Save Config",
+  "config_saved": "Config saved",
+  "smart_sync": "Smart Sync",
+  "smart_sync_desc": "Merge local & cloud data, auto dedup",
+  "upload_to_cloud": "Upload to Cloud",
+  "upload_desc": "Overwrite cloud with local data",
+  "download_from_cloud": "Download from Cloud",
+  "download_desc": "Overwrite local with cloud data",
+  "auto_sync": "Auto Sync",
+  "auto_sync_off": "Off",
+  "auto_sync_5min": "Every 5 min",
+  "auto_sync_10min": "Every 10 min",
+  "auto_sync_20min": "Every 20 min",
+  "auto_sync_enabled": "Auto sync enabled: {interval}",
+  "auto_sync_disabled": "Auto sync disabled",
+  "syncing": "Syncing...",
+  "not_configured": "Server not configured",
+  "first_sync_done": "First sync complete",
+  "sync_done": "Sync complete",
+  "sync_failed": "Sync failed",
+  "cloud_sync_tutorial": "Cloud Sync Tutorial",
+  "deleted": "Deleted",
+  "@delete_selected_count": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@selected_count": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@result_count": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@max_images": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@code_sent_to": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "@change_email_sub": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "@notif_time_desc": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@tag_deleted": {
+    "placeholders": {
+      "tag": {
+        "type": "String"
+      }
+    }
+  },
+  "@reset_failed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@tag_label": {
+    "placeholders": {
+      "tag": {
+        "type": "String"
+      }
+    }
+  },
+  "@trash_days_remaining": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "@auto_sync_enabled": {
+    "placeholders": {
+      "interval": {
+        "type": "String"
+      }
+    }
+  },
+  "cs_conn_success": "Connection successful",
+  "cs_upload_success": "Upload successful",
+  "cs_download_done": "Download complete, {count} records",
+  "cs_download_failed": "Download failed or no data",
+  "cs_upload_result": "{message}, {count} records in total",
+  "cs_pwd_hint": "Enter your password or an app-specific password",
+  "cs_sync_ops": "Sync Operations",
+  "cs_tab_jianguoyun": "Jianguoyun",
+  "cs_tab_nextcloud": "NextCloud",
+  "cs_tab_selfhosted": "Self-hosted",
+  "cs_note": "Notes",
+  "cs_jg_s1_title": "1. What is Jianguoyun WebDAV?",
+  "cs_jg_s1_para": "Jianguoyun is a leading cloud storage service in China that supports the WebDAV protocol. You can sync your thoughts directly to Jianguoyun via Zoosy for multi-device backups.",
+  "cs_jg_s2_title": "2. Get WebDAV credentials",
+  "cs_jg_step1_t": "Open the Jianguoyun web version",
+  "cs_jg_step1_d": "Visit www.jianguoyun.com in your browser and sign in",
+  "cs_jg_step2_t": "Go to security settings",
+  "cs_jg_step2_d": "Click the avatar at the top right → Settings → Security Options on the left",
+  "cs_jg_step3_t": "Find third-party app management",
+  "cs_jg_step3_d": "Scroll down to the \"Third-party App Management\" section",
+  "cs_jg_step4_t": "Add an app password",
+  "cs_jg_step4_d": "Click \"Add App Password\", enter \"Zoosy\" as the app name, and confirm",
+  "cs_jg_step5_t": "Save the app password",
+  "cs_jg_step5_d": "A 16-character app password will be generated (e.g. a1b2c3d4e5f6g7h8). Copy and keep it safe",
+  "cs_jg_s3_title": "3. Configure in Zoosy",
+  "cs_jg_step6_t": "Open Cloud Sync",
+  "cs_jg_step6_d": "Zoosy → Profile → Cloud Sync",
+  "cs_jg_step7_t": "Enter the server address",
+  "cs_jg_step7_d": "https://dav.jianguoyun.com/dav/",
+  "cs_jg_step8_t": "Enter the username",
+  "cs_jg_step8_d": "Your Jianguoyun login email (e.g. xxx@qq.com)",
+  "cs_jg_step9_t": "Enter the password",
+  "cs_jg_step9_d": "Paste the 16-character app password you just copied",
+  "cs_jg_step10_t": "Test connection",
+  "cs_jg_step10_d": "Tap \"Test Connection\", then \"Save Configuration\" once it succeeds",
+  "cs_jg_step11_t": "Start syncing",
+  "cs_jg_step11_d": "Tap \"Smart Sync\" to upload your data",
+  "cs_jg_warn1": "Enter the \"App Password\", not your Jianguoyun login password",
+  "cs_jg_warn2": "The free Jianguoyun plan offers 1GB upload / 3GB download traffic per month",
+  "cs_jg_warn3": "Use \"Smart Sync\" for the first sync — it merges local and cloud data automatically",
+  "cs_nc_s1_title": "1. What is NextCloud?",
+  "cs_nc_s1_para": "NextCloud is an open-source self-hosted cloud storage solution that lets you run your own private cloud. Many NAS devices (Synology, QNAP) also have built-in WebDAV support.",
+  "cs_nc_s2_title": "2. Get the WebDAV address",
+  "cs_nc_step1_t": "Sign in to NextCloud",
+  "cs_nc_step1_d": "Open your NextCloud web interface and sign in",
+  "cs_nc_step2_t": "Find the WebDAV address",
+  "cs_nc_step2_d": "NextCloud WebDAV format:\nhttps://your-domain/remote.php/dav/files/username/",
+  "cs_nc_step3_t": "Create an app password (recommended)",
+  "cs_nc_step3_d": "Click the avatar at the top right → Settings → Security → App passwords\nCreate a new password and copy it",
+  "cs_nc_s3_title": "3. Configure in Zoosy",
+  "cs_nc_step4_d": "https://your-domain/remote.php/dav/files/username/",
+  "cs_nc_step5_d": "Your NextCloud username",
+  "cs_nc_step6_d": "App password (recommended) or login password",
+  "cs_nc_info1": "If NextCloud uses a self-signed HTTPS certificate, Zoosy already has built-in certificate bypass support — just use it normally.",
+  "cs_sh_s1_title": "1. Supported server software",
+  "cs_sh_s1_para": "Any server that supports the WebDAV protocol works, for example:",
+  "cs_sh_bullet1": "Nginx + WebDAV module",
+  "cs_sh_bullet2": "Apache + mod_dav",
+  "cs_sh_bullet3": "Caddy + webdav plugin",
+  "cs_sh_bullet4": "Rclone serve webdav",
+  "cs_sh_bullet5": "WebDAV Server (Docker)",
+  "cs_sh_s2_title": "2. Quick setup (Docker)",
+  "cs_sh_s3_title": "3. Configure in Zoosy",
+  "cs_sh_step1_d": "http://your-server-ip:port/ (or https)",
+  "cs_sh_step2_d": "The username you set on the server",
+  "cs_sh_step3_d": "The password you set on the server",
+  "cs_sh_s4_title": "4. Nginx configuration example",
+  "cs_sh_warn1": "Enable HTTPS on your self-hosted server to avoid sending passwords in plain text",
+  "cs_sh_warn2": "With a LAN address, your phone must be on the same network to sync",
+  "cs_sh_warn3": "Consider DDNS or a tunnel service for access from the internet",
+  "@cs_download_done": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@cs_upload_result": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cs_server_addr": "Server address",
+  "cs_username": "Username",
+  "cs_password": "Password",
+  "cs_test_save": "Test and save",
+  "cs_test_save_desc": "Tap \"Test Connection\" and save once it succeeds",
+  "weekday_mon": "Mon",
+  "weekday_tue": "Tue",
+  "weekday_wed": "Wed",
+  "weekday_thu": "Thu",
+  "weekday_fri": "Fri",
+  "weekday_sat": "Sat",
+  "weekday_sun": "Sun",
+  "date_header": "{year}-{month}",
+  "@date_header": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "month": {
+        "type": "int"
+      }
+    }
+  },
+  "date_full": "{year}-{month}-{day}",
+  "date_header_full": "{y}-{m}-{d} {time}",
+  "ws_total": "Total Thoughts",
+  "app_first_thought_empty": "Start recording your first thought~",
+  "ws_recent": "Recent Thoughts",
+  "ws_recent_sub": "From today on, record every moment worth thinking about.",
+  "ws_saved": "Data saved. Check your home widget shortly.",
+  "ws_recent_title": "💭 Recent Thoughts",
+  "ws_settings_title": "Widget Settings",
+  "ws_choose_style": "Choose Style",
+  "ws_style_stats": "Stats Card",
+  "ws_count_suffix": "{count}",
+  "ws_second_line": "Second Line Content",
+  "ws_today": "Today's Thoughts",
+  "ws_streak": "Streak",
+  "ws_quick": "Quick Record",
+  "ws_quick_hint": "[ + New Thought ]",
+  "ws_update": "Update Widget",
+  "ws_howto": "How to add the widget?",
+  "ws_step1": "1. Tap \"Update Widget\" above to save data",
+  "ws_step2": "2. Long-press an empty spot on the home screen → Widgets → find Zoosy",
+  "ws_step3": "3. Choose a size and drag it to the home screen",
+  "ts_preview_title": "Reflection after the work report",
+  "ts_preview_content": "Finished the work summary today, went smoothly...",
+  "ts_preview_tag1": "Work",
+  "ts_preview_tag2": "Reflection",
+  "ais_verified": "Verified",
+  "nr_location_failed": "Failed to get location",
+  "ep_edit_profile": "Edit Profile",
+  "dm_android_device": "Android device",
+  "st_latest": "Already the latest version",
+  "st_update": "Update",
+  "st_backup_saved": "Backup saved to Download/zoosy/backup/",
+  "st_export_failed": "Export failed: {error}",
+  "st_md_title": "# Zoosy Thoughts\n",
+  "st_md_export_time": "Exported: {year}-{month}-{day}\n---\n",
+  "st_md_date": "**Date**: {date} {time}",
+  "st_md_tags": "**Tags**: {tags}",
+  "st_download_saved": "Saved to Download/zoosy/download/",
+  "st_restored_count": "Restored {count} records",
+  "st_restore_failed": "Restore failed: {error}",
+  "ss_month_label": "{month}",
+  "ss_count": "{count} items",
+  "@date_full": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "@date_header_full": {
+    "placeholders": {
+      "y": {
+        "type": "int"
+      },
+      "m": {
+        "type": "int"
+      },
+      "d": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@ws_count_suffix": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@st_export_failed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@st_md_export_time": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      },
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "@st_md_date": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@st_md_tags": {
+    "placeholders": {
+      "tags": {
+        "type": "String"
+      }
+    }
+  },
+  "@st_restored_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@st_restore_failed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@ss_month_label": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      }
+    }
+  },
+  "@ss_count": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cl_not_configured": "Server not configured",
+  "cl_conn_failed": "Connection failed: {detail}",
+  "cl_upload_failed": "Upload failed: {detail}",
+  "cl_first_sync_done": "First sync complete",
+  "cl_sync_done": "Sync complete",
+  "cl_sync_failed": "Sync failed: {detail}",
+  "em_invalid_email": "Invalid email address",
+  "em_not_configured": "Sender email not configured. Pass QQ_EMAIL and QQ_AUTH_CODE via --dart-define",
+  "em_subject_reset": "Zoosy Password Reset Code",
+  "em_subject_register": "Zoosy Email Verification Code",
+  "em_body_reset": "You are resetting your password. Use the following code to verify:",
+  "em_body_register": "You are registering a Zoosy account. Use the following code to verify:",
+  "em_body_code": "Your Zoosy verification code is: {code} (valid for 5 minutes, do not share)",
+  "em_send_failed": "Send failed: {error}",
+  "nt_default_title": "What are you doing? Got a good idea to record?",
+  "nt_default_content": "Tap here to quickly record~",
+  "nt_channel_name": "Zoosy Thought Reminder",
+  "nt_channel_desc": "Tap the notification to quickly record a thought",
+  "nt_perm_title": "Permission Request",
+  "nt_perm_desc": "To provide the full experience, Zoosy needs the following permissions:",
+  "nt_perm_notification": "Notifications",
+  "nt_perm_notification_desc": "For daily thought reminders",
+  "nt_perm_photo": "Photos",
+  "nt_perm_photo_desc": "For changing your avatar",
+  "nt_perm_usage": "App usage access",
+  "nt_perm_usage_desc": "For screen time reminders",
+  "nt_perm_files": "Read/write files",
+  "nt_perm_files_desc": "For export and backup",
+  "nt_perm_shortcut": "Home screen shortcut",
+  "nt_perm_shortcut_desc": "For quickly recording thoughts",
+  "nt_later": "Later",
+  "nt_allow": "Allow",
+  "wx_clear": "Clear",
+  "wx_mostly_clear": "Mostly clear",
+  "wx_cloudy": "Cloudy",
+  "wx_overcast": "Overcast",
+  "wx_fog": "Fog",
+  "wx_rime": "Rime",
+  "wx_drizzle_light": "Light drizzle",
+  "wx_drizzle": "Drizzle",
+  "wx_drizzle_heavy": "Heavy drizzle",
+  "wx_rain_light": "Light rain",
+  "wx_rain": "Rain",
+  "wx_rain_heavy": "Heavy rain",
+  "wx_snow_light": "Light snow",
+  "wx_snow": "Snow",
+  "wx_snow_heavy": "Heavy snow",
+  "wx_shower": "Showers",
+  "wx_shower_medium": "Medium showers",
+  "wx_shower_heavy": "Heavy showers",
+  "wx_snow_shower_light": "Light snow showers",
+  "wx_snow_shower_heavy": "Heavy snow showers",
+  "wx_thunderstorm": "Thunderstorm",
+  "wx_thunderstorm_hail_small": "Thunderstorm with small hail",
+  "wx_thunderstorm_hail_large": "Thunderstorm with large hail",
+  "wx_unknown": "Unknown",
+  "loc_failed_retry": "Failed to get location, please retry later",
+  "is_field_input": "Input",
+  "is_field_title": "Title",
+  "is_field_content": "Content",
+  "is_field_name": "Name",
+  "is_sanitized_general": "{fieldName} contains disallowed special characters, cleaned automatically",
+  "is_cleaned": "{fieldName} cleaned of special characters",
+  "is_email_too_long": "Email address too long, truncated",
+  "is_email_invalid": "Invalid email format",
+  "is_email_bad_chars": "Email contains disallowed characters",
+  "is_pwd_too_long": "Password too long, truncated",
+  "is_url_too_long": "URL too long, truncated",
+  "is_url_protocol": "Unsafe URL protocol, only http/https/ftp supported",
+  "is_url_bad_chars": "URL contains disallowed characters, cleaned",
+  "is_tag_too_long": "Tag too long, truncated",
+  "is_tag_bad_chars": "Tag contains disallowed characters, cleaned",
+  "@cl_conn_failed": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@cl_upload_failed": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@cl_sync_failed": {
+    "placeholders": {
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "@em_body_code": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "@em_send_failed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "@is_sanitized_general": {
+    "placeholders": {
+      "fieldName": {
+        "type": "String"
+      }
+    }
+  },
+  "@is_cleaned": {
+    "placeholders": {
+      "fieldName": {
+        "type": "String"
+      }
+    }
+  },
+  "th_color_purple": "Thoughtful Purple",
+  "th_color_pink": "Heartbeat Pink",
+  "th_color_green": "Serene Green",
+  "th_color_orange": "Warm Orange",
+  "th_color_blue": "Melancholy Blue",
+  "th_color_violet": "Dreamy Violet",
+  "th_color_cyan": "Fresh Cyan",
+  "th_color_red": "Passionate Red",
+  "ss_insight_growth": "You recorded {count} more on \"{tag}\" than last week!",
+  "ss_insight_current": "\"{tag}\" has {count} records this week. Keep it up!",
+  "@ss_insight_growth": {
+    "placeholders": {
+      "tag": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@ss_insight_current": {
+    "placeholders": {
+      "tag": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}

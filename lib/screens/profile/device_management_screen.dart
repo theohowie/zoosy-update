@@ -1,8 +1,8 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/prefs_util.dart';
 import '../../services/auth_service.dart';
-import '../../services/translation_service.dart';
 
 class DeviceManagementScreen extends StatefulWidget {
   const DeviceManagementScreen({Key? key}) : super(key: key);
@@ -44,19 +44,19 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen> {
 
   String _getDeviceName() {
     // 简单获取设备名称
-    return 'Android 设备';
+    return context.l10n.dm_android_device;
   }
 
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('device_management'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.device_management, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: const Center(child: CircularProgressIndicator()),
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('device_management'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.device_management, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: _isLoggedIn
           ? _buildDeviceList()
@@ -64,7 +64,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen> {
               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Icon(Icons.devices, size: 64, color: ZoosyTheme.textMutedOf(context).withOpacity(0.3)),
                 const SizedBox(height: 16),
-                Text(TranslationService.tr('please_login'), style: TextStyle(fontSize: 16, color: ZoosyTheme.textMutedOf(context))),
+                Text(context.l10n.please_login, style: TextStyle(fontSize: 16, color: ZoosyTheme.textMutedOf(context))),
               ]),
             ),
     );
@@ -72,7 +72,7 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen> {
 
   Widget _buildDeviceList() {
     if (_devices.isEmpty) {
-      return Center(child: Text(TranslationService.tr('no_device_records'), style: TextStyle(color: ZoosyTheme.textMutedOf(context))));
+      return Center(child: Text(context.l10n.no_device_records, style: TextStyle(color: ZoosyTheme.textMutedOf(context))));
     }
     return ListView.separated(
       padding: const EdgeInsets.all(16),
@@ -83,13 +83,13 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen> {
         final isCurrent = device['isCurrent'] == 'true';
         return ListTile(
           leading: Icon(isCurrent ? Icons.phone_android : Icons.devices_other, color: ZoosyTheme.primary),
-          title: Text(device['name'] ?? TranslationService.tr('unknown_device'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
-          subtitle: Text(isCurrent ? TranslationService.tr('current_device') : TranslationService.tr('other_device'), style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
+          title: Text(device['name'] ?? context.l10n.unknown_device, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+          subtitle: Text(isCurrent ? context.l10n.current_device : context.l10n.other_device, style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
           trailing: isCurrent
               ? Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(color: Colors.green.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                  child: Text(TranslationService.tr('current_device'), style: TextStyle(fontSize: 10, color: Colors.green, fontWeight: FontWeight.bold)),
+                  child: Text(context.l10n.current_device, style: TextStyle(fontSize: 10, color: Colors.green, fontWeight: FontWeight.bold)),
                 )
               : IconButton(
                   icon: Icon(Icons.delete_outline, color: Colors.red.withOpacity(0.6), size: 20),
@@ -99,14 +99,14 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen> {
                       builder: (ctx) => AlertDialog(
                         backgroundColor: ZoosyTheme.surfaceOf(ctx),
                         surfaceTintColor: Colors.transparent,
-                        title: Text(TranslationService.tr('delete_device'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
-                        content: Text(TranslationService.tr('delete_device_confirm'), style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
+                        title: Text(ctx.l10n.delete_device, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
+                        content: Text(ctx.l10n.delete_device_confirm, style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
                         actions: [
-                          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(TranslationService.tr('cancel'))),
+                          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(ctx.l10n.cancel)),
                           ElevatedButton(
                             onPressed: () => Navigator.pop(ctx, true),
                             style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary),
-                            child: Text(TranslationService.tr('delete'), style: TextStyle(color: Colors.white)),
+                            child: Text(ctx.l10n.delete, style: TextStyle(color: Colors.white)),
                           ),
                         ],
                       ),

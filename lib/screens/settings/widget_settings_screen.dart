@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import '../../models/reflection.dart';
 import '../../services/theme_service.dart';
 import 'widget_guide_screen.dart';
@@ -21,7 +22,10 @@ class WidgetSettingsScreen extends StatefulWidget {
 
 class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
   String _selectedStyle = 'style1';
-  String _labelType = '总共思考';
+  String _labelType = '';
+
+  /// 当前标签显示值（未选择时用当前语言默认"总共思考"）
+  String get _labelDisplay => _labelType.isEmpty ? context.l10n.ws_total : _labelType;
 
   @override
   void initState() {
@@ -47,8 +51,8 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
 
   Future<void> _updateWidget() async {
     // 获取最近一条思考
-    String recentTitle = '最近思考';
-    String recentContent = '从今天起，记录每一个值得思考的瞬间。';
+    String recentTitle = context.l10n.ws_recent;
+    String recentContent = context.l10n.ws_recent_sub;
     String recentDate = '';
     if (widget.reflections.isNotEmpty) {
       final sorted = List<Reflection>.from(widget.reflections)..sort((a, b) => '${b.date} ${b.time}'.compareTo('${a.date} ${a.time}'));
@@ -61,7 +65,7 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
     await HomeWidget.saveWidgetData('reflection_count', widget.reflectionCount.toString());
     await HomeWidget.saveWidgetData('current_streak', widget.currentStreak.toString());
     await HomeWidget.saveWidgetData('style', _selectedStyle);
-    await HomeWidget.saveWidgetData('widget_label', _labelType);
+    await HomeWidget.saveWidgetData('widget_label', _labelDisplay);
     await HomeWidget.saveWidgetData('recent_title', recentTitle);
     await HomeWidget.saveWidgetData('recent_content', recentContent);
     await HomeWidget.saveWidgetData('recent_date', recentDate);
@@ -82,7 +86,7 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
       'reflection_count': widget.reflectionCount.toString(),
       'current_streak': widget.currentStreak.toString(),
       'style': _selectedStyle,
-      'widget_label': _labelType,
+      'widget_label': _labelDisplay,
       'recent_title': recentTitle,
       'recent_content': recentContent,
       'recent_date': recentDate,
@@ -91,7 +95,7 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
       'last_updated': DateTime.now().millisecondsSinceEpoch.toString(),
     });
   } catch (_) {}
-  if (mounted) ToastUtil.showToast(context, message: '数据已保存，请稍后查看桌面小组件', icon: Icons.widgets, color: Colors.green);
+  if (mounted) ToastUtil.showToast(context, message: context.l10n.ws_saved, icon: Icons.widgets, color: Colors.green);
   }
 
   /// 获取最近一条思考（按日期+时间排序）
@@ -107,10 +111,10 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
     final title = recent?.title ?? '';
     final content = recent != null
         ? (recent.content.length > 72 ? '${recent.content.substring(0, 72)}...' : recent.content)
-        : '从今天起，记录每一个值得思考的瞬间。';
+        : context.l10n.ws_recent_sub;
     final date = recent != null ? _formatDate(recent.date, recent.time) : '';
     return [
-      _previewRow('💭  最近思考', ZoosyTheme.primary, true),
+      _previewRow(context.l10n.ws_recent_title, ZoosyTheme.primary, true),
       if (title.isNotEmpty) _previewRow(title, ZoosyTheme.primary, true),
       _previewRow(content, ZoosyTheme.textMutedOf(context), false),
       if (date.isNotEmpty)
@@ -130,7 +134,7 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
         final y = int.parse(parts[0]);
         final m = int.parse(parts[1]);
         final d = int.parse(parts[2]);
-        return '$y年${m}月${d}日 $time';
+        return context.l10n.date_header_full(y, m, d, time);
       }
     } catch (_) {}
     return '$date $time';
@@ -139,18 +143,18 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('小组件设置', style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.ws_settings_title, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Text('选择样式', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+          Text(context.l10n.ws_choose_style, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
           const SizedBox(height: 16),
 
-          _buildStyleCard('style1', '统计卡片', Icons.bar_chart, [
+          _buildStyleCard('style1', context.l10n.ws_style_stats, Icons.bar_chart, [
             _previewRow('Zoosy', ZoosyTheme.primary, true),
-            _previewRow('$_labelType', ZoosyTheme.textMutedOf(context), false),
-            _previewRow('${widget.reflectionCount}条', ZoosyTheme.primary, true),
+            _previewRow(_labelDisplay, ZoosyTheme.textMutedOf(context), false),
+            _previewRow(context.l10n.ws_count_suffix(widget.reflectionCount), ZoosyTheme.primary, true),
             _previewRow('🐙 zoosy', const Color(0xFFC9C4D7), false),
           ]),
           if (_selectedStyle == 'style1') ...[
@@ -158,9 +162,9 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
             Container(padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(color: ZoosyTheme.primary.withOpacity(0.04), borderRadius: BorderRadius.circular(14), border: Border.all(color: ZoosyTheme.primary.withOpacity(0.1))),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const Text('第二行显示内容', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                Text(context.l10n.ws_second_line, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 6),
-                Wrap(spacing: 8, children: ['总共思考', '今日思考', '连续记录'].map((t) {
+                Wrap(spacing: 8, children: [context.l10n.ws_total, context.l10n.ws_today, context.l10n.ws_streak].map((t) {
                   final sel = _labelType == t;
                   return ChoiceChip(label: Text(t), selected: sel, onSelected: (v) { if (v) setState(() => _labelType = t); },
                     selectedColor: ZoosyTheme.primary, labelStyle: TextStyle(fontSize: 12, color: sel ? Colors.white : ZoosyTheme.textMutedOf(context)));
@@ -170,19 +174,19 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
           ],
           const SizedBox(height: 12),
 
-          _buildStyleCard('style2', '快捷记录', Icons.add_circle_outline, [
+          _buildStyleCard('style2', context.l10n.ws_quick, Icons.add_circle_outline, [
             _previewRow('  Zoosy', ZoosyTheme.primary, true),
-            _previewRow('[ + 新建思考 ]', ZoosyTheme.primary, false),
+            _previewRow(context.l10n.ws_quick_hint, ZoosyTheme.primary, false),
           ]),
           const SizedBox(height: 12),
 
-          _buildStyleCard('style3', '最近思考', Icons.article_outlined, _buildStyle3Preview()),
+          _buildStyleCard('style3', context.l10n.ws_recent, Icons.article_outlined, _buildStyle3Preview()),
 
           const SizedBox(height: 28),
           SizedBox(height: 48, child: ElevatedButton.icon(
             onPressed: _updateWidget,
             icon: const Icon(Icons.refresh, color: Colors.white),
-            label: const Text('更新小组件', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            label: Text(context.l10n.ws_update, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
             style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
           )),
           const SizedBox(height: 16),
@@ -193,14 +197,14 @@ class _WidgetSettingsScreenState extends State<WidgetSettingsScreen> {
               decoration: BoxDecoration(color: ZoosyTheme.primary.withOpacity(0.04), borderRadius: BorderRadius.circular(14), border: Border.all(color: ZoosyTheme.primary.withOpacity(0.1))),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Row(children: [
-                  Text('如何添加小组件？', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+                  Text(context.l10n.ws_howto, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
                   const Spacer(),
                   Icon(Icons.chevron_right, size: 18, color: ZoosyTheme.textMutedOf(context)),
                 ]),
                 const SizedBox(height: 6),
-                Text('1. 点击上方「更新小组件」保存数据', style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), height: 1.5)),
-                Text('2. 长按桌面空白处 → 小组件 → 找到 Zoosy', style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), height: 1.5)),
-                Text('3. 选择对应尺寸拖到桌面', style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), height: 1.5)),
+                Text(context.l10n.ws_step1, style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), height: 1.5)),
+                Text(context.l10n.ws_step2, style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), height: 1.5)),
+                Text(context.l10n.ws_step3, style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), height: 1.5)),
               ]),
             ),
           ),

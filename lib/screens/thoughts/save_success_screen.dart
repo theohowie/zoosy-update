@@ -1,9 +1,9 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/theme_service.dart';
-import '../../services/translation_service.dart';
 import 'reflection_detail_screen.dart';
 import 'new_reflection_screen.dart';
 
@@ -155,7 +155,7 @@ class _SaveSuccessScreenState extends State<SaveSuccessScreen> with SingleTicker
                     const SizedBox(height: 28),
                     // 主标题
                     Text(
-                      TranslationService.tr('record_success'),
+                      context.l10n.record_success,
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w900,
@@ -166,7 +166,7 @@ class _SaveSuccessScreenState extends State<SaveSuccessScreen> with SingleTicker
                     const SizedBox(height: 8),
                     // 副标题
                     Text(
-                      TranslationService.tr('record_success_sub'),
+                      context.l10n.record_success_sub,
                       style: TextStyle(
                         fontSize: 14,
                         color: ZoosyTheme.textMutedOf(context),
@@ -180,7 +180,7 @@ class _SaveSuccessScreenState extends State<SaveSuccessScreen> with SingleTicker
                       child: ElevatedButton.icon(
                         onPressed: _viewRecord,
                         icon: const Icon(Icons.visibility_outlined, color: Colors.white, size: 20),
-                        label: Text(TranslationService.tr('view_record'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                        label: Text(context.l10n.view_record, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ZoosyTheme.primary,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -196,7 +196,7 @@ class _SaveSuccessScreenState extends State<SaveSuccessScreen> with SingleTicker
                       child: OutlinedButton.icon(
                         onPressed: _writeAnother,
                         icon: Icon(Icons.edit_outlined, color: ZoosyTheme.primary, size: 20),
-                        label: Text(TranslationService.tr('write_another'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.primary)),
+                        label: Text(context.l10n.write_another, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.primary)),
                         style: OutlinedButton.styleFrom(
                           backgroundColor: ZoosyTheme.primary.withOpacity(0.06),
                           side: BorderSide(color: ZoosyTheme.primary.withOpacity(0.3)),
@@ -217,7 +217,7 @@ class _SaveSuccessScreenState extends State<SaveSuccessScreen> with SingleTicker
                           Icon(Icons.lightbulb_outline, size: 20, color: ZoosyTheme.primary),
                           const SizedBox(width: 10),
                           Text(
-                            TranslationService.tr('reflection_builds_resilience'),
+                            context.l10n.reflection_builds_resilience,
                             style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(context)),
                           ),
                         ],

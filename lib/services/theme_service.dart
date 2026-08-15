@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/reflection.dart';
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'prefs_util.dart';
 
 class ThemeService {
@@ -61,9 +62,9 @@ class ThemeService {
 
   static String modeName(ThemeMode mode) {
     return switch (mode) {
-      ThemeMode.light => '浅色模式',
-      ThemeMode.dark => '深色模式',
-      ThemeMode.system => '跟随系统',
+      ThemeMode.light => appL10n().light_mode,
+      ThemeMode.dark => appL10n().dark_mode,
+      ThemeMode.system => appL10n().system_default,
     };
   }
 

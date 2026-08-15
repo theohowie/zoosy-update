@@ -1,7 +1,7 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/ai_service.dart';
-import '../../services/translation_service.dart';
 import '../../utils/input_sanitizer.dart';
 import '../../widgets/toast_util.dart';
 
@@ -63,7 +63,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
     await AIService.setApiUrl(sanitizedUrl);
     await AIService.setModel(_selectedModel);
     if (!mounted) return;
-    ToastUtil.showToast(context, message: TranslationService.tr('ai_saved'), icon: Icons.check, color: Colors.green);
+    ToastUtil.showToast(context, message: context.l10n.ai_saved, icon: Icons.check, color: Colors.green);
     Navigator.pop(context);
   }
 
@@ -71,11 +71,11 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
     final key = _keyController.text.trim();
     final url = _urlController.text.trim();
     if (key.isEmpty) {
-      setState(() => _validateResult = TranslationService.tr('fill_api_key'));
+      setState(() => _validateResult = context.l10n.fill_api_key);
       return;
     }
     if (url.isEmpty) {
-      setState(() => _validateResult = TranslationService.tr('fill_api_url'));
+      setState(() => _validateResult = context.l10n.fill_api_url);
       return;
     }
     setState(() { _isValidating = true; _validateResult = null; });
@@ -83,7 +83,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
     if (mounted) {
       setState(() {
         _isValidating = false;
-        _validateResult = result ?? TranslationService.tr('validation_passed');
+        _validateResult = result ?? context.l10n.validation_passed;
       });
     }
   }
@@ -91,15 +91,15 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('ai_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.ai_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: const Center(child: CircularProgressIndicator()),
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('ai_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.ai_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0,
-        actions: [TextButton(onPressed: _save, child: Text(TranslationService.tr('save'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 15)))],
+        actions: [TextButton(onPressed: _save, child: Text(context.l10n.save, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 15)))],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -108,8 +108,8 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
             child: Column(children: [
               SwitchListTile(
-                title: Text(TranslationService.tr('ai_summary'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('auto_generate_ai'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.ai_summary, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.auto_generate_ai, style: TextStyle(fontSize: 11)),
                 value: _enabled, activeColor: ZoosyTheme.primary,
                 onChanged: (v) => setState(() => _enabled = v),
               ),
@@ -117,7 +117,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
           ),
           if (_enabled) ...[
             const SizedBox(height: 20),
-            Text(TranslationService.tr('api_config'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.api_config, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 12),
             Card(color: ZoosyTheme.surfaceOf(context), surfaceTintColor: Colors.transparent, elevation: 0,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
@@ -125,7 +125,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                 padding: const EdgeInsets.all(16),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   // 模型选择
-                  Text(TranslationService.tr('select_model'), style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
+                  Text(context.l10n.select_model, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
                   const SizedBox(height: 6),
                   DropdownButtonFormField<String>(
                     value: _selectedModel,
@@ -141,7 +141,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                   ),
                   const SizedBox(height: 16),
                   // API 地址（自动填充，允许手动修改）
-                  Text(TranslationService.tr('api_url_label'), style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
+                  Text(context.l10n.api_url_label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: ZoosyTheme.textMutedOf(context))),
                   const SizedBox(height: 6),
                   TextField(controller: _urlController,
                     decoration: InputDecoration(hintText: 'https://api.openai.com/v1/chat/completions', filled: true, fillColor: ZoosyTheme.containerLowOf(context),
@@ -186,7 +186,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                         ),
                         child: _isValidating
                             ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                            : Text(TranslationService.tr('validate'), style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold)),
+                            : Text(context.l10n.validate, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ]),
@@ -195,22 +195,22 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                       decoration: BoxDecoration(
-                        color: _validateResult!.startsWith('验证通过')
+                        color: _validateResult!.startsWith(context.l10n.ais_verified)
                             ? Colors.green.withOpacity(0.08)
                             : Colors.red.withOpacity(0.06),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(children: [
                         Icon(
-                          _validateResult!.startsWith('验证通过') ? Icons.check_circle : Icons.error_outline,
+                          _validateResult!.startsWith(context.l10n.ais_verified) ? Icons.check_circle : Icons.error_outline,
                           size: 14,
-                          color: _validateResult!.startsWith('验证通过') ? Colors.green : Colors.red,
+                          color: _validateResult!.startsWith(context.l10n.ais_verified) ? Colors.green : Colors.red,
                         ),
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(_validateResult!, style: TextStyle(
                             fontSize: 11,
-                            color: _validateResult!.startsWith('验证通过') ? Colors.green : Colors.red,
+                            color: _validateResult!.startsWith(context.l10n.ais_verified) ? Colors.green : Colors.red,
                           )),
                         ),
                       ]),
@@ -220,7 +220,7 @@ class _AISettingsScreenState extends State<AISettingsScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(color: ZoosyTheme.primary.withOpacity(0.04), borderRadius: BorderRadius.circular(10), border: Border.all(color: ZoosyTheme.primary.withOpacity(0.1))),
-                    child: Text(TranslationService.tr('ai_config_hint'), style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
+                    child: Text(context.l10n.ai_config_hint, style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
                   ),
                 ]),
               ),

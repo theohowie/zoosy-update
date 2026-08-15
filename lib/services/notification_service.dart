@@ -1,3 +1,4 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -16,24 +17,24 @@ class NotificationService {
   static const _titleKey = 'notif_title';
   static const _contentKey = 'notif_content';
 
-  static const String defaultTitle = '在干嘛？有没有好的想法记录一下？';
-  static const String defaultContent = '点击此处可以快速记录哦~';
+  static String get defaultTitle => appL10n().nt_default_title;
+  static String get defaultContent => appL10n().nt_default_content;
 
   static VoidCallback? onNotificationTap;
 
   static const _channelId = 'zoosy_reminder';
-  static const _channelName = 'Zoosy 思考提醒';
+  static String get _channelName => appL10n().nt_channel_name;
   static const _dailyReminderId = 1;
   static const _testNotificationId = 0;
   static const _scheduledKey = 'notif_fired_today';
 
-  static const AndroidNotificationDetails _androidDetails = AndroidNotificationDetails(
+  static final AndroidNotificationDetails _androidDetails = AndroidNotificationDetails(
     _channelId, _channelName,
-    channelDescription: '点击通知快速记录想法',
+    channelDescription: appL10n().nt_channel_desc,
     importance: Importance.high, priority: Priority.high,
     enableVibration: true, enableLights: true,
   );
-  static const NotificationDetails _notificationDetails = NotificationDetails(
+  static final NotificationDetails _notificationDetails = NotificationDetails(
     android: _androidDetails, iOS: DarwinNotificationDetails(),
   );
 
@@ -50,8 +51,8 @@ class NotificationService {
       const InitializationSettings(android: androidSettings, iOS: iosSettings),
       onDidReceiveNotificationResponse: _onTap,
     );
-    const channel = AndroidNotificationChannel(_channelId, _channelName,
-      description: '点击通知快速记录想法', importance: Importance.high);
+    final channel = AndroidNotificationChannel(_channelId, _channelName,
+      description: appL10n().nt_channel_desc, importance: Importance.high);
     await notifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
@@ -378,25 +379,25 @@ Future<void> showPermissionDialog(BuildContext context) async {
     barrierDismissible: false,
     builder: (ctx) => AlertDialog(
       backgroundColor: ZoosyTheme.surfaceOf(ctx), surfaceTintColor: Colors.transparent,
-      title: Text('权限申请', style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
+      title: Text(ctx.l10n.nt_perm_title, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
       content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('为了提供完整的使用体验，Zoosy 需要以下权限：', style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(ctx))),
+        Text(ctx.l10n.nt_perm_desc, style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(ctx))),
         const SizedBox(height: 16),
-        if (!notifGranted) const _PermissionItem(Icons.notifications_outlined, '通知', '用于每日思考提醒'),
-        if (!photoGranted) const _PermissionItem(Icons.photo_library_outlined, '相册', '用于更换头像'),
-        const _PermissionItem(Icons.timer_outlined, '应用使用情况', '用于屏幕使用时长提醒'),
-        const _PermissionItem(Icons.description_outlined, '读写文件', '用于导出和备份数据'),
-        const _PermissionItem(Icons.add_box_outlined, '桌面快捷方式', '用于快速记录想法'),
+        if (!notifGranted) _PermissionItem(Icons.notifications_outlined, ctx.l10n.nt_perm_notification, ctx.l10n.nt_perm_notification_desc),
+        if (!photoGranted) _PermissionItem(Icons.photo_library_outlined, ctx.l10n.nt_perm_photo, ctx.l10n.nt_perm_photo_desc),
+        _PermissionItem(Icons.timer_outlined, ctx.l10n.nt_perm_usage, ctx.l10n.nt_perm_usage_desc),
+        _PermissionItem(Icons.description_outlined, ctx.l10n.nt_perm_files, ctx.l10n.nt_perm_files_desc),
+        _PermissionItem(Icons.add_box_outlined, ctx.l10n.nt_perm_shortcut, ctx.l10n.nt_perm_shortcut_desc),
       ]),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('稍后')),
+        TextButton(onPressed: () => Navigator.pop(ctx), child: Text(ctx.l10n.nt_later)),
         ElevatedButton(
           onPressed: () async {
             Navigator.pop(ctx);
             await NotificationService.requestAllPermissions();
           },
           style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary),
-          child: const Text('允许', style: TextStyle(color: Colors.white)),
+          child: Text(ctx.l10n.nt_allow, style: const TextStyle(color: Colors.white)),
         ),
       ],
     ),

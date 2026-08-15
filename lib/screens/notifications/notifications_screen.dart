@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 
 class NotificationsScreen extends StatelessWidget {
   final List<NotificationItem> notifications;
@@ -12,7 +12,7 @@ class NotificationsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          TranslationService.tr('messages_and_notifications'),
+          context.l10n.messages_and_notifications,
           style: TextStyle(
             fontFamily: 'Plus Jakarta Sans',
             fontWeight: FontWeight.bold,
@@ -25,7 +25,7 @@ class NotificationsScreen extends StatelessWidget {
       body: notifications.isEmpty
           ? Center(
               child: Text(
-                TranslationService.tr('no_notifications'),
+                context.l10n.no_notifications,
                 style: TextStyle(color: ZoosyTheme.textMutedOf(context)),
               ),
             )

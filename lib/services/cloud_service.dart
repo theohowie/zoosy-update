@@ -1,3 +1,4 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -121,7 +122,7 @@ class CloudService {
   static Future<String?> testConnection() async {
     try {
       final config = await getConfig();
-      if (config['server']!.isEmpty) return '未配置服务器';
+      if (config['server']!.isEmpty) return appL10n().cl_not_configured;
 
       final client = _createClient();
       final url = Uri.parse(config['server']!);
@@ -136,9 +137,9 @@ class CloudService {
       if (response.statusCode == 207 || response.statusCode == 200) {
         return null;
       }
-      return '连接失败: ${response.statusCode}';
+      return appL10n().cl_conn_failed('${response.statusCode}');
     } catch (e) {
-      return '连接失败: $e';
+      return appL10n().cl_conn_failed('$e');
     }
   }
 
@@ -147,7 +148,7 @@ class CloudService {
   static Future<String?> upload(List<Reflection> reflections) async {
     try {
       final config = await getConfig();
-      if (config['server']!.isEmpty) return '未配置服务器';
+      if (config['server']!.isEmpty) return appL10n().cl_not_configured;
 
       final data = {
         'version': '1.0',
@@ -176,9 +177,9 @@ class CloudService {
       if (response.statusCode == 404) {
         return await _uploadWithMkcol(config, bytes);
       }
-      return '上传失败: ${response.statusCode}';
+      return appL10n().cl_upload_failed('${response.statusCode}');
     } catch (e) {
-      return '上传失败: $e';
+      return appL10n().cl_upload_failed('$e');
     }
   }
 
@@ -203,9 +204,9 @@ class CloudService {
       if (response.statusCode == 201 || response.statusCode == 204 || response.statusCode == 200) {
         return null;
       }
-      return '上传失败: ${response.statusCode}';
+      return appL10n().cl_upload_failed('${response.statusCode}');
     } catch (e) {
-      return '上传失败: $e';
+      return appL10n().cl_upload_failed('$e');
     }
   }
 
@@ -273,7 +274,7 @@ class CloudService {
     try {
       final config = await getConfig();
       if (config['server']!.isEmpty) {
-        return SyncResult(reflections: localReflections, message: '未配置服务器', hasUpdate: false);
+        return SyncResult(reflections: localReflections, message: appL10n().cl_not_configured, hasUpdate: false);
       }
 
       List<Reflection>? cloudReflections;
@@ -283,15 +284,15 @@ class CloudService {
 
       if (cloudReflections == null || cloudReflections.isEmpty) {
         await upload(localReflections);
-        return SyncResult(reflections: localReflections, message: '首次同步完成', hasUpdate: false);
+        return SyncResult(reflections: localReflections, message: appL10n().cl_first_sync_done, hasUpdate: false);
       }
 
       final merged = _mergeReflections(localReflections, cloudReflections);
       await upload(merged);
 
-      return SyncResult(reflections: merged, message: '同步完成', hasUpdate: merged.length != localReflections.length);
+      return SyncResult(reflections: merged, message: appL10n().cl_sync_done, hasUpdate: merged.length != localReflections.length);
     } catch (e) {
-      return SyncResult(reflections: localReflections, message: '同步失败: $e', hasUpdate: false);
+      return SyncResult(reflections: localReflections, message: appL10n().cl_sync_failed('$e'), hasUpdate: false);
     }
   }
 

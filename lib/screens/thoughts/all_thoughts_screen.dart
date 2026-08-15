@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 import 'reflection_detail_screen.dart';
 
 class AllThoughtsScreen extends StatefulWidget {
@@ -75,11 +75,11 @@ class _AllThoughtsScreenState extends State<AllThoughtsScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(TranslationService.tr('confirm_delete')),
-        content: Text(TranslationService.tr('delete_selected_count', params: {'count': '${_selectedIds.length}'})),
+        title: Text(ctx.l10n.confirm_delete),
+        content: Text(ctx.l10n.delete_selected_count('${_selectedIds.length}')),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(TranslationService.tr('cancel'))),
-          TextButton(onPressed: () => Navigator.pop(ctx, true), child: Text(TranslationService.tr('delete'), style: const TextStyle(color: Colors.red))),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(ctx.l10n.cancel)),
+          TextButton(onPressed: () => Navigator.pop(ctx, true), child: Text(ctx.l10n.delete, style: const TextStyle(color: Colors.red))),
         ],
       ),
     );
@@ -99,7 +99,7 @@ class _AllThoughtsScreenState extends State<AllThoughtsScreen> {
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Icon(Icons.inbox_outlined, size: 64, color: ZoosyTheme.textMutedOf(context).withOpacity(0.3)),
           const SizedBox(height: 16),
-          Text(TranslationService.tr('no_thoughts_yet'), style: TextStyle(fontSize: 16, color: ZoosyTheme.textMutedOf(context))),
+          Text(context.l10n.no_thoughts_yet, style: TextStyle(fontSize: 16, color: ZoosyTheme.textMutedOf(context))),
         ]),
       );
     }

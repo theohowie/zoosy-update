@@ -1,7 +1,7 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/page_settings.dart';
-import '../../services/translation_service.dart';
 
 class StatsSettingsScreen extends StatefulWidget {
   const StatsSettingsScreen({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _StatsSettingsScreenState extends State<StatsSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('stats_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.stats_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -33,8 +33,8 @@ class _StatsSettingsScreenState extends State<StatsSettingsScreen> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
             child: Column(children: [
               SwitchListTile(
-                title: Text(TranslationService.tr('tag_dist_show'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('tag_dist_show_desc'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.tag_dist_show, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.tag_dist_show_desc, style: TextStyle(fontSize: 11)),
                 value: _showTagDist, activeColor: ZoosyTheme.primary,
                 onChanged: (v) async {
                   await PageSettings.setShowTagDistribution(v);

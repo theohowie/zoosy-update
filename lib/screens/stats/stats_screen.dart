@@ -1,3 +1,4 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
@@ -8,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../models/reflection.dart';
 import '../../services/page_settings.dart';
-import '../../services/translation_service.dart';
 import '../thoughts/tag_thoughts_screen.dart';
 
 class StatsScreen extends StatefulWidget {
@@ -24,7 +24,7 @@ class StatsScreen extends StatefulWidget {
 }
 
 class _StatsScreenState extends State<StatsScreen> {
-  String period = '日';
+  String period = 'day';
   String _chartType = 'line';
   bool _showTagDist = true;
   bool _showMenu = false;
@@ -117,7 +117,7 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 
   int get _totalPeriods => 200;
-  double get _pointWidth => period == '日' ? 44 : (period == '周' ? 120 : 80);
+  double get _pointWidth => period == 'day' ? 44 : (period == 'week' ? 120 : 80);
 
   int _dayCount(String date) { final m = <String, int>{}; for (final r in widget.reflections) m[r.date] = (m[r.date] ?? 0) + 1; return m[date] ?? 0; }
 
@@ -159,16 +159,16 @@ class _StatsScreenState extends State<StatsScreen> {
 
   List<String> _chartLabelsMonths() {
     final half = _totalPeriods ~/ 2; final today = DateTime.now();
-    return List.generate(_totalPeriods, (m) { final month = DateTime(today.year, today.month + m - half, 1); return '${month.month}月'; });
+    return List.generate(_totalPeriods, (m) { final month = DateTime(today.year, today.month + m - half, 1); return context.l10n.ss_month_label(month.month); });
   }
 
-  List<double> get _allChartData => period == '日' ? _chartDataMulti() : (period == '周' ? _chartDataWeeks() : _chartDataMonths());
-  List<String> get _allChartLabels => period == '日' ? _chartLabelsDaily() : (period == '周' ? _chartLabelsWeeks() : _chartLabelsMonths());
+  List<double> get _allChartData => period == 'day' ? _chartDataMulti() : (period == 'week' ? _chartDataWeeks() : _chartDataMonths());
+  List<String> get _allChartLabels => period == 'day' ? _chartLabelsDaily() : (period == 'week' ? _chartLabelsWeeks() : _chartLabelsMonths());
 
   int get _totalForDisplay {
     final now = DateTime.now();
-    if (period == '日') return _dayCount('${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}');
-    if (period == '周') { final mon = DateTime(now.year, now.month, now.day - (now.weekday - 1)); int sum = 0; for (int i = 0; i < 7; i++) { final d = mon.add(Duration(days: i)); sum += _dayCount('${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}'); } return sum; }
+    if (period == 'day') return _dayCount('${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}');
+    if (period == 'week') { final mon = DateTime(now.year, now.month, now.day - (now.weekday - 1)); int sum = 0; for (int i = 0; i < 7; i++) { final d = mon.add(Duration(days: i)); sum += _dayCount('${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}'); } return sum; }
     final month = DateTime(now.year, now.month, 1); final dim = DateTime(month.year, month.month + 1, 0).day; int sum = 0;
     for (int i = 1; i <= dim; i++) sum += _dayCount('${month.year}-${month.month.toString().padLeft(2, '0')}-${i.toString().padLeft(2, '0')}');
     return sum;
@@ -184,7 +184,7 @@ class _StatsScreenState extends State<StatsScreen> {
       final dir = await getTemporaryDirectory();
       final file = File('${dir.path}/zoosy_chart.png');
       await file.writeAsBytes(byteData.buffer.asUint8List());
-      await Share.shareXFiles([XFile(file.path)], text: TranslationService.tr('chart_share_text'));
+      await Share.shareXFiles([XFile(file.path)], text: context.l10n.chart_share_text);
     } catch (_) {}
   }
 
@@ -200,7 +200,7 @@ class _StatsScreenState extends State<StatsScreen> {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 100),
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(TranslationService.tr('stats_trend'), style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.stats_trend, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             Row(mainAxisSize: MainAxisSize.min, children: [
               AnimatedCrossFade(
                 firstChild: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -220,12 +220,18 @@ class _StatsScreenState extends State<StatsScreen> {
           ]),
           const SizedBox(height: 12),
           Container(padding: const EdgeInsets.all(4), decoration: BoxDecoration(color: ZoosyTheme.containerLowOf(context), borderRadius: BorderRadius.circular(30)),
-            child: Row(children: [TranslationService.tr('period_day'), TranslationService.tr('period_week'), TranslationService.tr('period_month')].map((p) {
-              final sel = period == p;
+            child: Row(children: [
+              ['day', context.l10n.period_day],
+              ['week', context.l10n.period_week],
+              ['month', context.l10n.period_month],
+            ].map((e) {
+              final code = e[0];
+              final label = e[1];
+              final sel = period == code;
               return Expanded(child: GestureDetector(
-                onTap: () { setState(() => period = p); _scrollToToday(); },
+                onTap: () { setState(() => period = code); _scrollToToday(); },
                 child: Container(padding: const EdgeInsets.symmetric(vertical: 8), decoration: BoxDecoration(color: sel ? ZoosyTheme.primary : Colors.transparent, borderRadius: BorderRadius.circular(20)), alignment: Alignment.center,
-                  child: Text(p, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: sel ? Colors.white : ZoosyTheme.textMutedOf(context))))),
+                  child: Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: sel ? Colors.white : ZoosyTheme.textMutedOf(context))))),
               );
             }).toList()),
           ),
@@ -236,8 +242,8 @@ class _StatsScreenState extends State<StatsScreen> {
           const SizedBox(height: 16),
           _buildInsightCard(best),
           if (_showTagDist) ...[
-            const SizedBox(height: 24), Text(TranslationService.tr('tag_distribution'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))), const SizedBox(height: 12),
-            sortedTags.isEmpty ? Center(child: Text(TranslationService.tr('no_tag_data'))) : Column(children: sortedTags.map((e) => _buildTagRow(e.key, e.value, ((e.value / totalLogs) * 100).round())).toList()),
+            const SizedBox(height: 24), Text(context.l10n.tag_distribution, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))), const SizedBox(height: 12),
+            sortedTags.isEmpty ? Center(child: Text(context.l10n.no_tag_data)) : Column(children: sortedTags.map((e) => _buildTagRow(e.key, e.value, ((e.value / totalLogs) * 100).round())).toList()),
           ],
           const SizedBox(height: 48),
         ]),
@@ -252,8 +258,8 @@ class _StatsScreenState extends State<StatsScreen> {
     child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: ZoosyTheme.surfaceOf(context), borderRadius: BorderRadius.circular(28), border: Border.all(color: ZoosyTheme.outlineOf(context).withOpacity(0.3))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Row(children: [Icon(Icons.insights, color: ZoosyTheme.primary, size: 18), const SizedBox(width: 8), Text(_chartType == 'donut' ? TranslationService.tr('tag_distribution') : TranslationService.tr('record_count_label'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: ZoosyTheme.textMutedOf(context)))]),
-          Text(_chartType == 'donut' ? '' : '${_totalForDisplay} 条', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+          Row(children: [Icon(Icons.insights, color: ZoosyTheme.primary, size: 18), const SizedBox(width: 8), Text(_chartType == 'donut' ? context.l10n.tag_distribution : context.l10n.record_count_label, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: ZoosyTheme.textMutedOf(context)))]),
+          Text(_chartType == 'donut' ? '' : context.l10n.ss_count(_totalForDisplay), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
         ]),
         const SizedBox(height: 12),
         if (_chartType == 'donut') _buildDonutChart() else _buildLineBarChart(),
@@ -262,7 +268,7 @@ class _StatsScreenState extends State<StatsScreen> {
   Widget _buildDonutChart() {
     final tc = <String, int>{}; for (final r in widget.reflections) { for (final t in r.tags) tc[t] = (tc[t] ?? 0) + 1; }
     final total = tc.values.fold(0, (a, b) => a + b);
-    if (total == 0) return SizedBox(height: 120, child: Center(child: Text(TranslationService.tr('no_data'), style: TextStyle(color: ZoosyTheme.textMutedOf(context)))));
+    if (total == 0) return SizedBox(height: 120, child: Center(child: Text(context.l10n.no_data, style: TextStyle(color: ZoosyTheme.textMutedOf(context)))));
     final sorted = tc.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
     return SizedBox(height: 140, child: Row(children: [
       SizedBox(width: 120, height: 130, child: CustomPaint(size: const Size(120, 130), painter: ChartDonutPainter(values: sorted.map((e) => e.value.toDouble()).toList(), centerFillColor: ZoosyTheme.surfaceOf(context)))),
@@ -296,15 +302,15 @@ class _StatsScreenState extends State<StatsScreen> {
   Widget _buildBentoGrid(int tl, int cs, int ms, Map<String, dynamic> cmp) {
     final c = cmp['change'] as int; final pct = cmp['pct'] as double;
     final arrow = c > 0 ? '↑' : (c < 0 ? '↓' : '');
-    final label = c == 0 ? TranslationService.tr('same_vs_last_week') : '$arrow ${pct.round()}% ${TranslationService.tr('vs_last_week')}';
+    final label = c == 0 ? context.l10n.same_vs_last_week : '$arrow ${pct.round()}% ${context.l10n.vs_last_week}';
     final color = c > 0 ? Colors.green : (c < 0 ? Colors.red : ZoosyTheme.textMutedOf(context));
     return Column(children: [
       Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: ZoosyTheme.surfaceOf(context), borderRadius: BorderRadius.circular(24), border: Border.all(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
         child: Row(children: [
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(TranslationService.tr('total'), style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), fontWeight: FontWeight.w600)), const SizedBox(height: 4),
+            Text(context.l10n.total, style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context), fontWeight: FontWeight.w600)), const SizedBox(height: 4),
             Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic, children: [
-              Text('$tl', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: ZoosyTheme.textDarkOf(context))), const SizedBox(width: 4), Text(TranslationService.tr('unit_piece'), style: TextStyle(fontSize: 12, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
+              Text('$tl', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: ZoosyTheme.textDarkOf(context))), const SizedBox(width: 4), Text(context.l10n.unit_piece, style: TextStyle(fontSize: 12, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
             ]),
           ]),
           const Spacer(),
@@ -314,21 +320,21 @@ class _StatsScreenState extends State<StatsScreen> {
       const SizedBox(height: 12),
       Row(children: [
         Expanded(child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: ZoosyTheme.surfaceOf(context), borderRadius: BorderRadius.circular(24), border: Border.all(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.local_fire_department, color: Colors.redAccent, size: 28), const SizedBox(height: 8), Text(TranslationService.tr('consecutive_days'), style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context), fontWeight: FontWeight.bold)), const SizedBox(height: 2), Text('$cs ${TranslationService.tr('unit_day')}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: ZoosyTheme.textDarkOf(context))), const SizedBox(height: 2), Text(TranslationService.tr('keep_going'), style: TextStyle(fontSize: 9, color: Colors.redAccent, fontWeight: FontWeight.w600))]))),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [const Icon(Icons.local_fire_department, color: Colors.redAccent, size: 28), const SizedBox(height: 8), Text(context.l10n.consecutive_days, style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context), fontWeight: FontWeight.bold)), const SizedBox(height: 2), Text('$cs ${context.l10n.unit_day}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: ZoosyTheme.textDarkOf(context))), const SizedBox(height: 2), Text(context.l10n.keep_going, style: TextStyle(fontSize: 9, color: Colors.redAccent, fontWeight: FontWeight.w600))]))),
         const SizedBox(width: 12),
         Expanded(child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: ZoosyTheme.surfaceOf(context), borderRadius: BorderRadius.circular(24), border: Border.all(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Icon(Icons.military_tech, color: ZoosyTheme.primary, size: 28), const SizedBox(height: 8), Text(TranslationService.tr('longest_streak'), style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context), fontWeight: FontWeight.bold)), const SizedBox(height: 2), Text('$ms ${TranslationService.tr('unit_day')}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: ZoosyTheme.textDarkOf(context))), const SizedBox(height: 2), Text(TranslationService.tr('personal_best'), style: TextStyle(fontSize: 9, color: Colors.grey, fontWeight: FontWeight.bold))]))),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Icon(Icons.military_tech, color: ZoosyTheme.primary, size: 28), const SizedBox(height: 8), Text(context.l10n.longest_streak, style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context), fontWeight: FontWeight.bold)), const SizedBox(height: 2), Text('$ms ${context.l10n.unit_day}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: ZoosyTheme.textDarkOf(context))), const SizedBox(height: 2), Text(context.l10n.personal_best, style: TextStyle(fontSize: 9, color: Colors.grey, fontWeight: FontWeight.bold))]))),
       ]),
     ]);
   }
 
   Widget _buildInsightCard(Map<String, dynamic> best) {
     final tag = best['tag'] as String; final g = best['growth'] as int; final tc = best['thisCount'] as int;
-    final msg = (tag.isEmpty || tc == 0) ? TranslationService.tr('no_record_this_week') : (g > 0 ? '你在"$tag"上比上周多了 $g 条!' : '本周 "$tag" $tc 条，继续加油!');
+    final msg = (tag.isEmpty || tc == 0) ? context.l10n.no_record_this_week : (g > 0 ? context.l10n.ss_insight_growth(tag, g) : context.l10n.ss_insight_current(tag, tc));
     return Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: ZoosyTheme.primary, borderRadius: BorderRadius.circular(24)),
       child: Row(children: [
         Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(12)), child: const Icon(Icons.lightbulb, color: Colors.white, size: 20)),
-        const SizedBox(width: 14), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(TranslationService.tr('weekly_insight'), style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold)), const SizedBox(height: 2), Text(msg, style: const TextStyle(fontSize: 11.5, color: Colors.white70))])),
+        const SizedBox(width: 14), Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(context.l10n.weekly_insight, style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold)), const SizedBox(height: 2), Text(msg, style: const TextStyle(fontSize: 11.5, color: Colors.white70))])),
       ]));
   }
 

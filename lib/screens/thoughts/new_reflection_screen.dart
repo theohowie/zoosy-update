@@ -1,3 +1,4 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -5,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import '../../models/reflection.dart';
 import '../../services/ai_service.dart';
 import '../../services/location_service.dart';
-import '../../services/translation_service.dart';
 import '../../services/voice_service.dart';
 import '../../services/draft_service.dart';
 import '../../utils/input_sanitizer.dart';
@@ -92,7 +92,7 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
       if (mounted) {
         setState(() {
           _isLoadingLocation = false;
-          _locationError = '获取位置失败';
+          _locationError = context.l10n.nr_location_failed;
         });
       }
     }
@@ -116,11 +116,11 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
     if (!_hasContent) return true;
     final result = await showDialog<String>(context: context, builder: (ctx) => AlertDialog(
       backgroundColor: ZoosyTheme.surfaceOf(ctx), surfaceTintColor: Colors.transparent,
-      title: Text(TranslationService.tr('unsaved_changes'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
-      content: Text(TranslationService.tr('draft_save_to_drafts'), style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
+      title: Text(ctx.l10n.unsaved_changes, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
+      content: Text(ctx.l10n.draft_save_to_drafts, style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(ctx, 'discard'), child: Text(TranslationService.tr('draft_discard'))),
-        TextButton(onPressed: () => Navigator.pop(ctx, 'save'), child: Text(TranslationService.tr('draft_save'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold))),
+        TextButton(onPressed: () => Navigator.pop(ctx, 'discard'), child: Text(ctx.l10n.draft_discard)),
+        TextButton(onPressed: () => Navigator.pop(ctx, 'save'), child: Text(ctx.l10n.draft_save, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold))),
       ],
     ));
     if (result == 'save') {
@@ -148,12 +148,12 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
       emotions: const [],
     );
     await DraftService.saveDraft(draft);
-    if (mounted) ToastUtil.showToast(context, message: TranslationService.tr('draft_edited'), icon: Icons.article, color: ZoosyTheme.primary);
+    if (mounted) ToastUtil.showToast(context, message: context.l10n.draft_edited, icon: Icons.article, color: ZoosyTheme.primary);
   }
 
   Future<void> _pickImages() async {
     if (_imagePaths.length >= maxImages) {
-      ToastUtil.showToast(context, message: TranslationService.tr('max_images', params: {'count': '$maxImages'}), icon: Icons.warning_amber_rounded, color: Colors.orange);
+      ToastUtil.showToast(context, message: context.l10n.max_images('$maxImages'), icon: Icons.warning_amber_rounded, color: Colors.orange);
       return;
     }
     final picker = ImagePicker();
@@ -201,16 +201,16 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
           String msg;
           switch (error) {
             case 'guest_blocked':
-              msg = TranslationService.tr('voice_guest_blocked');
+              msg = context.l10n.voice_guest_blocked;
               break;
             case 'limit_reached':
-              msg = TranslationService.tr('voice_limit_reached');
+              msg = context.l10n.voice_limit_reached;
               break;
             case 'mic_denied':
-              msg = TranslationService.tr('voice_mic_denied');
+              msg = context.l10n.voice_mic_denied;
               break;
             case 'not_available':
-              msg = TranslationService.tr('voice_not_available');
+              msg = context.l10n.voice_not_available;
               break;
             default:
               msg = error;
@@ -235,7 +235,7 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
     final content = contentResult.sanitized;
 
     if (title.isEmpty || content.isEmpty) {
-      ToastUtil.showToast(context, message: TranslationService.tr('please_enter_content'), icon: Icons.info_outline);
+      ToastUtil.showToast(context, message: context.l10n.please_enter_content, icon: Icons.info_outline);
       return;
     }
 
@@ -309,13 +309,13 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        appBar: AppBar(title: Text(_isEditing ? TranslationService.tr('edit_thought') : TranslationService.tr('new_thought'), style: const TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.bold)),
+        appBar: AppBar(title: Text(_isEditing ? context.l10n.edit_thought : context.l10n.new_thought, style: const TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.bold)),
           surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           TextField(controller: _titleController,
-            decoration: InputDecoration(hintText: TranslationService.tr('title_hint'), labelText: TranslationService.tr('title_label'), filled: true, fillColor: ZoosyTheme.surfaceOf(context),
+            decoration: InputDecoration(hintText: context.l10n.title_hint, labelText: context.l10n.title_label, filled: true, fillColor: ZoosyTheme.surfaceOf(context),
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.3)))),
             style: TextStyle(fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context)),
           ),
@@ -323,8 +323,8 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
           Stack(children: [
             TextField(controller: _contentController, focusNode: _contentFocusNode, maxLines: 6,
               decoration: InputDecoration(
-                hintText: TranslationService.tr('content_hint'),
-                labelText: TranslationService.tr('content_label'),
+                hintText: context.l10n.content_hint,
+                labelText: context.l10n.content_label,
                 filled: true,
                 fillColor: ZoosyTheme.surfaceOf(context),
                 alignLabelWithHint: true,
@@ -403,7 +403,7 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
           ],
           const SizedBox(height: 24),
 
-          Text(TranslationService.tr('select_tags'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+          Text(context.l10n.select_tags, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 8, children: tagOptions.map((tag) {
             final bool isSel = selectedTags.contains(tag);
@@ -435,7 +435,7 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        TranslationService.tr('location_getting'),
+                        context.l10n.location_getting,
                         style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context)),
                       ),
                     ),
@@ -469,7 +469,7 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          TranslationService.tr('retry'),
+                          context.l10n.retry,
                           style: TextStyle(fontSize: 10, color: ZoosyTheme.primary, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -478,7 +478,7 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
                     Icon(Icons.location_off_outlined, size: 14, color: ZoosyTheme.textMutedOf(context).withOpacity(0.5)),
                     const SizedBox(width: 6),
                     Text(
-                      TranslationService.tr('location_disabled'),
+                      context.l10n.location_disabled,
                       style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context).withOpacity(0.5)),
                     ),
                   ],
@@ -492,7 +492,7 @@ class _NewReflectionScreenState extends State<NewReflectionScreen> {
             child: ElevatedButton.icon(
               onPressed: (_generatingAI && !_isEditing) ? null : _save,
               icon: _generatingAI ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white)) : const Icon(Icons.check, color: Colors.white),
-              label: Text(_isEditing ? TranslationService.tr('save_modify') : (_generatingAI ? TranslationService.tr('generating_ai') : TranslationService.tr('save_thought')),
+              label: Text(_isEditing ? context.l10n.save_modify : (_generatingAI ? context.l10n.generating_ai : context.l10n.save_thought),
                   style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)), elevation: 4),
             ),

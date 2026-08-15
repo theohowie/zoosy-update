@@ -1,7 +1,7 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/notification_service.dart';
-import '../../services/translation_service.dart';
 import '../edit_field_screen.dart';
 import '../../widgets/toast_util.dart';
 
@@ -41,13 +41,13 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     // 重置今日触发标记，允许新时间生效
     await NotificationService.onTimeChanged();
     if (!mounted) return;
-    ToastUtil.showToast(context, message: TranslationService.tr('notification_saved'), icon: Icons.check, color: Colors.green);
+    ToastUtil.showToast(context, message: context.l10n.notification_saved, icon: Icons.check, color: Colors.green);
     Navigator.pop(context);
   }
 
   void _editTitle() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => EditFieldScreen(
-      title: TranslationService.tr('notif_title_label'),
+    Navigator.push(context, MaterialPageRoute(builder: (ctx) => EditFieldScreen(
+      title: ctx.l10n.notif_title_label,
       initialValue: _title,
       hintText: NotificationService.defaultTitle,
       maxLength: 16,
@@ -56,8 +56,8 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   }
 
   void _editContent() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => EditFieldScreen(
-      title: TranslationService.tr('notif_content_label'),
+    Navigator.push(context, MaterialPageRoute(builder: (ctx) => EditFieldScreen(
+      title: ctx.l10n.notif_content_label,
       initialValue: _content,
       hintText: NotificationService.defaultContent,
       maxLength: 30,
@@ -104,9 +104,9 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('notification_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.notification_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0,
-        actions: [TextButton(onPressed: _save, child: Text(TranslationService.tr('save'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 15)))],
+        actions: [TextButton(onPressed: _save, child: Text(context.l10n.save, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 15)))],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -115,8 +115,8 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
             child: Column(children: [
               SwitchListTile(
-                title: Text(TranslationService.tr('daily_reminder'), style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('daily_reminder_desc'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.daily_reminder, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.daily_reminder_desc, style: TextStyle(fontSize: 11)),
                 value: _enabled, activeColor: ZoosyTheme.primary,
                 onChanged: (v) {
                   setState(() => _enabled = v);
@@ -130,15 +130,15 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
             const SizedBox(height: 20),
 
             // 时间设置
-            Text(TranslationService.tr('notif_time_label'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.notif_time_label, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 12),
             Card(color: ZoosyTheme.surfaceOf(context), surfaceTintColor: Colors.transparent, elevation: 0,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
               child: ListTile(
                 leading: Icon(Icons.access_time, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('notif_time'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                title: Text(context.l10n.notif_time, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                 subtitle: Text(
-                  TranslationService.tr('notif_time_desc', params: {'time': _formatTime()}),
+                  context.l10n.notif_time_desc(_formatTime()),
                   style: const TextStyle(fontSize: 11),
                 ),
                 trailing: Row(
@@ -159,14 +159,14 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
             const SizedBox(height: 20),
 
             // 通知内容
-            Text(TranslationService.tr('notification_style'), style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+            Text(context.l10n.notification_style, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
             const SizedBox(height: 12),
             Card(color: ZoosyTheme.surfaceOf(context), surfaceTintColor: Colors.transparent, elevation: 0,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
               child: Column(children: [
                 ListTile(
                   leading: Icon(Icons.title, color: ZoosyTheme.textMutedOf(context)),
-                  title: Text(TranslationService.tr('notif_title_label'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                  title: Text(context.l10n.notif_title_label, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                   subtitle: Text(_title, style: const TextStyle(fontSize: 11), maxLines: 1, overflow: TextOverflow.ellipsis),
                   trailing: const Icon(Icons.chevron_right, size: 20),
                   onTap: _editTitle,
@@ -174,7 +174,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 const Divider(height: 1, indent: 16, endIndent: 16),
                 ListTile(
                   leading: Icon(Icons.article_outlined, color: ZoosyTheme.textMutedOf(context)),
-                  title: Text(TranslationService.tr('notif_content_label'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                  title: Text(context.l10n.notif_content_label, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
                   subtitle: Text(_content, style: const TextStyle(fontSize: 11), maxLines: 1, overflow: TextOverflow.ellipsis),
                   trailing: const Icon(Icons.chevron_right, size: 20),
                   onTap: _editContent,
@@ -192,7 +192,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 await NotificationService.showTestNotification();
               },
               icon: const Icon(Icons.notifications_active_outlined, size: 20),
-              label: Text(TranslationService.tr('send_test_notif')),
+              label: Text(context.l10n.send_test_notif),
               style: OutlinedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
             )),
           ],

@@ -1,3 +1,4 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/translation_service.dart';
@@ -15,7 +16,7 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
   bool _isLoading = true;
 
   List<Map<String, String>> get _languages => [
-    {'code': 'system', 'name': TranslationService.tr('system_default'), 'local': 'system'},
+    {'code': 'system', 'name': context.l10n.system_default, 'local': 'system'},
     {'code': 'zh', 'name': '简体中文', 'local': 'zh'},
     {'code': 'zh_TW', 'name': '繁体中文', 'local': 'zh_TW'},
     {'code': 'en', 'name': 'English', 'local': 'en'},
@@ -42,20 +43,20 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
     await TranslationService.setLocale(code);
     if (mounted) {
       setState(() => _selectedLocale = code);
-      ToastUtil.showToast(context, message: TranslationService.tr('language_saved'), icon: Icons.language);
+      ToastUtil.showToast(context, message: context.l10n.language_saved, icon: Icons.language);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('language_title'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.language_title, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: const Center(child: CircularProgressIndicator()),
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('language_title'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.language_title, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: ListView.separated(
         padding: const EdgeInsets.all(16),

@@ -34,6 +34,9 @@ class AuthService {
   static const _adminPassword = 'zoosy_admin';
   static const adminNickname = 'Zoosy Admin';
 
+  /// 游客登录使用的占位邮箱，持久化后重启 App 无需重新游客登录
+  static const guestEmail = 'guest@zoosy.local';
+
   // 支持的哈希算法列表（兼容旧版数据）
   static const _hashAlgorithms = ['sha256', 'md5', 'sha1'];
 

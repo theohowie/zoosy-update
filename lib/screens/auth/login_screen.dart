@@ -1,10 +1,10 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
 import '../../services/auth_service.dart';
 import '../../services/profile_service.dart';
 import '../../services/secure_prefs.dart';
 import '../../services/theme_service.dart';
-import '../../services/translation_service.dart';
 import 'register_screen.dart';
 import 'reset_password_screen.dart';
 import '../about/user_agreement_screen.dart';
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     final password = _passwordController.text;
 
     if (email.isEmpty || password.isEmpty) {
-      setState(() => _errorMsg = TranslationService.tr('enter_email_password'));
+      setState(() => _errorMsg = context.l10n.enter_email_password);
       return;
     }
     if (!_agreeTerms) {
@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
     String? err;
     final success = await AuthService.login(email, password);
-    err = success ? null : TranslationService.tr('email_password_error');
+    err = success ? null : context.l10n.email_password_error;
     if (!mounted) return;
 
     if (err == null) {
@@ -140,26 +140,28 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       builder: (ctx) => AlertDialog(
                         backgroundColor: ZoosyTheme.surfaceOf(ctx),
                         surfaceTintColor: Colors.transparent,
-                        title: Text(TranslationService.tr('guest_login'), style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
+                        title: Text(ctx.l10n.guest_login, style: TextStyle(color: ZoosyTheme.textDarkOf(ctx))),
                         content: Text(
-                          TranslationService.tr('guest_login_desc'),
+                          ctx.l10n.guest_login_desc,
                           style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(ctx), height: 1.5),
                         ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(ctx, false),
-                            child: Text(TranslationService.tr('cancel'), style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
+                            child: Text(ctx.l10n.cancel, style: TextStyle(color: ZoosyTheme.textMutedOf(ctx))),
                           ),
                           ElevatedButton(
                             onPressed: () => Navigator.pop(ctx, true),
                             style: ElevatedButton.styleFrom(backgroundColor: ZoosyTheme.primary),
-                            child: Text(TranslationService.tr('confirm'), style: TextStyle(color: Colors.white)),
+                            child: Text(ctx.l10n.confirm, style: TextStyle(color: Colors.white)),
                           ),
                         ],
                       ),
                     );
                     if (proceed == true && context.mounted) {
-                      widget.onLoginSuccess();
+                      // 游客登录持久化：重启 App 后无需重新游客登录
+                      await AuthService.saveLoginState(AuthService.guestEmail);
+                      if (context.mounted) widget.onLoginSuccess();
                     }
                   },
                   child: Container(
@@ -168,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: Text(TranslationService.tr('guest_login'), style: TextStyle(fontSize: 13, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
+                    child: Text(context.l10n.guest_login, style: TextStyle(fontSize: 13, color: ZoosyTheme.primary, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),
@@ -201,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                     ),
                     const SizedBox(height: 6),
                       Text(
-                      TranslationService.tr('slogan'),
+                      context.l10n.slogan,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(context), letterSpacing: 0.5),
                     ),
@@ -210,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               ),
               const SizedBox(height: 40),
 
-              Text(TranslationService.tr('email'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+              Text(context.l10n.email, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
               const SizedBox(height: 8),
               TextField(
                 controller: _emailController,
@@ -228,13 +230,13 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
               ),
               const SizedBox(height: 18),
 
-              Text(TranslationService.tr('password'), style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+              Text(context.l10n.password, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
               const SizedBox(height: 8),
               TextField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
-                  hintText: TranslationService.tr('enter_password'),
+                  hintText: context.l10n.enter_password,
                   filled: true,
                   fillColor: ZoosyTheme.surfaceOf(context),
                   border: OutlineInputBorder(
@@ -264,7 +266,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                         ),
                       ),
                       const SizedBox(width: 4),
-                      Text(TranslationService.tr('remember_password'), style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context))),
+                      Text(context.l10n.remember_password, style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context))),
                     ]),
                   ),
                   const Spacer(),
@@ -276,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       );
                     },
                     child: Text(
-                      TranslationService.tr('forgot_password'),
+                      context.l10n.forgot_password,
                       style: TextStyle(fontSize: 12, color: ZoosyTheme.primary, fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -310,19 +312,19 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       child: RichText(
                         text: TextSpan(
                           style: TextStyle(fontSize: 12, color: ZoosyTheme.textMutedOf(context)),
-                          text: TranslationService.tr('agree_prefix'),
+                          text: context.l10n.agree_prefix,
                           children: [
                             WidgetSpan(
                               child: GestureDetector(
                                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const UserAgreementPage())),
-                                child: Text(TranslationService.tr('user_agreement'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 12)),
+                                child: Text(context.l10n.user_agreement, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 12)),
                               ),
                             ),
-                            TextSpan(text: TranslationService.tr('and')),
+                            TextSpan(text: context.l10n.and),
                             WidgetSpan(
                               child: GestureDetector(
                                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyPage())),
-                                child: Text(TranslationService.tr('privacy_policy'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 12)),
+                                child: Text(context.l10n.privacy_policy, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 12)),
                               ),
                             ),
                           ],
@@ -365,7 +367,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   ),
                   child: _isLoading
                       ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
-                      : Text(TranslationService.tr('login'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                      : Text(context.l10n.login, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
                 ),
               ),
 
@@ -384,10 +386,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                   child: RichText(
                     text: TextSpan(
                       style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(context)),
-                      text: TranslationService.tr('no_account'),
+                      text: context.l10n.no_account,
                       children: [
                         TextSpan(
-                          text: ' ${TranslationService.tr('register_now')}',
+                          text: ' ${context.l10n.register_now}',
                           style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold),
                         ),
                       ],

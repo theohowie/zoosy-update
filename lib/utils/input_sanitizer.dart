@@ -1,3 +1,5 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
+
 /// 输入消毒工具 — 防止指令注入、XSS、SQL注入等攻击
 class InputSanitizer {
   // 最大输入长度限制
@@ -57,7 +59,7 @@ class InputSanitizer {
   }
 
   /// 消毒并验证文本，返回消毒后的文本和警告信息
-  static SanitizeResult sanitizeAndValidate(String input, {int? maxLength, String fieldName = '输入'}) {
+  static SanitizeResult sanitizeAndValidate(String input, {int? maxLength, String fieldName = ''}) {
     if (input.isEmpty) {
       return SanitizeResult(input, null);
     }
@@ -67,7 +69,7 @@ class InputSanitizer {
       if (pattern.hasMatch(input)) {
         return SanitizeResult(
           sanitizeText(input, maxLength: maxLength),
-          '$fieldName 包含不允许的特殊字符，已自动清理',
+          appL10n().is_sanitized_general(fieldName.isEmpty ? appL10n().is_field_input : fieldName),
         );
       }
     }
@@ -77,7 +79,7 @@ class InputSanitizer {
 
     return SanitizeResult(
       sanitized,
-      wasModified ? '$fieldName 已自动清理特殊字符' : null,
+      wasModified ? appL10n().is_cleaned(fieldName.isEmpty ? appL10n().is_field_input : fieldName) : null,
     );
   }
 
@@ -102,18 +104,18 @@ class InputSanitizer {
     // 长度检查
     if (sanitized.length > maxEmailLength) {
       sanitized = sanitized.substring(0, maxEmailLength);
-      return SanitizeResult(sanitized, '邮箱地址过长，已截断');
+      return SanitizeResult(sanitized, appL10n().is_email_too_long);
     }
 
     // 基本格式验证
     final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     if (!emailRegex.hasMatch(sanitized)) {
-      return SanitizeResult(sanitized, '邮箱格式不正确');
+      return SanitizeResult(sanitized, appL10n().is_email_invalid);
     }
 
     // 检查注入
     if (sanitized.contains(RegExp(r'[;&|`$<>]'))) {
-      return SanitizeResult(sanitized.replaceAll(RegExp(r'[;&|`$<>]'), ''), '邮箱包含不允许的字符');
+      return SanitizeResult(sanitized.replaceAll(RegExp(r'[;&|`$<>]'), ''), appL10n().is_email_bad_chars);
     }
 
     return SanitizeResult(sanitized, null);
@@ -126,7 +128,7 @@ class InputSanitizer {
     }
 
     if (input.length > maxPasswordLength) {
-      return SanitizeResult(input.substring(0, maxPasswordLength), '密码过长，已截断');
+      return SanitizeResult(input.substring(0, maxPasswordLength), appL10n().is_pwd_too_long);
     }
 
     return SanitizeResult(input, null);
@@ -147,7 +149,7 @@ class InputSanitizer {
 
     // 长度检查
     if (sanitized.length > maxUrlLength) {
-      return SanitizeResult(sanitized.substring(0, maxUrlLength), 'URL 过长，已截断');
+      return SanitizeResult(sanitized.substring(0, maxUrlLength), appL10n().is_url_too_long);
     }
 
     // 协议白名单
@@ -155,14 +157,14 @@ class InputSanitizer {
     if (uri != null && uri.hasScheme) {
       final allowedSchemes = ['http', 'https', 'ftp'];
       if (!allowedSchemes.contains(uri.scheme.toLowerCase())) {
-        return SanitizeResult(sanitized, 'URL 协议不安全，仅支持 http/https/ftp');
+        return SanitizeResult(sanitized, appL10n().is_url_protocol);
       }
     }
 
     // 移除危险字符
     if (sanitized.contains(RegExp(r'[;&|`$]'))) {
       sanitized = sanitized.replaceAll(RegExp(r'[;&|`$]'), '');
-      return SanitizeResult(sanitized, 'URL 包含不允许的字符，已清理');
+      return SanitizeResult(sanitized, appL10n().is_url_bad_chars);
     }
 
     return SanitizeResult(sanitized, null);
@@ -179,14 +181,14 @@ class InputSanitizer {
     // 标签长度限制
     if (sanitized.length > 30) {
       sanitized = sanitized.substring(0, 30);
-      return SanitizeResult(sanitized, '标签过长，已截断');
+      return SanitizeResult(sanitized, appL10n().is_tag_too_long);
     }
 
     // 移除特殊字符，只保留中文、字母、数字、下划线、连字符
     final allowedPattern = RegExp(r'^[\u4e00-\u9fa5a-zA-Z0-9_\-]+$');
     if (!allowedPattern.hasMatch(sanitized)) {
       sanitized = sanitized.replaceAll(RegExp(r'[^\u4e00-\u9fa5a-zA-Z0-9_\-]'), '');
-      return SanitizeResult(sanitized, '标签包含不允许的字符，已清理');
+      return SanitizeResult(sanitized, appL10n().is_tag_bad_chars);
     }
 
     return SanitizeResult(sanitized, null);

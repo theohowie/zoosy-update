@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../../models/reflection.dart';
-import '../../services/translation_service.dart';
 import '../../services/prefs_util.dart';
 import '../../widgets/toast_util.dart';
 import '../settings/ai_settings_screen.dart';
@@ -34,7 +34,7 @@ class _ThoughtDetailSettingsScreenState extends State<ThoughtDetailSettingsScree
     if (mounted) {
       ToastUtil.showToast(
         context,
-        message: value ? TranslationService.tr('location_granted') : TranslationService.tr('location_disabled'),
+        message: value ? context.l10n.location_granted : context.l10n.location_disabled,
         icon: value ? Icons.location_on : Icons.location_off,
         color: value ? Colors.green : Colors.grey,
       );
@@ -44,13 +44,13 @@ class _ThoughtDetailSettingsScreenState extends State<ThoughtDetailSettingsScree
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('thought_detail_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.thought_detail_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: const Center(child: CircularProgressIndicator()),
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text(TranslationService.tr('thought_detail_settings'), style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.thought_detail_settings, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -60,16 +60,16 @@ class _ThoughtDetailSettingsScreenState extends State<ThoughtDetailSettingsScree
             child: Column(children: [
               ListTile(
                 leading: Icon(Icons.psychology_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('ai_settings'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('ai_settings_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.ai_settings, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.ai_settings_sub, style: TextStyle(fontSize: 11)),
                 trailing: const Icon(Icons.chevron_right, size: 20),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AISettingsScreen())),
               ),
               const Divider(height: 1, indent: 16, endIndent: 16),
               SwitchListTile(
                 secondary: Icon(Icons.location_on_outlined, color: ZoosyTheme.textMutedOf(context)),
-                title: Text(TranslationService.tr('thought_location'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
-                subtitle: Text(TranslationService.tr('thought_location_sub'), style: TextStyle(fontSize: 11)),
+                title: Text(context.l10n.thought_location, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+                subtitle: Text(context.l10n.thought_location_sub, style: TextStyle(fontSize: 11)),
                 value: _locationEnabled, activeColor: ZoosyTheme.primary,
                 onChanged: _toggleLocation,
               ),

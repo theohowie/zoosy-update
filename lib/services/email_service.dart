@@ -9,6 +9,7 @@
 /// 1. 登录 https://mail.qq.com → 设置 → 账户 → POP3/SMTP服务 → 开启
 /// 2. 生成授权码（16位，代替登录密码）
 
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:math';
 
 import 'package:mailer/mailer.dart';
@@ -24,12 +25,12 @@ class EmailService {
     // 输入消毒
     final sanitizedEmail = InputSanitizer.sanitizeEmail(toEmail).sanitized;
     if (sanitizedEmail.isEmpty) {
-      return '邮箱地址无效';
+      return appL10n().em_invalid_email;
     }
 
     // 检查是否已配置发件邮箱（需在构建时通过 --dart-define 注入 QQ_EMAIL / QQ_AUTH_CODE）
     if (AppConfig.qqEmail.isEmpty || AppConfig.qqAuthCode.isEmpty) {
-      return '发件邮箱未配置，请通过 --dart-define 传入 QQ_EMAIL 和 QQ_AUTH_CODE';
+      return appL10n().em_not_configured;
     }
 
     final code = _generateCode();
@@ -42,16 +43,16 @@ class EmailService {
         password: AppConfig.qqAuthCode,
       );
 
-      final subject = purpose == 'reset' ? 'Zoosy 密码重置验证码' : 'Zoosy 邮箱验证码';
+      final subject = purpose == 'reset' ? appL10n().em_subject_reset : appL10n().em_subject_register;
       final bodyText = purpose == 'reset'
-          ? '您正在进行重置密码操作，请使用以下验证码完成验证：'
-          : '您正在注册 Zoosy 账号，请使用以下验证码完成验证：';
+          ? appL10n().em_body_reset
+          : appL10n().em_body_register;
 
       final message = Message()
         ..from = Address(AppConfig.qqEmail, 'Zoosy')
         ..recipients.add(sanitizedEmail)
         ..subject = subject
-        ..text = '您的 Zoosy 验证码为：$code（有效期 5 分钟，请勿泄露）'
+        ..text = appL10n().em_body_code('$code')
         ..html = '''
 <!DOCTYPE html>
 <html>
@@ -77,9 +78,9 @@ class EmailService {
       await send(message, smtpServer);
       return code;
     } on MailerException catch (e) {
-      return '发送失败：${e.message}';
+      return appL10n().em_send_failed('${e.message}');
     } catch (e) {
-      return '发送失败：$e';
+      return appL10n().em_send_failed('$e');
     }
   }
 

@@ -1,6 +1,6 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import '../models/reflection.dart';
-import '../services/translation_service.dart';
 import '../utils/input_sanitizer.dart';
 
 class EditFieldScreen extends StatefulWidget {
@@ -56,7 +56,7 @@ class _EditFieldScreenState extends State<EditFieldScreen> {
               widget.onSave(sanitized);
               Navigator.pop(context);
             },
-            child: Text(TranslationService.tr('save'), style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 15)),
+            child: Text(context.l10n.save, style: TextStyle(color: ZoosyTheme.primary, fontWeight: FontWeight.bold, fontSize: 15)),
           ),
         ],
       ),

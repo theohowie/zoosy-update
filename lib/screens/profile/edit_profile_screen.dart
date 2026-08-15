@@ -1,9 +1,9 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../models/reflection.dart';
 import '../../services/profile_service.dart';
-import '../../services/translation_service.dart';
 import '../edit_field_screen.dart';
 import 'edit_gender_screen.dart';
 import '../auth/change_email_screen.dart';
@@ -58,16 +58,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       builder: (ctx) => Padding(
         padding: const EdgeInsets.all(20),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Text(TranslationService.tr('change_avatar'), style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(ctx))),
+          Text(ctx.l10n.change_avatar, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(ctx))),
           const SizedBox(height: 20),
           ListTile(
             leading: Icon(Icons.photo_library_outlined, color: ZoosyTheme.primary),
-            title: Text(TranslationService.tr('choose_from_gallery')),
+            title: Text(ctx.l10n.choose_from_gallery),
             onTap: () { Navigator.pop(ctx); _pickImage(); },
           ),
           ListTile(
             leading: Icon(Icons.camera_alt_outlined, color: ZoosyTheme.primary),
-            title: Text(TranslationService.tr('take_photo')),
+            title: Text(ctx.l10n.take_photo),
             onTap: () async {
               Navigator.pop(ctx);
               final picker = ImagePicker();
@@ -83,7 +83,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           if (_avatarUrl.startsWith('/') || _avatarUrl.startsWith('file://'))
             ListTile(
               leading: const Icon(Icons.delete_outline, color: Colors.redAccent),
-              title: Text(TranslationService.tr('restore_default_avatar'), style: TextStyle(color: Colors.redAccent)),
+              title: Text(ctx.l10n.restore_default_avatar, style: TextStyle(color: Colors.redAccent)),
               onTap: () async {
                 Navigator.pop(ctx);
                 await ProfileService.setAvatarUrl(ProfileService.defaultAvatar);
@@ -101,14 +101,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Scaffold(
-        appBar: AppBar(title: Text(TranslationService.tr('edit_profile'), style: TextStyle(fontWeight: FontWeight.bold)),
+        appBar: AppBar(title: Text(context.l10n.edit_profile, style: TextStyle(fontWeight: FontWeight.bold)),
           surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('编辑资料', style: TextStyle(fontWeight: FontWeight.bold)),
+      appBar: AppBar(title: Text(context.l10n.ep_edit_profile, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent, backgroundColor: Colors.transparent, elevation: 0),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -151,24 +151,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           Card(color: ZoosyTheme.surfaceOf(context), surfaceTintColor: Colors.transparent, elevation: 0,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2))),
             child: Column(children: [
-              _buildFieldTile(TranslationService.tr('nickname'), _nickname, Icons.person_outline, () => _editField(TranslationService.tr('nickname'), _nickname, TranslationService.tr('enter_nickname'), (v) => ProfileService.setNickname(v))),
+              _buildFieldTile(context.l10n.nickname, _nickname, Icons.person_outline, () => _editField(context.l10n.nickname, _nickname, context.l10n.enter_nickname, (v) => ProfileService.setNickname(v))),
               const Divider(height: 1, indent: 16, endIndent: 16),
-              _buildFieldTile(TranslationService.tr('email'), _email, Icons.email_outlined, () async {
+              _buildFieldTile(context.l10n.email, _email, Icons.email_outlined, () async {
                 await Navigator.push(context, MaterialPageRoute(builder: (_) => const ChangeEmailScreen()));
                 await _loadProfile();
                 widget.onSaved();
                 if (mounted) setState(() {});
               }),
               const Divider(height: 1, indent: 16, endIndent: 16),
-              _buildFieldTile(TranslationService.tr('gender'), _gender, Icons.people_outline, () => _openGenderEditor()),
+              _buildFieldTile(context.l10n.gender, _gender, Icons.people_outline, () => _openGenderEditor()),
               const Divider(height: 1, indent: 16, endIndent: 16),
-              _buildFieldTile(TranslationService.tr('birthday'), _birthday, Icons.cake_outlined, () => _pickBirthday()),
+              _buildFieldTile(context.l10n.birthday, _birthday, Icons.cake_outlined, () => _pickBirthday()),
               const Divider(height: 1, indent: 16, endIndent: 16),
-              _buildFieldTile(TranslationService.tr('occupation'), _occupation, Icons.work_outline, () => _editField(TranslationService.tr('occupation'), _occupation, TranslationService.tr('enter_nickname'), (v) => ProfileService.setOccupation(v))),
+              _buildFieldTile(context.l10n.occupation, _occupation, Icons.work_outline, () => _editField(context.l10n.occupation, _occupation, context.l10n.enter_nickname, (v) => ProfileService.setOccupation(v))),
               const Divider(height: 1, indent: 16, endIndent: 16),
-              _buildFieldTile(TranslationService.tr('signature'), _signature.isEmpty ? TranslationService.tr('not_set') : _signature, Icons.format_quote, () => _editField(TranslationService.tr('signature'), _signature, TranslationService.tr('write_signature'), (v) => ProfileService.setSignature(v), maxLines: 3)),
+              _buildFieldTile(context.l10n.signature, _signature.isEmpty ? context.l10n.not_set : _signature, Icons.format_quote, () => _editField(context.l10n.signature, _signature, context.l10n.write_signature, (v) => ProfileService.setSignature(v), maxLines: 3)),
               const Divider(height: 1, indent: 16, endIndent: 16),
-              _buildFieldTile(TranslationService.tr('bio'), _bio.isEmpty ? TranslationService.tr('not_set') : _bio, Icons.description_outlined, () => _editField(TranslationService.tr('bio'), _bio, TranslationService.tr('introduce_yourself'), (v) => ProfileService.setBio(v), maxLines: 5)),
+              _buildFieldTile(context.l10n.bio, _bio.isEmpty ? context.l10n.not_set : _bio, Icons.description_outlined, () => _editField(context.l10n.bio, _bio, context.l10n.introduce_yourself, (v) => ProfileService.setBio(v), maxLines: 5)),
             ]),
           ),
           const SizedBox(height: 40),
@@ -221,7 +221,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ), child: child!),
     );
     if (date != null) {
-      await ProfileService.setBirthday('${date.year}年${date.month}月${date.day}日');
+      await ProfileService.setBirthday(context.l10n.date_full(date.year, date.month, date.day));
       await _loadProfile();
       widget.onSaved();
       if (mounted) setState(() {});

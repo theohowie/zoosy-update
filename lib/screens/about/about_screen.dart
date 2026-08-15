@@ -1,8 +1,8 @@
+import 'package:zoosy/generated/l10n/l10n_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../models/reflection.dart';
 import '../../services/theme_service.dart';
-import '../../services/translation_service.dart';
 import 'feature_list_screen.dart';
 
 class AboutScreen extends StatefulWidget {
@@ -30,7 +30,7 @@ class _AboutScreenState extends State<AboutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(TranslationService.tr('about_zoosy'), style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(context.l10n.about_zoosy, style: TextStyle(fontWeight: FontWeight.bold)),
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -60,7 +60,7 @@ class _AboutScreenState extends State<AboutScreen> {
               letterSpacing: -0.5,
             )),
             const SizedBox(height: 4),
-            Text(TranslationService.tr('slogan'), style: TextStyle(fontSize: 14, color: ZoosyTheme.textMutedOf(context))),
+            Text(context.l10n.slogan, style: TextStyle(fontSize: 14, color: ZoosyTheme.textMutedOf(context))),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
@@ -82,17 +82,17 @@ class _AboutScreenState extends State<AboutScreen> {
                 side: BorderSide(color: ZoosyTheme.outlineOf(context).withOpacity(0.2)),
               ),
               child: Column(children: [
-                _buildFeatureTile(context, Icons.edit_note, TranslationService.tr('feature_daily_reflection'), TranslationService.tr('feature_daily_reflection_sub')),
+                _buildFeatureTile(context, Icons.edit_note, context.l10n.feature_daily_reflection, context.l10n.feature_daily_reflection_sub),
                 const Divider(height: 1, indent: 16, endIndent: 16),
-                _buildFeatureTile(context, Icons.analytics, TranslationService.tr('feature_stats'), TranslationService.tr('feature_stats_sub')),
+                _buildFeatureTile(context, Icons.analytics, context.l10n.feature_stats, context.l10n.feature_stats_sub),
                 const Divider(height: 1, indent: 16, endIndent: 16),
-                _buildFeatureTile(context, Icons.psychology, TranslationService.tr('feature_ai'), TranslationService.tr('feature_ai_sub')),
+                _buildFeatureTile(context, Icons.psychology, context.l10n.feature_ai, context.l10n.feature_ai_sub),
                 const Divider(height: 1, indent: 16, endIndent: 16),
-                _buildFeatureTile(context, Icons.widgets, TranslationService.tr('feature_widget'), TranslationService.tr('feature_widget_sub')),
+                _buildFeatureTile(context, Icons.widgets, context.l10n.feature_widget, context.l10n.feature_widget_sub),
                 const Divider(height: 1, indent: 16, endIndent: 16),
-                _buildFeatureTile(context, Icons.palette, TranslationService.tr('feature_theme'), TranslationService.tr('feature_theme_sub')),
+                _buildFeatureTile(context, Icons.palette, context.l10n.feature_theme, context.l10n.feature_theme_sub),
                 const Divider(height: 1, indent: 16, endIndent: 16),
-                _buildFeatureTile(context, Icons.cloud_sync, TranslationService.tr('feature_cloud'), TranslationService.tr('feature_cloud_sub')),
+                _buildFeatureTile(context, Icons.cloud_sync, context.l10n.feature_cloud, context.l10n.feature_cloud_sub),
               ]),
             ),
             const SizedBox(height: 24),
@@ -115,8 +115,8 @@ class _AboutScreenState extends State<AboutScreen> {
                   ),
                   child: Icon(Icons.checklist, size: 20, color: ZoosyTheme.primary),
                 ),
-                title: Text(TranslationService.tr('feature_list'), style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
-                subtitle: Text(TranslationService.tr('about_subtitle'), style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
+                title: Text(context.l10n.feature_list, style: TextStyle(fontSize: 13.5, fontWeight: FontWeight.bold, color: ZoosyTheme.textDarkOf(context))),
+                subtitle: Text(context.l10n.about_subtitle, style: TextStyle(fontSize: 11, color: ZoosyTheme.textMutedOf(context))),
                 trailing: Icon(Icons.chevron_right, size: 20, color: ZoosyTheme.textMutedOf(context)),
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FeatureListScreen())),
               ),
@@ -125,7 +125,7 @@ class _AboutScreenState extends State<AboutScreen> {
 
             // 描述
             Text(
-              TranslationService.tr('about_description'),
+              context.l10n.about_description,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 13, color: ZoosyTheme.textMutedOf(context), height: 1.6),
             ),

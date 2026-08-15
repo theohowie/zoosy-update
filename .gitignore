@@ -58,3 +58,6 @@ android/.kotlin/
 
 # Generated localization code
 lib/generated/
+
+# Release APK ÏÂÔØÔ´
+!release/*.apk

@@ -1,7 +1,7 @@
 name: zoosy
 description: "Zoosy - 主动思考记录应用"
 publish_to: 'none'
-version: 1.18.1+5
+version: 1.18.2+6
 
 environment:
   sdk: ^3.12.0

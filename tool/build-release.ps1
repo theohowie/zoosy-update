@@ -84,9 +84,13 @@ if (-not $SkipBuild) {
     Write-Step '构建 release APK'
     Push-Location $RepoRoot
     try {
-        & flutter build apk --release --target-platform android-arm64 `
-            --obfuscate --split-debug-info=build/symbols
-        if ($LASTEXITCODE -ne 0) { Fail "flutter build apk 失败（exit $LASTEXITCODE）" }
+        # flutter/gradle 会往 stderr 写进度信息，这里用 cmd 调用并把 stderr 合并，
+        # 避免 PowerShell 把正常输出当成错误（$ErrorActionPreference = 'Stop'）
+        $buildCmd = 'flutter build apk --release --target-platform android-arm64 --obfuscate --split-debug-info=build/symbols 2>&1'
+        $buildOut = & cmd /c $buildCmd
+        $buildCode = $LASTEXITCODE
+        $buildOut | ForEach-Object { Write-Host "    $_" }
+        if ($buildCode -ne 0) { Fail "flutter build apk 失败（exit $buildCode）" }
     } finally { Pop-Location }
 }
 
@@ -146,12 +150,15 @@ for ($i = 0; $i -lt $apks.Count; $i++) {
     $signed = Join-Path $apk.DirectoryName ($apk.BaseName + '-rotated.apk')
     Remove-Item $signed -ErrorAction SilentlyContinue
 
-    # 连续第二次执行本脚本时，产物已经带轮换签名，直接验证即可
+    # 判断产物是否已带轮换签名：
+    # 已轮换 -> v3 用 upload 密钥签名，v2 由 lineage 里最早的 debug 密钥签名，
+    #           所以只看 API 28+ 时是 v3=true / v2=false；
+    # 未轮换（gradle 只用 upload 密钥签）-> API 28+ 同时存在 v2 和 v3。
     $probeArgs = @('verify', '--print-certs', '-v', '--min-sdk-version', '28', $apkPath)
     $probe = (& $apksigner $probeArgs 2>&1 | Out-String)
-    $alreadyRotated = ($probe -match 'Signer #1 certificate SHA-256 digest:\s*') -and
-                      ($probe -notmatch 'CN=Android Debug')
-    if ($alreadyRotated) {
+    $probeV3 = $probe -match 'Verified using v3 scheme \(APK Signature Scheme v3\):\s*true'
+    $probeV2 = $probe -match 'Verified using v2 scheme \(APK Signature Scheme v2\):\s*true'
+    if ($probeV3 -and -not $probeV2) {
         Write-Ok '产物已带轮换签名，跳过重新签名'
         continue
     }

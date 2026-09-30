@@ -1,5 +1,5 @@
 {
-  "version": "1.17.5",
-  "url": "https://1833859220.share.123pan.cn/123pan/sCKATd-Jtt2v",
-  "changelog": "1. 删除屏幕时长通知功能\n2. 修复通知在打开App时立即发送的问题"
+  "version": "1.18.1",
+  "url": "https://github.com/theohowie/zoosy-update/raw/main/release/zoosy-v1.18.1.apk",
+  "changelog": "1. 修复「全部思考」中日期前的选择框点击后误触发全局全选的问题，现在只选中/取消该日期的全部思考\n2. 修复旧版本（debug 签名）升级到新版本时的签名冲突问题，可直接覆盖安装"
 }

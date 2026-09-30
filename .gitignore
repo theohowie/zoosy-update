@@ -59,5 +59,11 @@ android/.kotlin/
 # Generated localization code
 lib/generated/
 
-# Release APK ����Դ
+# Release APK 下载源
 !release/*.apk
+
+# 签名密钥（私钥绝不入库）
+android/keystores/*.jks
+android/keystores/*.keystore
+# 密钥轮换证明只含公钥信息，需要入库以便复现签名
+!android/keystores/lineage-debug-to-upload.bin

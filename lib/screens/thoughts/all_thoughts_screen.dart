@@ -61,6 +61,23 @@ class _AllThoughtsScreenState extends State<AllThoughtsScreen> {
     _notifySelectionChanged();
   }
 
+  /// 切换某一天全部思考的选中状态
+  ///
+  /// 该日期下的卡片全部已选中时取消该日期的选中，否则选中该日期的全部卡片。
+  /// 只影响当前日期分组，不会影响其他日期。
+  void _toggleDaySelection(List<Reflection> dayReflections) {
+    final ids = dayReflections.map((r) => r.id).toSet();
+    setState(() {
+      final isAllSelected = ids.isNotEmpty && ids.every(_selectedIds.contains);
+      if (isAllSelected) {
+        _selectedIds.removeAll(ids);
+      } else {
+        _selectedIds.addAll(ids);
+      }
+    });
+    _notifySelectionChanged();
+  }
+
   void _notifySelectionChanged() {
     widget.onSelectionChanged?.call(
       _isSelectionMode,
@@ -126,9 +143,9 @@ class _AllThoughtsScreenState extends State<AllThoughtsScreen> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: GestureDetector(
-                      onTap: _selectAll,
+                      onTap: () => _toggleDaySelection(dayReflections),
                       child: Icon(
-                        _selectedIds.length == sorted.length ? Icons.check_circle : Icons.radio_button_unchecked,
+                        dayReflections.every((r) => _selectedIds.contains(r.id)) ? Icons.check_circle : Icons.radio_button_unchecked,
                         size: 20, color: ZoosyTheme.primary,
                       ),
                     ),
